@@ -116,13 +116,20 @@ let mqttClient = null;
 let userName = "";
 let userColor = "";
 let userKey = "";
+let userStatus = "";
 let clearEpoch = 0;
 let autoRefresh = true;
 let heartbeatTimer = null;
 let typTimer = null;
+let currentTheme = "dark";
+let isRecording = false;
+let mediaRecorder = null;
+let recordedChunks = [];
 const seenIds = new Set();
 const onlineMap = {};
 const typMap = {};
+const polls = new Map(); // poll_id -> poll data
+const reactions = new Map(); // msg_id -> {emoji: [userKeys]}
 const adminRoomOnlineUsers = {}; // Track online users per room for admin view
 
 const COLORS = [
@@ -184,6 +191,23 @@ const typDots = document.querySelector(".t-dots");
 const modal = document.getElementById("modal");
 const modalYes = document.getElementById("modal-yes");
 const modalNo = document.getElementById("modal-no");
+
+// New features
+const themeBtn = document.getElementById("theme-btn");
+const themeModal = document.getElementById("theme-modal");
+const themeOptions = document.querySelectorAll(".theme-option");
+const themeModalClose = document.getElementById("theme-modal-close");
+const pollBtn = document.getElementById("poll-btn");
+const pollModal = document.getElementById("poll-modal");
+const pollForm = document.getElementById("poll-form");
+const pollModalClose = document.getElementById("poll-modal-close");
+const statusBtn = document.getElementById("status-btn");
+const statusModal = document.getElementById("status-modal");
+const statusForm = document.getElementById("status-form");
+const statusInput = document.getElementById("status-input");
+const statusModalClose = document.getElementById("status-modal-close");
+const userStatusText = document.getElementById("user-status-text");
+const voiceBtn = document.getElementById("voice-btn");
 
 // ── DOM ─────────────────────────────────────────────────────────────────────
 const roomInp = document.getElementById("room-input");
@@ -589,6 +613,7 @@ function doLeave() {
   publish(getTopic("pres"), {
     key: userKey,
     name: userName,
+    status: userStatus,
     ts: 0,
     room_id: currentRoom.room_id,
   });
@@ -737,6 +762,8 @@ function connectMQTT() {
           getTopic("type"),
           getTopic("pres"),
           getTopic("call"),
+          getTopic("poll"),
+          getTopic("reaction"),
         ],
         async (err) => {
           if (!err) {
@@ -776,6 +803,7 @@ function connectMQTT() {
             publish(getTopic("pres"), {
               key: userKey,
               name: userName,
+              status: userStatus,
               ts: nowMs(),
               room_id: currentRoom.room_id,
             });
@@ -784,6 +812,7 @@ function connectMQTT() {
                 publish(getTopic("pres"), {
                   key: userKey,
                   name: userName,
+                  status: userStatus,
                   ts: nowMs(),
                   room_id: currentRoom.room_id,
                 }),
@@ -829,6 +858,8 @@ function connectMQTT() {
         if (topic === getTopic("call")) {
           if (typeof handleCallMsg === "function") handleCallMsg(data);
         }
+        if (topic === getTopic("poll")) handlePoll(data);
+        if (topic === getTopic("reaction")) handleReaction(data);
       } catch (_) {}
     });
   }
@@ -876,7 +907,7 @@ function addToHistory(msg) {
     "|" +
     String(msg.name || "") +
     "|" +
-    String(msg.text || "");
+    String(msg.text || msg.audio || "");
   if (
     h.some(
       (m) =>
@@ -884,7 +915,7 @@ function addToHistory(msg) {
           "|" +
           String(m.name || "") +
           "|" +
-          String(m.text || "") ===
+          String(m.text || m.audio || "") ===
         key,
     )
   )
@@ -908,22 +939,79 @@ function handleMsg(msg) {
     "|" +
     String(msg.name || "") +
     "|" +
-    String(msg.text || "");
+    String(msg.text || msg.audio || "");
   if (seenIds.has(dk)) return;
   seenIds.add(dk);
   renderMsg(msg, true);
-  if (msg.type === "user") addToHistory(msg);
+  if (msg.type === "user" || msg.type === "voice") addToHistory(msg);
+}
+
+function getMessageId(msg) {
+  if (msg.id) return msg.id;
+  return `${msg.ts}|${msg.name}|${msg.text || msg.audio || ""}`;
+}
+
+function renderReactionButtons(msgId) {
+  const msgReactions = reactions.get(msgId) || {};
+  const container = document.createElement("div");
+  container.className = "message-reactions";
+  ["👍", "❤️", "😂", "😮"].forEach((emoji) => {
+    const count = msgReactions[emoji]?.length || 0;
+    const reacted = msgReactions[emoji]?.includes(userKey);
+    const btn = document.createElement("button");
+    btn.className = `reaction-btn ${reacted ? "reacted" : ""}`;
+    btn.textContent = emoji + (count > 0 ? count : "");
+    btn.addEventListener("click", () => addReaction(msgId, emoji));
+    container.appendChild(btn);
+  });
+  return container;
 }
 
 function renderMsg(msg, animate) {
+  const msgId = getMessageId(msg);
+
   if (msg.type === "system") {
     const el = document.createElement("div");
     el.className = "sys";
     el.textContent = msg.text;
     msgsEl.appendChild(el);
+  } else if (msg.type === "voice") {
+    const isMe = msg.name === userName;
+    const row = document.createElement("div");
+    row.dataset.msgId = msgId;
+    row.className = "row " + (isMe ? "me" : "them") + (animate ? " pop" : "");
+
+    if (!isMe) {
+      const who = document.createElement("div");
+      who.className = "who";
+      who.style.color = /^#[0-9a-fA-F]{6}$/.test(msg.color)
+        ? msg.color
+        : "#888899";
+      who.textContent = msg.name;
+      row.appendChild(who);
+    }
+
+    const voiceEl = document.createElement("div");
+    voiceEl.className = "voice-msg";
+    voiceEl.innerHTML = `<button class="voice-play">▶️</button>
+      <div class="voice-wave"></div>
+      <span class="voice-duration">Voice</span>`;
+    const audio = new Audio(msg.audio);
+    voiceEl.querySelector(".voice-play").addEventListener("click", () => {
+      audio.play();
+    });
+    row.appendChild(voiceEl);
+
+    const ts = document.createElement("div");
+    ts.className = "ts";
+    ts.textContent = fmtTime(msg.ts);
+    row.appendChild(ts);
+
+    msgsEl.appendChild(row);
   } else {
     const isMe = msg.name === userName;
     const row = document.createElement("div");
+    row.dataset.msgId = msgId;
     row.className = "row " + (isMe ? "me" : "them") + (animate ? " pop" : "");
 
     if (!isMe) {
@@ -941,6 +1029,8 @@ function renderMsg(msg, animate) {
     bubble.textContent = msg.text;
     row.appendChild(bubble);
 
+    row.appendChild(renderReactionButtons(msgId));
+
     const ts = document.createElement("div");
     ts.className = "ts";
     ts.textContent = fmtTime(msg.ts);
@@ -957,6 +1047,7 @@ msgForm.addEventListener("submit", (e) => {
   const text = msgInp.value.trim();
   if (!text || !userName || !currentRoom) return;
   const msg = {
+    id: makeId(),
     type: "user",
     room_id: currentRoom.room_id,
     room_name: currentRoom.room_name,
@@ -989,9 +1080,255 @@ modalYes.addEventListener("click", () => {
   applyClear(epoch, userName);
 });
 
+// New features listeners
+themeBtn.addEventListener("click", () => themeModal.classList.remove("hidden"));
+themeModalClose.addEventListener("click", () => themeModal.classList.add("hidden"));
+themeOptions.forEach(btn => {
+  btn.addEventListener("click", () => {
+    setTheme(btn.dataset.theme);
+    themeModal.classList.add("hidden");
+  });
+});
+
+loadTheme();
+
+pollBtn.addEventListener("click", () => pollModal.classList.remove("hidden"));
+pollModalClose.addEventListener("click", () => pollModal.classList.add("hidden"));
+pollForm.addEventListener("submit", (e) => {
+  e.preventDefault();
+  createPoll();
+  pollModal.classList.add("hidden");
+});
+
+statusBtn.addEventListener("click", () => statusModal.classList.remove("hidden"));
+statusModalClose.addEventListener("click", () => statusModal.classList.add("hidden"));
+statusForm.addEventListener("submit", (e) => {
+  e.preventDefault();
+  setUserStatus(statusInput.value.trim());
+  statusModal.classList.add("hidden");
+});
+
+voiceBtn.addEventListener("click", toggleVoiceRecording);
+
 function handleClear(data) {
   if (!data || !data.epoch || data.epoch <= clearEpoch) return;
   applyClear(data.epoch, data.by);
+}
+
+// ── Themes ────────────────────────────────────────────────────────────────────
+function setTheme(theme) {
+  currentTheme = theme;
+  document.documentElement.setAttribute("data-theme", theme);
+  localStorage.setItem("Nut_theme", theme);
+}
+
+function loadTheme() {
+  const saved = localStorage.getItem("Nut_theme") || "dark";
+  setTheme(saved);
+}
+
+// ── Status ────────────────────────────────────────────────────────────────────
+function setUserStatus(status) {
+  userStatus = status;
+  userStatusText.textContent = status;
+  publish(getTopic("pres"), {
+    key: userKey,
+    name: userName,
+    status: status,
+    ts: nowMs(),
+    room_id: currentRoom.room_id,
+  });
+}
+
+// ── Polls ─────────────────────────────────────────────────────────────────────
+function createPoll() {
+  const question = document.getElementById("poll-question").value.trim();
+  const options = [];
+  for (let i = 1; i <= 4; i++) {
+    const opt = document.getElementById(`poll-option${i}`).value.trim();
+    if (opt) options.push(opt);
+  }
+  if (!question || options.length < 2) return;
+
+  const poll = {
+    id: makeId(),
+    question,
+    options,
+    votes: {},
+    created_by: userName,
+    ts: nowMs(),
+  };
+  polls.set(poll.id, poll);
+
+  publish(getTopic("poll"), {
+    type: "create",
+    poll,
+    room_id: currentRoom.room_id,
+  });
+
+  // Clear form
+  pollForm.reset();
+}
+
+function handlePoll(data) {
+  if (!data || data.room_id !== currentRoom?.room_id) return;
+  if (data.type === "create") {
+    polls.set(data.poll.id, data.poll);
+    renderPoll(data.poll);
+  } else if (data.type === "vote") {
+    const poll = polls.get(data.poll_id);
+    if (poll) {
+      poll.votes[data.user_key] = data.option_index;
+      renderPoll(poll);
+    }
+  }
+}
+
+function renderPoll(poll) {
+  const existing = msgsEl.querySelector(`[data-poll-id="${CSS.escape(poll.id)}"]`);
+  if (existing) existing.remove();
+
+  const el = document.createElement("div");
+  el.className = "poll-container";
+  el.dataset.pollId = poll.id;
+  el.innerHTML = `<div class="poll-question">${esc(poll.question)}</div>
+    <div class="poll-options"></div>`;
+  const optsEl = el.querySelector(".poll-options");
+
+  poll.options.forEach((opt, idx) => {
+    const votes = Object.values(poll.votes).filter((v) => v === idx).length;
+    const total = Object.keys(poll.votes).length;
+    const percent = total > 0 ? (votes / total) * 100 : 0;
+    const voted = poll.votes[userKey] === idx;
+
+    const optEl = document.createElement("div");
+    optEl.className = `poll-option ${voted ? "voted" : ""}`;
+    optEl.innerHTML = `<span>${esc(opt)}</span>
+      <div class="poll-bar"><div class="poll-fill" style="width: ${percent}%"></div></div>
+      <span>${votes}</span>`;
+    optEl.addEventListener("click", () => votePoll(poll.id, idx));
+    optsEl.appendChild(optEl);
+  });
+
+  msgsEl.appendChild(el);
+  msgsEl.scrollTop = msgsEl.scrollHeight;
+}
+
+function votePoll(pollId, optionIndex) {
+  const poll = polls.get(pollId);
+  if (!poll || poll.votes[userKey] !== undefined) return;
+
+  poll.votes[userKey] = optionIndex;
+  publish(getTopic("poll"), {
+    type: "vote",
+    poll_id: pollId,
+    option_index: optionIndex,
+    user_key: userKey,
+    room_id: currentRoom.room_id,
+  });
+  renderPoll(poll);
+}
+
+// ── Voice Messages ────────────────────────────────────────────────────────────
+async function toggleVoiceRecording() {
+  if (isRecording) {
+    stopRecording();
+  } else {
+    await startRecording();
+  }
+}
+
+async function startRecording() {
+  try {
+    const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+    mediaRecorder = new MediaRecorder(stream);
+    recordedChunks = [];
+
+    mediaRecorder.ondataavailable = (e) => {
+      if (e.data.size > 0) recordedChunks.push(e.data);
+    };
+
+    mediaRecorder.onstop = () => {
+      const blob = new Blob(recordedChunks, { type: "audio/webm" });
+      sendVoiceMessage(blob);
+      stream.getTracks().forEach(track => track.stop());
+    };
+
+    mediaRecorder.start();
+    isRecording = true;
+    voiceBtn.classList.add("recording");
+  } catch (err) {
+    console.error("Recording failed", err);
+  }
+}
+
+function stopRecording() {
+  if (mediaRecorder && isRecording) {
+    mediaRecorder.stop();
+    isRecording = false;
+    voiceBtn.classList.remove("recording");
+  }
+}
+
+function sendVoiceMessage(blob) {
+  const reader = new FileReader();
+  reader.onload = () => {
+    const audioData = reader.result;
+    const msg = {
+      id: makeId(),
+      type: "voice",
+      room_id: currentRoom.room_id,
+      room_name: currentRoom.room_name,
+      name: userName,
+      color: userColor,
+      audio: audioData,
+      ts: nowMs(),
+    };
+    publish(getTopic("msg"), msg);
+    renderMsg(msg, true);
+    addToHistory(msg);
+  };
+  reader.readAsDataURL(blob);
+}
+
+// ── Reactions ─────────────────────────────────────────────────────────────────
+function addReaction(msgId, emoji) {
+  const msgReactions = reactions.get(msgId) || {};
+  if (!msgReactions[emoji]) msgReactions[emoji] = [];
+  if (!msgReactions[emoji].includes(userKey)) {
+    msgReactions[emoji].push(userKey);
+    reactions.set(msgId, msgReactions);
+    publish(getTopic("reaction"), {
+      type: "add",
+      msg_id: msgId,
+      emoji,
+      user_key: userKey,
+      room_id: currentRoom.room_id,
+    });
+  }
+}
+
+function updateReactionUI(msgId) {
+  const row = msgsEl.querySelector(`[data-msg-id="${CSS.escape(msgId)}"]`);
+  if (!row) return;
+  const oldReactions = row.querySelector(".message-reactions");
+  if (oldReactions) oldReactions.remove();
+  const reactionsEl = renderReactionButtons(msgId);
+  const ts = row.querySelector(".ts");
+  if (ts) row.insertBefore(reactionsEl, ts);
+}
+
+function handleReaction(data) {
+  if (!data || data.room_id !== currentRoom?.room_id) return;
+  const msgReactions = reactions.get(data.msg_id) || {};
+  if (data.type === "add") {
+    if (!msgReactions[data.emoji]) msgReactions[data.emoji] = [];
+    if (!msgReactions[data.emoji].includes(data.user_key)) {
+      msgReactions[data.emoji].push(data.user_key);
+    }
+  }
+  reactions.set(data.msg_id, msgReactions);
+  updateReactionUI(data.msg_id);
 }
 
 function handleRoomClose(data) {
@@ -1059,6 +1396,7 @@ function startHeartbeat() {
     publish(getTopic("pres"), {
       key: userKey,
       name: userName,
+      status: userStatus,
       ts: nowMs(),
       room_id: currentRoom.room_id,
     });
@@ -1076,7 +1414,7 @@ refBtn.addEventListener("click", () => {
 function handlePresence(data) {
   if (!data || !data.key) return;
   if (!data.ts || nowMs() - data.ts > 35000) delete onlineMap[data.key];
-  else onlineMap[data.key] = { name: data.name, key: data.key, ts: data.ts };
+  else onlineMap[data.key] = { name: data.name, key: data.key, ts: data.ts, status: data.status };
   updateOnlineCount();
 }
 
@@ -1127,4 +1465,32 @@ function handleTyping(data) {
         : typers.join(", ") + " are typing";
     if (typDots) typDots.classList.remove("hidden");
   }
+}
+
+// ── Admin Helpers ─────────────────────────────────────────────────────────────
+function publishToClient(client, topic, data, opts = {}) {
+  if (client && client.connected) client.publish(topic, JSON.stringify(data), opts);
+}
+
+function getTopicFor(roomId, suffix) {
+  return TOPIC_BASE + roomId + "/" + suffix;
+}
+
+function getMetaTopicFor(roomId) {
+  return TOPIC_BASE + roomId + "/" + ROOM_META_SUFFIX;
+}
+
+function removeSavedRoom(roomId) {
+  const rooms = getSavedRooms().filter(r => r.room_id !== roomId);
+  localStorage.setItem(LS_ROOMS, JSON.stringify(rooms));
+}
+
+function leaveRoomAfterClose() {
+  doLeave();
+}
+
+function handleClose(data) {
+  if (!data || data.room_id !== currentRoom?.room_id) return;
+  showSysMsg("Room closed by " + (data.by || "Admin"));
+  doLeave();
 }

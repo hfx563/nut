@@ -1202,6 +1202,262 @@ body {
   border: 1px solid rgba(34, 211, 238, 0.25);
 }
 
+/* ════════════════════════════════════════
+   NEW FEATURES
+════════════════════════════════════════ */
+
+/* Theme modal */
+.theme-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+.theme-option {
+  padding: 12px 20px;
+  border: 1px solid var(--bdr);
+  border-radius: var(--r);
+  background: var(--sur);
+  color: var(--txt);
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  transition: all 0.2s;
+}
+.theme-option:hover {
+  background: var(--sur2);
+  border-color: var(--acc);
+}
+
+/* Poll modal */
+#poll-form input {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 10px;
+  border: 1px solid var(--bdr);
+  border-radius: var(--r);
+  background: var(--sur);
+  color: var(--txt);
+  font-size: 14px;
+}
+#poll-form input:focus {
+  outline: none;
+  border-color: var(--acc);
+}
+
+/* Status */
+.user-status {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  color: var(--txt2);
+  margin-top: 4px;
+}
+.status-edit-btn {
+  background: none;
+  border: none;
+  color: var(--txt2);
+  cursor: pointer;
+  font-size: 12px;
+  padding: 2px;
+}
+.status-edit-btn:hover {
+  color: var(--acc);
+}
+
+/* Compose buttons */
+#poll-btn,
+#voice-btn {
+  background: none;
+  border: none;
+  color: var(--txt2);
+  cursor: pointer;
+  padding: 8px;
+  border-radius: var(--r);
+  transition: all 0.2s;
+}
+#poll-btn:hover,
+#voice-btn:hover {
+  background: var(--sur);
+  color: var(--acc);
+}
+#voice-btn.recording {
+  color: var(--red);
+  background: var(--red-dim);
+}
+
+/* Reactions */
+.message-reactions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-top: 8px;
+}
+.reaction-btn {
+  background: var(--sur);
+  border: 1px solid var(--bdr);
+  border-radius: 12px;
+  padding: 4px 8px;
+  font-size: 12px;
+  color: var(--txt2);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.reaction-btn:hover {
+  background: var(--sur2);
+  border-color: var(--acc);
+}
+.reaction-btn.reacted {
+  background: var(--acc-dim);
+  border-color: var(--acc);
+  color: var(--acc);
+}
+
+/* Poll messages */
+.poll-container {
+  background: var(--sur);
+  border: 1px solid var(--bdr);
+  border-radius: var(--r);
+  padding: 12px;
+  margin: 8px 0;
+}
+.poll-question {
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+.poll-options {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.poll-option {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px;
+  border: 1px solid var(--bdr);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.poll-option:hover {
+  background: var(--sur2);
+}
+.poll-option.voted {
+  background: var(--acc-dim);
+  border-color: var(--acc);
+}
+.poll-bar {
+  flex: 1;
+  height: 4px;
+  background: var(--bdr);
+  border-radius: 2px;
+  overflow: hidden;
+}
+.poll-fill {
+  height: 100%;
+  background: var(--acc);
+  transition: width 0.3s;
+}
+
+/* Voice messages */
+.voice-msg {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--sur);
+  border: 1px solid var(--bdr);
+  border-radius: var(--r);
+  padding: 8px 12px;
+  margin: 4px 0;
+}
+.voice-play {
+  cursor: pointer;
+  color: var(--acc);
+}
+.voice-wave {
+  flex: 1;
+  height: 20px;
+  background: var(--bdr);
+  border-radius: 10px;
+  position: relative;
+}
+.voice-duration {
+  font-size: 12px;
+  color: var(--txt2);
+}
+
+/* Themes */
+[data-theme="dark"] {
+  --bg-a: #0f172a;
+  --bg-b: #1e293b;
+  --bg-c: #312e81;
+  --sur: rgba(255, 255, 255, 0.04);
+  --sur2: rgba(255, 255, 255, 0.07);
+  --sur3: rgba(255, 255, 255, 0.1);
+  --bdr: rgba(255, 255, 255, 0.08);
+  --bdr2: rgba(255, 255, 255, 0.14);
+  --txt: #e5e7eb;
+  --txt2: #94a3b8;
+  --txt3: #475569;
+}
+
+[data-theme="light"] {
+  --bg-a: #f8fafc;
+  --bg-b: #e2e8f0;
+  --bg-c: #cbd5e1;
+  --sur: rgba(0, 0, 0, 0.04);
+  --sur2: rgba(0, 0, 0, 0.07);
+  --sur3: rgba(0, 0, 0, 0.1);
+  --bdr: rgba(0, 0, 0, 0.08);
+  --bdr2: rgba(0, 0, 0, 0.14);
+  --txt: #1e293b;
+  --txt2: #64748b;
+  --txt3: #94a3b8;
+  --acc: #3b82f6;
+  --red: #ef4444;
+  --green: #10b981;
+  --cyan: #06b6d4;
+}
+
+[data-theme="blue"] {
+  --bg-a: #0f1419;
+  --bg-b: #1e293b;
+  --bg-c: #1e40af;
+  --sur: rgba(59, 130, 246, 0.1);
+  --sur2: rgba(59, 130, 246, 0.15);
+  --sur3: rgba(59, 130, 246, 0.2);
+  --bdr: rgba(59, 130, 246, 0.2);
+  --bdr2: rgba(59, 130, 246, 0.3);
+  --txt: #e0f2fe;
+  --txt2: #7dd3fc;
+  --txt3: #38bdf8;
+  --acc: #3b82f6;
+  --red: #f87171;
+  --green: #34d399;
+  --cyan: #22d3ee;
+}
+
+[data-theme="green"] {
+  --bg-a: #0f172a;
+  --bg-b: #1e293b;
+  --bg-c: #14532d;
+  --sur: rgba(34, 197, 94, 0.1);
+  --sur2: rgba(34, 197, 94, 0.15);
+  --sur3: rgba(34, 197, 94, 0.2);
+  --bdr: rgba(34, 197, 94, 0.2);
+  --bdr2: rgba(34, 197, 94, 0.3);
+  --txt: #ecfdf5;
+  --txt2: #86efac;
+  --txt3: #4ade80;
+  --acc: #22c55e;
+  --red: #f87171;
+  --green: #10b981;
+  --cyan: #22d3ee;
+}
+
 .cc-title {
   font-size: 17px;
   font-weight: 700;
