@@ -130,6 +130,8 @@ const onlineMap = {};
 const typMap = {};
 const polls = new Map(); // poll_id -> poll data
 const reactions = new Map(); // msg_id -> {emoji: [userKeys]}
+let selectedMsgId = null;
+let previousSelected = null;
 const adminRoomOnlineUsers = {}; // Track online users per room for admin view
 
 const COLORS = [
@@ -951,20 +953,53 @@ function getMessageId(msg) {
   return `${msg.ts}|${msg.name}|${msg.text || msg.audio || ""}`;
 }
 
-function renderReactionButtons(msgId) {
+function updateMessageReactions(msgId) {
+  const row = document.querySelector(`[data-msg-id="${msgId}"]`);
+  if (!row) return;
+  let reactionsEl = row.querySelector(".message-reactions");
+  if (!reactionsEl) {
+    reactionsEl = document.createElement("div");
+    reactionsEl.className = "message-reactions";
+    const bubble = row.querySelector(".bubble");
+    if (bubble) {
+      bubble.insertAdjacentElement("afterend", reactionsEl);
+    } else {
+      return; // no bubble, no reactions
+    }
+  }
+  reactionsEl.innerHTML = "";
   const msgReactions = reactions.get(msgId) || {};
-  const container = document.createElement("div");
-  container.className = "message-reactions";
-  ["👍", "❤️", "😂", "😮"].forEach((emoji) => {
-    const count = msgReactions[emoji]?.length || 0;
-    const reacted = msgReactions[emoji]?.includes(userKey);
-    const btn = document.createElement("button");
-    btn.className = `reaction-btn ${reacted ? "reacted" : ""}`;
-    btn.textContent = emoji + (count > 0 ? count : "");
-    btn.addEventListener("click", () => addReaction(msgId, emoji));
-    container.appendChild(btn);
-  });
-  return container;
+  const isSelected = msgId === selectedMsgId;
+  if (isSelected) {
+    // show buttons
+    ["👍", "❤️", "😂", "😮"].forEach((emoji) => {
+      const count = msgReactions[emoji]?.length || 0;
+      const reacted = msgReactions[emoji]?.includes(userKey);
+      const btn = document.createElement("button");
+      btn.className = `reaction-btn ${reacted ? "reacted" : ""}`;
+      btn.textContent = emoji + (count > 0 ? count : "");
+      btn.addEventListener("click", (e) => {
+        e.stopPropagation();
+        addReaction(msgId, emoji);
+        selectedMsgId = null;
+        updateMessageReactions(msgId);
+        if (previousSelected && previousSelected !== msgId)
+          updateMessageReactions(previousSelected);
+      });
+      reactionsEl.appendChild(btn);
+    });
+  } else {
+    // show reacted emojis
+    Object.keys(msgReactions).forEach((emoji) => {
+      const count = msgReactions[emoji].length;
+      if (count > 0) {
+        const span = document.createElement("span");
+        span.className = "reaction-emoji";
+        span.textContent = emoji + (count > 1 ? count : "");
+        reactionsEl.appendChild(span);
+      }
+    });
+  }
 }
 
 function renderMsg(msg, animate) {
@@ -1029,7 +1064,19 @@ function renderMsg(msg, animate) {
     bubble.textContent = msg.text;
     row.appendChild(bubble);
 
-    row.appendChild(renderReactionButtons(msgId));
+    row.addEventListener("click", () => {
+      if (selectedMsgId === msgId) {
+        selectedMsgId = null;
+      } else {
+        previousSelected = selectedMsgId;
+        selectedMsgId = msgId;
+      }
+      updateMessageReactions(msgId);
+      if (previousSelected && previousSelected !== msgId)
+        updateMessageReactions(previousSelected);
+    });
+
+    updateMessageReactions(msgId);
 
     const ts = document.createElement("div");
     ts.className = "ts";
@@ -1082,8 +1129,10 @@ modalYes.addEventListener("click", () => {
 
 // New features listeners
 themeBtn.addEventListener("click", () => themeModal.classList.remove("hidden"));
-themeModalClose.addEventListener("click", () => themeModal.classList.add("hidden"));
-themeOptions.forEach(btn => {
+themeModalClose.addEventListener("click", () =>
+  themeModal.classList.add("hidden"),
+);
+themeOptions.forEach((btn) => {
   btn.addEventListener("click", () => {
     setTheme(btn.dataset.theme);
     themeModal.classList.add("hidden");
@@ -1093,15 +1142,21 @@ themeOptions.forEach(btn => {
 loadTheme();
 
 pollBtn.addEventListener("click", () => pollModal.classList.remove("hidden"));
-pollModalClose.addEventListener("click", () => pollModal.classList.add("hidden"));
+pollModalClose.addEventListener("click", () =>
+  pollModal.classList.add("hidden"),
+);
 pollForm.addEventListener("submit", (e) => {
   e.preventDefault();
   createPoll();
   pollModal.classList.add("hidden");
 });
 
-statusBtn.addEventListener("click", () => statusModal.classList.remove("hidden"));
-statusModalClose.addEventListener("click", () => statusModal.classList.add("hidden"));
+statusBtn.addEventListener("click", () =>
+  statusModal.classList.remove("hidden"),
+);
+statusModalClose.addEventListener("click", () =>
+  statusModal.classList.add("hidden"),
+);
 statusForm.addEventListener("submit", (e) => {
   e.preventDefault();
   setUserStatus(statusInput.value.trim());
@@ -1185,7 +1240,9 @@ function handlePoll(data) {
 }
 
 function renderPoll(poll) {
-  const existing = msgsEl.querySelector(`[data-poll-id="${CSS.escape(poll.id)}"]`);
+  const existing = msgsEl.querySelector(
+    `[data-poll-id="${CSS.escape(poll.id)}"]`,
+  );
   if (existing) existing.remove();
 
   const el = document.createElement("div");
@@ -1251,7 +1308,7 @@ async function startRecording() {
     mediaRecorder.onstop = () => {
       const blob = new Blob(recordedChunks, { type: "audio/webm" });
       sendVoiceMessage(blob);
-      stream.getTracks().forEach(track => track.stop());
+      stream.getTracks().forEach((track) => track.stop());
     };
 
     mediaRecorder.start();
@@ -1305,17 +1362,8 @@ function addReaction(msgId, emoji) {
       user_key: userKey,
       room_id: currentRoom.room_id,
     });
+    updateMessageReactions(msgId);
   }
-}
-
-function updateReactionUI(msgId) {
-  const row = msgsEl.querySelector(`[data-msg-id="${CSS.escape(msgId)}"]`);
-  if (!row) return;
-  const oldReactions = row.querySelector(".message-reactions");
-  if (oldReactions) oldReactions.remove();
-  const reactionsEl = renderReactionButtons(msgId);
-  const ts = row.querySelector(".ts");
-  if (ts) row.insertBefore(reactionsEl, ts);
 }
 
 function handleReaction(data) {
@@ -1328,7 +1376,7 @@ function handleReaction(data) {
     }
   }
   reactions.set(data.msg_id, msgReactions);
-  updateReactionUI(data.msg_id);
+  updateMessageReactions(data.msg_id);
 }
 
 function handleRoomClose(data) {
@@ -1414,7 +1462,13 @@ refBtn.addEventListener("click", () => {
 function handlePresence(data) {
   if (!data || !data.key) return;
   if (!data.ts || nowMs() - data.ts > 35000) delete onlineMap[data.key];
-  else onlineMap[data.key] = { name: data.name, key: data.key, ts: data.ts, status: data.status };
+  else
+    onlineMap[data.key] = {
+      name: data.name,
+      key: data.key,
+      ts: data.ts,
+      status: data.status,
+    };
   updateOnlineCount();
 }
 
@@ -1469,7 +1523,8 @@ function handleTyping(data) {
 
 // ── Admin Helpers ─────────────────────────────────────────────────────────────
 function publishToClient(client, topic, data, opts = {}) {
-  if (client && client.connected) client.publish(topic, JSON.stringify(data), opts);
+  if (client && client.connected)
+    client.publish(topic, JSON.stringify(data), opts);
 }
 
 function getTopicFor(roomId, suffix) {
@@ -1481,7 +1536,7 @@ function getMetaTopicFor(roomId) {
 }
 
 function removeSavedRoom(roomId) {
-  const rooms = getSavedRooms().filter(r => r.room_id !== roomId);
+  const rooms = getSavedRooms().filter((r) => r.room_id !== roomId);
   localStorage.setItem(LS_ROOMS, JSON.stringify(rooms));
 }
 

@@ -1314,6 +1314,15 @@ body {
   border-color: var(--acc);
   color: var(--acc);
 }
+.reaction-emoji {
+  background: var(--sur);
+  border: 1px solid var(--bdr);
+  border-radius: 12px;
+  padding: 4px 8px;
+  font-size: 12px;
+  color: var(--txt2);
+  display: inline-block;
+}
 
 /* Poll messages */
 .poll-container {
