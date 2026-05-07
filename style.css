@@ -977,6 +977,26 @@ body {
   padding: 20px;
 }
 
+#theme-modal {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 300;
+  padding: 20px;
+}
+
+#poll-modal {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 300;
+  padding: 20px;
+}
+
 .modal-overlay {
   position: absolute;
   inset: 0;
@@ -1467,7 +1487,29 @@ body {
   --cyan: #22d3ee;
 }
 
-.cc-title {
+.custom-theme-settings {
+  margin-top: 20px;
+}
+
+.custom-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.custom-row label {
+  font-size: 14px;
+  color: var(--txt2);
+}
+
+.custom-row input[type="color"] {
+  width: 50px;
+  height: 30px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
   font-size: 17px;
   font-weight: 700;
   color: #e5e7eb;

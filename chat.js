@@ -199,6 +199,8 @@ const themeBtn = document.getElementById("theme-btn");
 const themeModal = document.getElementById("theme-modal");
 const themeOptions = document.querySelectorAll(".theme-option");
 const themeModalClose = document.getElementById("theme-modal-close");
+const customThemeSettings = document.querySelector(".custom-theme-settings");
+const saveCustomThemeBtn = document.getElementById("save-custom-theme");
 const pollBtn = document.getElementById("poll-btn");
 const pollModal = document.getElementById("poll-modal");
 const pollForm = document.getElementById("poll-form");
@@ -1129,17 +1131,30 @@ modalYes.addEventListener("click", () => {
 
 // New features listeners
 themeBtn.addEventListener("click", () => themeModal.classList.remove("hidden"));
-themeModalClose.addEventListener("click", () =>
-  themeModal.classList.add("hidden"),
-);
+themeModalClose.addEventListener("click", () => {
+  themeModal.classList.add("hidden");
+  customThemeSettings.classList.add("hidden");
+});
 themeOptions.forEach((btn) => {
   btn.addEventListener("click", () => {
-    setTheme(btn.dataset.theme);
-    themeModal.classList.add("hidden");
+    const theme = btn.dataset.theme;
+    if (theme === "custom") {
+      customThemeSettings.classList.remove("hidden");
+      loadCustomThemeInputs();
+    } else {
+      setTheme(theme);
+      themeModal.classList.add("hidden");
+      customThemeSettings.classList.add("hidden");
+    }
   });
 });
 
-loadTheme();
+saveCustomThemeBtn.addEventListener("click", () => {
+  saveCustomTheme();
+  setTheme("custom");
+  themeModal.classList.add("hidden");
+  customThemeSettings.classList.add("hidden");
+});
 
 pollBtn.addEventListener("click", () => pollModal.classList.remove("hidden"));
 pollModalClose.addEventListener("click", () =>
@@ -1174,12 +1189,43 @@ function handleClear(data) {
 function setTheme(theme) {
   currentTheme = theme;
   document.documentElement.setAttribute("data-theme", theme);
+  if (theme === "custom") {
+    applyCustomTheme();
+  }
   localStorage.setItem("Nut_theme", theme);
 }
 
-function loadTheme() {
-  const saved = localStorage.getItem("Nut_theme") || "dark";
-  setTheme(saved);
+function applyCustomTheme() {
+  const custom = JSON.parse(localStorage.getItem("Nut_custom_theme") || "{}");
+  const root = document.documentElement;
+  root.style.setProperty("--bg-a", custom.bgA || "#0f172a");
+  root.style.setProperty("--bg-b", custom.bgB || "#1e293b");
+  root.style.setProperty("--bg-c", custom.bgC || "#312e81");
+  root.style.setProperty("--acc", custom.acc || "#6366f1");
+  root.style.setProperty("--txt", custom.txt || "#e5e7eb");
+  root.style.setProperty("--txt2", custom.txt2 || "#94a3b8");
+}
+
+function loadCustomThemeInputs() {
+  const custom = JSON.parse(localStorage.getItem("Nut_custom_theme") || "{}");
+  document.getElementById("bg-a").value = custom.bgA || "#0f172a";
+  document.getElementById("bg-b").value = custom.bgB || "#1e293b";
+  document.getElementById("bg-c").value = custom.bgC || "#312e81";
+  document.getElementById("acc").value = custom.acc || "#6366f1";
+  document.getElementById("txt").value = custom.txt || "#e5e7eb";
+  document.getElementById("txt2").value = custom.txt2 || "#94a3b8";
+}
+
+function saveCustomTheme() {
+  const custom = {
+    bgA: document.getElementById("bg-a").value,
+    bgB: document.getElementById("bg-b").value,
+    bgC: document.getElementById("bg-c").value,
+    acc: document.getElementById("acc").value,
+    txt: document.getElementById("txt").value,
+    txt2: document.getElementById("txt2").value,
+  };
+  localStorage.setItem("Nut_custom_theme", JSON.stringify(custom));
 }
 
 // ── Status ────────────────────────────────────────────────────────────────────
