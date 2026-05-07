@@ -47,290 +47,465 @@
       <div class="mesh-orb mesh-3"></div>
     </div>
 
-    <!-- ══════════════════════════════════
-       LOGIN PAGE
-  ══════════════════════════════════ -->
-    <div id="join-screen">
-      <div class="login-card">
-        <div class="brand">
-          <div class="brand-icon">
-            <img src="logo.png" width="48" height="48" alt="Nut" />
-          </div>
-          <span class="brand-name">Nut</span>
-        </div>
-
-        <h1 class="login-title">Welcome back</h1>
-        <p class="login-sub">Sign in to your private room</p>
-
-        <div id="login-form">
-          <div class="login-fields">
-            <div class="input-wrap">
-              <div class="input-icon" aria-hidden="true">
-                <svg
-                  width="15"
-                  height="15"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="1.8"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                >
-                  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
-                  <circle cx="12" cy="7" r="4" />
-                </svg>
-              </div>
-              <input
-                id="name-input"
-                type="text"
-                inputmode="text"
-                placeholder="Your name"
-                maxlength="24"
-                autocomplete="name"
-                autocorrect="off"
-                autocapitalize="words"
-                spellcheck="false"
-              />
+    <main id="app-root">
+      <!-- ══════════════════════════════════
+         LOGIN & ROOM JOIN
+      ══════════════════════════════════ -->
+      <section id="join-screen" class="screen">
+        <div class="login-card">
+          <div class="brand">
+            <div class="brand-icon">
+              <img src="logo.png" width="48" height="48" alt="Nut" />
             </div>
-            <div class="input-wrap">
-              <div class="input-icon" aria-hidden="true">
-                <svg
-                  width="15"
-                  height="15"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="1.8"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                >
-                  <circle cx="12" cy="12" r="4" />
-                  <path
-                    d="M12 2v4M12 18v4M2 12h4M18 12h4M4.9 4.9l2.8 2.8M16.3 16.3l2.8 2.8M4.9 19.1l2.8-2.8M16.3 7.7l2.8-2.8"
-                  />
-                </svg>
-              </div>
-              <input
-                id="room-input"
-                type="text"
-                inputmode="text"
-                placeholder="Room name"
-                maxlength="32"
-                autocomplete="off"
-                autocorrect="off"
-                autocapitalize="none"
-                spellcheck="false"
-              />
-            </div>
-            <div class="input-wrap">
-              <div class="input-icon" aria-hidden="true">
-                <svg
-                  width="15"
-                  height="15"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="1.8"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                >
-                  <rect x="3" y="11" width="18" height="11" rx="2" />
-                  <path d="M7 11V7a5 5 0 0 1 10 0v4" />
-                </svg>
-              </div>
-              <input
-                id="pass-input"
-                type="password"
-                inputmode="text"
-                placeholder="Room password"
-                autocomplete="new-password"
-                autocorrect="off"
-                autocapitalize="off"
-                spellcheck="false"
-              />
-            </div>
-            <div id="admin-auth-wrap" class="input-wrap hidden">
-              <div class="input-icon" aria-hidden="true">
-                <svg
-                  width="15"
-                  height="15"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="1.8"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                >
-                  <path d="M12 3v5" />
-                  <path d="M12 16v5" />
-                  <path d="M5 12h14" />
-                  <circle cx="12" cy="12" r="9" />
-                </svg>
-              </div>
-              <input
-                id="admin-pass-input"
-                type="password"
-                inputmode="text"
-                placeholder="Admin password"
-                autocomplete="current-password"
-                autocorrect="off"
-                autocapitalize="off"
-                spellcheck="false"
-              />
-            </div>
+            <span class="brand-name">Nut</span>
           </div>
 
-          <span id="join-error" role="alert"></span>
+          <h1 class="login-title">Welcome back</h1>
+          <p class="login-sub">Sign in to your private room</p>
 
-          <div class="login-actions">
-            <button id="create-btn" class="login-btn" type="button">
-              <span>Create room</span>
-            </button>
-            <button id="join-btn" class="login-btn" type="button">
-              <span>Join room</span>
-            </button>
-          </div>
+          <div id="login-form">
+            <div class="login-fields">
+              <div class="input-wrap">
+                <div class="input-icon" aria-hidden="true">
+                  <svg
+                    width="15"
+                    height="15"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.8"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+                    <circle cx="12" cy="7" r="4" />
+                  </svg>
+                </div>
+                <input
+                  id="name-input"
+                  type="text"
+                  inputmode="text"
+                  placeholder="Your name"
+                  maxlength="24"
+                  autocomplete="name"
+                  autocorrect="off"
+                  autocapitalize="words"
+                  spellcheck="false"
+                />
+              </div>
+              <div class="input-wrap">
+                <div class="input-icon" aria-hidden="true">
+                  <svg
+                    width="15"
+                    height="15"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.8"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <circle cx="12" cy="12" r="4" />
+                    <path
+                      d="M12 2v4M12 18v4M2 12h4M18 12h4M4.9 4.9l2.8 2.8M16.3 16.3l2.8 2.8M4.9 19.1l2.8-2.8M16.3 7.7l2.8-2.8"
+                    />
+                  </svg>
+                </div>
+                <input
+                  id="room-input"
+                  type="text"
+                  inputmode="text"
+                  placeholder="Room name"
+                  maxlength="32"
+                  autocomplete="off"
+                  autocorrect="off"
+                  autocapitalize="none"
+                  spellcheck="false"
+                />
+              </div>
+              <div class="input-wrap">
+                <div class="input-icon" aria-hidden="true">
+                  <svg
+                    width="15"
+                    height="15"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.8"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <rect x="3" y="11" width="18" height="11" rx="2" />
+                    <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+                  </svg>
+                </div>
+                <input
+                  id="pass-input"
+                  type="password"
+                  inputmode="text"
+                  placeholder="Room password"
+                  autocomplete="new-password"
+                  autocorrect="off"
+                  autocapitalize="off"
+                  spellcheck="false"
+                />
+              </div>
+              <div id="admin-auth-wrap" class="input-wrap hidden">
+                <div class="input-icon" aria-hidden="true">
+                  <svg
+                    width="15"
+                    height="15"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.8"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <path d="M12 3v5" />
+                    <path d="M12 16v5" />
+                    <path d="M5 12h14" />
+                    <circle cx="12" cy="12" r="9" />
+                  </svg>
+                </div>
+                <input
+                  id="admin-pass-input"
+                  type="password"
+                  inputmode="text"
+                  placeholder="Admin password"
+                  autocomplete="current-password"
+                  autocorrect="off"
+                  autocapitalize="off"
+                  spellcheck="false"
+                />
+              </div>
+            </div>
 
-          <p class="login-hint">Invite only · End-to-end encrypted</p>
-        </div>
-      </div>
-      <div id="admin-panel" class="hidden admin-panel">
-        <div class="admin-panel-header">
-          <div>
-            <h2>Admin Rooms</h2>
-            <p>Click a room to join as admin.</p>
-          </div>
-          <div class="admin-actions">
-            <button
-              id="admin-refresh-btn"
-              class="login-btn small"
-              type="button"
-            >
-              Refresh
-            </button>
-            <button
-              id="admin-signout-btn"
-              class="login-btn small ghost"
-              type="button"
-            >
-              Sign out
-            </button>
+            <span id="join-error" role="alert"></span>
+
+            <div class="login-actions">
+              <button id="create-btn" class="login-btn" type="button">
+                <span>Create room</span>
+              </button>
+              <button id="join-btn" class="login-btn" type="button">
+                <span>Join room</span>
+              </button>
+            </div>
+
+            <p class="login-hint">Invite only · End-to-end encrypted</p>
           </div>
         </div>
-        <div id="admin-room-list" class="room-list"></div>
-        <div id="admin-room-empty" class="room-empty hidden">
-          No rooms available yet.
-        </div>
-      </div>
-    </div>
-
-    <!-- ══════════════════════════════════
-       CHAT INTERFACE
-  ══════════════════════════════════ -->
-    <div id="chat-screen" class="hidden">
-      <header class="chat-header">
-        <div class="ch-left">
-          <div class="ch-avatar" id="ch-avatar-el">A</div>
-          <div class="ch-info">
-            <span class="ch-name">Nut</span>
-            <div class="ch-status">
-              <span id="conn-dot" class="status-dot offline"></span>
-              <span id="status-text" class="status-label">Connecting…</span>
+        <div id="admin-panel" class="hidden admin-panel">
+          <div class="admin-panel-header">
+            <div>
+              <h2>Admin Rooms</h2>
+              <p>Click a room to join as admin.</p>
             </div>
-            <div class="user-status">
-              <span id="user-status-text"></span>
+            <div class="admin-actions">
               <button
-                id="status-btn"
-                class="status-edit-btn"
-                aria-label="Set status"
+                id="admin-refresh-btn"
+                class="login-btn small"
+                type="button"
               >
-                ✏️
+                Refresh
+              </button>
+              <button
+                id="admin-signout-btn"
+                class="login-btn small ghost"
+                type="button"
+              >
+                Sign out
               </button>
             </div>
           </div>
-        </div>
-
-        <div class="ch-center">
-          <span class="ch-room-name"></span>
-          <div class="online-badge">
-            <span class="online-pulse"></span>
-            <span id="online-num">1</span>
-            <span class="online-label">online</span>
+          <div id="admin-room-list" class="room-list"></div>
+          <div id="admin-room-empty" class="room-empty hidden">
+            No rooms available yet.
           </div>
         </div>
+      </section>
 
-        <div class="ch-right">
-          <button
-            id="call-btn"
-            class="icon-btn green"
-            type="button"
-            aria-label="Voice call"
-          >
-            <svg
-              width="15"
-              height="15"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="1.8"
-              stroke-linecap="round"
-              stroke-linejoin="round"
+      <!-- ══════════════════════════════════
+       CHAT INTERFACE
+  ══════════════════════════════════ -->
+      <section id="chat-screen" class="screen hidden">
+        <header class="chat-header">
+          <div class="ch-left">
+            <div class="ch-avatar" id="ch-avatar-el">A</div>
+            <div class="ch-info">
+              <span class="ch-name">Nut</span>
+              <div class="ch-status">
+                <span id="conn-dot" class="status-dot offline"></span>
+                <span id="status-text" class="status-label">Connecting…</span>
+              </div>
+              <div class="user-status">
+                <span id="user-status-text"></span>
+                <button
+                  id="status-btn"
+                  class="status-edit-btn"
+                  aria-label="Set status"
+                >
+                  ✏️
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div class="ch-center">
+            <span class="ch-room-name"></span>
+            <div class="online-badge">
+              <span class="online-pulse"></span>
+              <span id="online-num">1</span>
+              <span class="online-label">online</span>
+            </div>
+          </div>
+
+          <div class="ch-right">
+            <button
+              id="call-btn"
+              class="icon-btn green"
+              type="button"
+              aria-label="Voice call"
             >
-              <path
-                d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.4 2 2 0 0 1 3.6 1.22h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.78a16 16 0 0 0 6.29 6.29l1.62-1.62a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"
+              <svg
+                width="15"
+                height="15"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.8"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path
+                  d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.4 2 2 0 0 1 3.6 1.22h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.78a16 16 0 0 0 6.29 6.29l1.62-1.62a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"
+                />
+              </svg>
+            </button>
+            <button
+              id="video-call-btn"
+              class="icon-btn cyan"
+              type="button"
+              aria-label="Video call"
+            >
+              <svg
+                width="15"
+                height="15"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.8"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <polygon points="23 7 16 12 23 17 23 7" />
+                <rect x="1" y="5" width="15" height="14" rx="2" />
+              </svg>
+            </button>
+            <div class="icon-sep" aria-hidden="true"></div>
+            <button
+              id="refresh-btn"
+              class="icon-btn"
+              type="button"
+              aria-label="Toggle auto-refresh"
+            >
+              <svg
+                width="14"
+                height="14"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.8"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <polyline points="23 4 23 10 17 10" />
+                <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10" />
+              </svg>
+            </button>
+            <button
+              id="clear-btn"
+              class="icon-btn"
+              type="button"
+              aria-label="Clear history"
+            >
+              <svg
+                width="14"
+                height="14"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.8"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <polyline points="3 6 5 6 21 6" />
+                <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6" />
+                <path
+                  d="M10 11v6M14 11v6M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"
+                />
+              </svg>
+            </button>
+            <div class="icon-sep" aria-hidden="true"></div>
+            <button
+              id="leave-btn"
+              class="icon-btn red"
+              type="button"
+              aria-label="Leave room"
+            >
+              <svg
+                width="14"
+                height="14"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.8"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+                <polyline points="16 17 21 12 16 7" />
+                <line x1="21" y1="12" x2="9" y2="12" />
+              </svg>
+            </button>
+            <button
+              id="theme-btn"
+              class="icon-btn"
+              type="button"
+              aria-label="Change theme"
+            >
+              <svg
+                width="14"
+                height="14"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.8"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <circle cx="12" cy="12" r="3" />
+                <path
+                  d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"
+                />
+              </svg>
+            </button>
+          </div>
+        </header>
+
+        <section id="message-section" class="chat-section">
+          <div
+            id="messages"
+            role="log"
+            aria-live="polite"
+            aria-label="Messages"
+          ></div>
+        </section>
+
+        <section id="compose-section" class="chat-section">
+          <div id="typing-bar" aria-live="polite">
+            <div class="t-dots hidden" aria-hidden="true">
+              <span></span><span></span><span></span>
+            </div>
+            <span id="typing-text"></span>
+          </div>
+          <form id="msg-form" autocomplete="off">
+            <div class="compose-inner">
+              <!-- font-size 16px prevents iOS auto-zoom on focus -->
+              <input
+                id="msg-input"
+                type="text"
+                inputmode="text"
+                placeholder="Type a message…"
+                maxlength="500"
+                autocomplete="off"
+                autocorrect="off"
+                autocapitalize="sentences"
+                spellcheck="true"
+                aria-label="Message input"
               />
-            </svg>
-          </button>
-          <button
-            id="video-call-btn"
-            class="icon-btn cyan"
-            type="button"
-            aria-label="Video call"
-          >
+              <button id="poll-btn" type="button" aria-label="Create poll">
+                <svg
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2.2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <path
+                    d="M9 11H5a2 2 0 0 0-2 2v3a2 2 0 0 0 2 2h3a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2z"
+                  />
+                  <path
+                    d="M19 11h-4a2 2 0 0 0-2 2v3a2 2 0 0 0 2 2h3a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2z"
+                  />
+                  <line x1="12" y1="6" x2="12" y2="18" />
+                </svg>
+              </button>
+              <button
+                id="voice-btn"
+                type="button"
+                aria-label="Record voice message"
+              >
+                <svg
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2.2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <path
+                    d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"
+                  />
+                  <path d="M19 10v2a7 7 0 0 1-14 0v-2" />
+                  <line x1="12" y1="19" x2="12" y2="23" />
+                  <line x1="8" y1="23" x2="16" y2="23" />
+                </svg>
+              </button>
+              <button type="submit" id="send-btn" aria-label="Send message">
+                <svg
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2.2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <line x1="22" y1="2" x2="11" y2="13" />
+                  <polygon points="22 2 15 22 11 13 2 9 22 2" />
+                </svg>
+              </button>
+            </div>
+          </form>
+        </section>
+      </section>
+    </main>
+
+    <!-- ══════════════════════════════════
+       MODALS & OVERLAYS
+  ══════════════════════════════════ -->
+    <section id="modal-section" aria-hidden="true">
+      <!-- Clear modal -->
+      <div
+        id="modal"
+        class="hidden"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="modal-title"
+      >
+        <div class="modal-overlay"></div>
+        <div class="modal-box">
+          <div class="modal-ico red-ico" aria-hidden="true">
             <svg
-              width="15"
-              height="15"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="1.8"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            >
-              <polygon points="23 7 16 12 23 17 23 7" />
-              <rect x="1" y="5" width="15" height="14" rx="2" />
-            </svg>
-          </button>
-          <div class="icon-sep" aria-hidden="true"></div>
-          <button
-            id="refresh-btn"
-            class="icon-btn"
-            type="button"
-            aria-label="Toggle auto-refresh"
-          >
-            <svg
-              width="14"
-              height="14"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="1.8"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            >
-              <polyline points="23 4 23 10 17 10" />
-              <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10" />
-            </svg>
-          </button>
-          <button
-            id="clear-btn"
-            class="icon-btn"
-            type="button"
-            aria-label="Clear history"
-          >
-            <svg
-              width="14"
-              height="14"
+              width="18"
+              height="18"
               viewBox="0 0 24 24"
               fill="none"
               stroke="currentColor"
@@ -340,42 +515,38 @@
             >
               <polyline points="3 6 5 6 21 6" />
               <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6" />
-              <path
-                d="M10 11v6M14 11v6M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"
-              />
             </svg>
-          </button>
-          <div class="icon-sep" aria-hidden="true"></div>
-          <button
-            id="leave-btn"
-            class="icon-btn red"
-            type="button"
-            aria-label="Leave room"
-          >
+          </div>
+          <h3 id="modal-title">Clear all messages?</h3>
+          <p>
+            This removes the entire chat history for everyone. It cannot be
+            undone.
+          </p>
+          <div class="modal-actions">
+            <button id="modal-no" class="mbtn mbtn-ghost" type="button">
+              Cancel
+            </button>
+            <button id="modal-yes" class="mbtn mbtn-red" type="button">
+              Clear all
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Theme modal -->
+      <div
+        id="theme-modal"
+        class="hidden"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="theme-modal-title"
+      >
+        <div class="modal-overlay"></div>
+        <div class="modal-box">
+          <div class="modal-ico" aria-hidden="true">
             <svg
-              width="14"
-              height="14"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="1.8"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            >
-              <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
-              <polyline points="16 17 21 12 16 7" />
-              <line x1="21" y1="12" x2="9" y2="12" />
-            </svg>
-          </button>
-          <button
-            id="theme-btn"
-            class="icon-btn"
-            type="button"
-            aria-label="Change theme"
-          >
-            <svg
-              width="14"
-              height="14"
+              width="18"
+              height="18"
               viewBox="0 0 24 24"
               fill="none"
               stroke="currentColor"
@@ -388,337 +559,187 @@
                 d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"
               />
             </svg>
-          </button>
-        </div>
-      </header>
-
-      <div
-        id="messages"
-        role="log"
-        aria-live="polite"
-        aria-label="Messages"
-      ></div>
-
-      <div id="compose">
-        <div id="typing-bar" aria-live="polite">
-          <div class="t-dots hidden" aria-hidden="true">
-            <span></span><span></span><span></span>
           </div>
-          <span id="typing-text"></span>
-        </div>
-        <form id="msg-form" autocomplete="off">
-          <div class="compose-inner">
-            <!-- font-size 16px prevents iOS auto-zoom on focus -->
-            <input
-              id="msg-input"
-              type="text"
-              inputmode="text"
-              placeholder="Type a message…"
-              maxlength="500"
-              autocomplete="off"
-              autocorrect="off"
-              autocapitalize="sentences"
-              spellcheck="true"
-              aria-label="Message input"
-            />
-            <button id="poll-btn" type="button" aria-label="Create poll">
-              <svg
-                width="16"
-                height="16"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2.2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              >
-                <path
-                  d="M9 11H5a2 2 0 0 0-2 2v3a2 2 0 0 0 2 2h3a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2z"
-                />
-                <path
-                  d="M19 11h-4a2 2 0 0 0-2 2v3a2 2 0 0 0 2 2h3a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2z"
-                />
-                <line x1="12" y1="6" x2="12" y2="18" />
-              </svg>
-            </button>
-            <button
-              id="voice-btn"
-              type="button"
-              aria-label="Record voice message"
-            >
-              <svg
-                width="16"
-                height="16"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2.2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              >
-                <path
-                  d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"
-                />
-                <path d="M19 10v2a7 7 0 0 1-14 0v-2" />
-                <line x1="12" y1="19" x2="12" y2="23" />
-                <line x1="8" y1="23" x2="16" y2="23" />
-              </svg>
-            </button>
-            <button type="submit" id="send-btn" aria-label="Send message">
-              <svg
-                width="16"
-                height="16"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2.2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              >
-                <line x1="22" y1="2" x2="11" y2="13" />
-                <polygon points="22 2 15 22 11 13 2 9 22 2" />
-              </svg>
+          <h3 id="theme-modal-title">Choose Theme</h3>
+          <div class="theme-options">
+            <button class="theme-option" data-theme="light">Light</button>
+            <button class="theme-option" data-theme="dark">Dark</button>
+            <button class="theme-option" data-theme="blue">Blue</button>
+            <button class="theme-option" data-theme="green">Green</button>
+            <button class="theme-option" data-theme="custom">Custom</button>
+          </div>
+          <div class="custom-theme-settings hidden">
+            <div class="custom-row">
+              <label for="bg-a">Background Primary:</label>
+              <input type="color" id="bg-a" value="#0f172a" />
+            </div>
+            <div class="custom-row">
+              <label for="bg-b">Background Secondary:</label>
+              <input type="color" id="bg-b" value="#1e293b" />
+            </div>
+            <div class="custom-row">
+              <label for="bg-c">Background Gradient:</label>
+              <input type="color" id="bg-c" value="#312e81" />
+            </div>
+            <div class="custom-row">
+              <label for="acc">Accent Color:</label>
+              <input type="color" id="acc" value="#6366f1" />
+            </div>
+            <div class="custom-row">
+              <label for="txt">Text Color:</label>
+              <input type="color" id="txt" value="#e5e7eb" />
+            </div>
+            <div class="custom-row">
+              <label for="txt2">Muted Text:</label>
+              <input type="color" id="txt2" value="#94a3b8" />
+            </div>
+            <button id="save-custom-theme" class="mbtn mbtn-primary">
+              Save Custom Theme
             </button>
           </div>
-        </form>
-      </div>
-    </div>
-
-    <!-- Clear modal -->
-    <div
-      id="modal"
-      class="hidden"
-      role="dialog"
-      aria-modal="true"
-      aria-labelledby="modal-title"
-    >
-      <div class="modal-overlay"></div>
-      <div class="modal-box">
-        <div class="modal-ico red-ico" aria-hidden="true">
-          <svg
-            width="18"
-            height="18"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="1.8"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          >
-            <polyline points="3 6 5 6 21 6" />
-            <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6" />
-          </svg>
-        </div>
-        <h3 id="modal-title">Clear all messages?</h3>
-        <p>
-          This removes the entire chat history for everyone. It cannot be
-          undone.
-        </p>
-        <div class="modal-actions">
-          <button id="modal-no" class="mbtn mbtn-ghost" type="button">
-            Cancel
-          </button>
-          <button id="modal-yes" class="mbtn mbtn-red" type="button">
-            Clear all
-          </button>
-        </div>
-      </div>
-    </div>
-
-    <!-- Theme modal -->
-    <div
-      id="theme-modal"
-      class="hidden"
-      role="dialog"
-      aria-modal="true"
-      aria-labelledby="theme-modal-title"
-    >
-      <div class="modal-overlay"></div>
-      <div class="modal-box">
-        <div class="modal-ico" aria-hidden="true">
-          <svg
-            width="18"
-            height="18"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="1.8"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          >
-            <circle cx="12" cy="12" r="3" />
-            <path
-              d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"
-            />
-          </svg>
-        </div>
-        <h3 id="theme-modal-title">Choose Theme</h3>
-        <div class="theme-options">
-          <button class="theme-option" data-theme="light">Light</button>
-          <button class="theme-option" data-theme="dark">Dark</button>
-          <button class="theme-option" data-theme="blue">Blue</button>
-          <button class="theme-option" data-theme="green">Green</button>
-          <button class="theme-option" data-theme="custom">Custom</button>
-        </div>
-        <div class="custom-theme-settings hidden">
-          <div class="custom-row">
-            <label for="bg-a">Background Primary:</label>
-            <input type="color" id="bg-a" value="#0f172a" />
-          </div>
-          <div class="custom-row">
-            <label for="bg-b">Background Secondary:</label>
-            <input type="color" id="bg-b" value="#1e293b" />
-          </div>
-          <div class="custom-row">
-            <label for="bg-c">Background Gradient:</label>
-            <input type="color" id="bg-c" value="#312e81" />
-          </div>
-          <div class="custom-row">
-            <label for="acc">Accent Color:</label>
-            <input type="color" id="acc" value="#6366f1" />
-          </div>
-          <div class="custom-row">
-            <label for="txt">Text Color:</label>
-            <input type="color" id="txt" value="#e5e7eb" />
-          </div>
-          <div class="custom-row">
-            <label for="txt2">Muted Text:</label>
-            <input type="color" id="txt2" value="#94a3b8" />
-          </div>
-          <button id="save-custom-theme" class="mbtn mbtn-primary">
-            Save Custom Theme
-          </button>
-        </div>
-        <div class="modal-actions">
-          <button id="theme-modal-close" class="mbtn mbtn-ghost" type="button">
-            Close
-          </button>
-        </div>
-      </div>
-    </div>
-
-    <!-- Poll modal -->
-    <div
-      id="poll-modal"
-      class="hidden"
-      role="dialog"
-      aria-modal="true"
-      aria-labelledby="poll-modal-title"
-    >
-      <div class="modal-overlay"></div>
-      <div class="modal-box">
-        <div class="modal-ico" aria-hidden="true">
-          <svg
-            width="18"
-            height="18"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="1.8"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          >
-            <path
-              d="M9 11H5a2 2 0 0 0-2 2v3a2 2 0 0 0 2 2h3a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2z"
-            />
-            <path
-              d="M19 11h-4a2 2 0 0 0-2 2v3a2 2 0 0 0 2 2h3a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2z"
-            />
-            <line x1="12" y1="6" x2="12" y2="18" />
-          </svg>
-        </div>
-        <h3 id="poll-modal-title">Create Poll</h3>
-        <form id="poll-form">
-          <input
-            id="poll-question"
-            type="text"
-            placeholder="Poll question"
-            maxlength="100"
-            required
-          />
-          <input
-            id="poll-option1"
-            type="text"
-            placeholder="Option 1"
-            maxlength="50"
-            required
-          />
-          <input
-            id="poll-option2"
-            type="text"
-            placeholder="Option 2"
-            maxlength="50"
-            required
-          />
-          <input
-            id="poll-option3"
-            type="text"
-            placeholder="Option 3 (optional)"
-            maxlength="50"
-          />
-          <input
-            id="poll-option4"
-            type="text"
-            placeholder="Option 4 (optional)"
-            maxlength="50"
-          />
-          <div class="modal-actions">
-            <button id="poll-modal-close" class="mbtn mbtn-ghost" type="button">
-              Cancel
-            </button>
-            <button type="submit" class="mbtn mbtn-primary">Create Poll</button>
-          </div>
-        </form>
-      </div>
-    </div>
-
-    <!-- Status modal -->
-    <div
-      id="status-modal"
-      class="hidden"
-      role="dialog"
-      aria-modal="true"
-      aria-labelledby="status-modal-title"
-    >
-      <div class="modal-overlay"></div>
-      <div class="modal-box">
-        <div class="modal-ico" aria-hidden="true">
-          <svg
-            width="18"
-            height="18"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="1.8"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          >
-            <circle cx="12" cy="12" r="10" />
-            <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" />
-            <line x1="12" y1="17" x2="12.01" y2="17" />
-          </svg>
-        </div>
-        <h3 id="status-modal-title">Set Status</h3>
-        <form id="status-form">
-          <input
-            id="status-input"
-            type="text"
-            placeholder="What's your status?"
-            maxlength="50"
-          />
           <div class="modal-actions">
             <button
-              id="status-modal-close"
+              id="theme-modal-close"
               class="mbtn mbtn-ghost"
               type="button"
             >
-              Cancel
+              Close
             </button>
-            <button type="submit" class="mbtn mbtn-primary">Set Status</button>
           </div>
-        </form>
+        </div>
       </div>
-    </div>
+
+      <!-- Poll modal -->
+      <div
+        id="poll-modal"
+        class="hidden"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="poll-modal-title"
+      >
+        <div class="modal-overlay"></div>
+        <div class="modal-box">
+          <div class="modal-ico" aria-hidden="true">
+            <svg
+              width="18"
+              height="18"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.8"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path
+                d="M9 11H5a2 2 0 0 0-2 2v3a2 2 0 0 0 2 2h3a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2z"
+              />
+              <path
+                d="M19 11h-4a2 2 0 0 0-2 2v3a2 2 0 0 0 2 2h3a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2z"
+              />
+              <line x1="12" y1="6" x2="12" y2="18" />
+            </svg>
+          </div>
+          <h3 id="poll-modal-title">Create Poll</h3>
+          <form id="poll-form">
+            <input
+              id="poll-question"
+              type="text"
+              placeholder="Poll question"
+              maxlength="100"
+              required
+            />
+            <input
+              id="poll-option1"
+              type="text"
+              placeholder="Option 1"
+              maxlength="50"
+              required
+            />
+            <input
+              id="poll-option2"
+              type="text"
+              placeholder="Option 2"
+              maxlength="50"
+              required
+            />
+            <input
+              id="poll-option3"
+              type="text"
+              placeholder="Option 3 (optional)"
+              maxlength="50"
+            />
+            <input
+              id="poll-option4"
+              type="text"
+              placeholder="Option 4 (optional)"
+              maxlength="50"
+            />
+            <div class="modal-actions">
+              <button
+                id="poll-modal-close"
+                class="mbtn mbtn-ghost"
+                type="button"
+              >
+                Cancel
+              </button>
+              <button type="submit" class="mbtn mbtn-primary">
+                Create Poll
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <!-- Status modal -->
+      <div
+        id="status-modal"
+        class="hidden"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="status-modal-title"
+      >
+        <div class="modal-overlay"></div>
+        <div class="modal-box">
+          <div class="modal-ico" aria-hidden="true">
+            <svg
+              width="18"
+              height="18"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.8"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <circle cx="12" cy="12" r="10" />
+              <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" />
+              <line x1="12" y1="17" x2="12.01" y2="17" />
+            </svg>
+          </div>
+          <h3 id="status-modal-title">Set Status</h3>
+          <form id="status-form">
+            <input
+              id="status-input"
+              type="text"
+              placeholder="What's your status?"
+              maxlength="50"
+            />
+            <div class="modal-actions">
+              <button
+                id="status-modal-close"
+                class="mbtn mbtn-ghost"
+                type="button"
+              >
+                Cancel
+              </button>
+              <button type="submit" class="mbtn mbtn-primary">
+                Set Status
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </section>
 
     <!-- Scripts — defer so DOM is ready -->
     <script
