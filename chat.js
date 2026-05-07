@@ -201,6 +201,7 @@ const themeOptions = document.querySelectorAll(".theme-option");
 const themeModalClose = document.getElementById("theme-modal-close");
 const customThemeSettings = document.querySelector(".custom-theme-settings");
 const saveCustomThemeBtn = document.getElementById("save-custom-theme");
+const themeOptionsDiv = document.querySelector(".theme-options");
 const pollBtn = document.getElementById("poll-btn");
 const pollModal = document.getElementById("poll-modal");
 const pollForm = document.getElementById("poll-form");
@@ -1130,21 +1131,24 @@ modalYes.addEventListener("click", () => {
 });
 
 // New features listeners
-themeBtn.addEventListener("click", () => themeModal.classList.remove("hidden"));
+themeBtn.addEventListener("click", () => {
+  themeModal.classList.remove("hidden");
+  themeOptionsDiv.classList.remove("hidden");
+  customThemeSettings.classList.add("hidden");
+});
 themeModalClose.addEventListener("click", () => {
   themeModal.classList.add("hidden");
-  customThemeSettings.classList.add("hidden");
 });
 themeOptions.forEach((btn) => {
   btn.addEventListener("click", () => {
     const theme = btn.dataset.theme;
     if (theme === "custom") {
+      themeOptionsDiv.classList.add("hidden");
       customThemeSettings.classList.remove("hidden");
       loadCustomThemeInputs();
     } else {
       setTheme(theme);
       themeModal.classList.add("hidden");
-      customThemeSettings.classList.add("hidden");
     }
   });
 });
