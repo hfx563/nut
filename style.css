@@ -175,12 +175,14 @@ body {
 .brand {
   display: flex;
   align-items: center;
-  gap: 10px;
+  justify-content: center;
+  gap: 12px;
   margin-bottom: 32px;
+  flex-direction: column;
 }
 .brand-icon {
-  width: 102px;
-  height: 102px;
+  width: auto;
+  height: auto;
   background: none;
   border: none;
   display: flex;
@@ -189,11 +191,12 @@ body {
   flex-shrink: 0;
 }
 .brand-icon img {
-  width: 82px;
-  height: auto;
+  width: 48px;
+  height: 48px;
+  display: block;
 }
 .brand-name {
-  font-size: 34px;
+  font-size: 28px;
   font-weight: 700;
   letter-spacing: -0.04em;
   color: var(--txt);
@@ -495,6 +498,20 @@ body {
   padding-right: var(--sar);
   position: relative;
   z-index: 1;
+}
+
+/* ── Chat Sections ── */
+.chat-section {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+#message-section {
+  flex: 1;
+  overflow: hidden;
+}
+#compose-section {
+  flex-shrink: 0;
 }
 
 /* ── Chat Header ── */
@@ -842,7 +859,7 @@ body {
 /* ════════════════════════════════════════
    COMPOSE AREA
 ════════════════════════════════════════ */
-#compose {
+#compose-section {
   flex-shrink: 0;
   background: rgba(15, 23, 42, 0.85);
   backdrop-filter: blur(28px);
