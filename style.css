@@ -65,9 +65,8 @@ body {
     var(--bg-c) 100%
   );
   background-attachment: fixed;
-  height: 100vh;
-  height: 100dvh;
-  height: -webkit-fill-available;
+  min-height: 100vh;
+  min-height: -webkit-fill-available;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -78,14 +77,6 @@ body {
 
 .hidden {
   display: none !important;
-}
-
-main {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  position: absolute;
-  inset: 0;
 }
 
 /* ── Mesh background orbs ── */
@@ -498,14 +489,15 @@ main {
   display: flex;
   flex-direction: column;
   width: 100%;
-  height: 100%;
-  max-width: none;
-  position: relative;
-  z-index: 1;
+  max-width: 760px;
+  height: 100vh;
+  height: -webkit-fill-available;
   padding-top: var(--sat);
   padding-bottom: var(--sab);
   padding-left: var(--sal);
   padding-right: var(--sar);
+  position: relative;
+  z-index: 1;
 }
 
 /* ── Chat Sections ── */
