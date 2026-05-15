@@ -622,6 +622,35 @@ body {
   gap: 12px;
 }
 
+.chat-search {
+  display: flex;
+  align-items: center;
+  flex: 1 1 220px;
+  min-width: 220px;
+  max-width: 320px;
+}
+
+.chat-search input {
+  width: 100%;
+  min-width: 0;
+  padding: 10px 14px;
+  border-radius: 999px;
+  border: 1px solid var(--bdr);
+  background: var(--bg-a);
+  color: var(--txt);
+  font-size: 13px;
+}
+
+.chat-search input::placeholder {
+  color: var(--txt3);
+}
+
+.chat-search input:focus {
+  outline: none;
+  border-color: var(--acc);
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.12);
+}
+
 .ch-room-name {
   font-size: 14px;
   color: var(--txt2);
@@ -826,6 +855,61 @@ body {
   line-height: 1.55;
   word-break: break-word;
   letter-spacing: -0.01em;
+}
+
+.bubble.mentioned {
+  border: 1px solid rgba(34, 211, 238, 0.4);
+  box-shadow: 0 0 0 2px rgba(34, 211, 238, 0.14);
+}
+
+.row.search-hit .bubble {
+  box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.35);
+}
+
+.mention-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 8px;
+  padding: 4px 10px;
+  background: rgba(34, 211, 238, 0.12);
+  color: var(--cyan);
+  border: 1px solid rgba(34, 211, 238, 0.24);
+  border-radius: 999px;
+  font-size: 11px;
+}
+
+.msg-delete-btn {
+  position: absolute;
+  top: 8px;
+  right: 10px;
+  width: 24px;
+  height: 24px;
+  border: none;
+  border-radius: 50%;
+  background: rgba(248, 113, 113, 0.14);
+  color: var(--txt);
+  cursor: pointer;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0.88;
+  transition: opacity 0.14s ease, transform 0.14s ease;
+}
+
+.msg-delete-btn:hover {
+  opacity: 1;
+  transform: scale(1.05);
+  color: var(--red);
+}
+
+.row {
+  position: relative;
+}
+
+.me .row .msg-delete-btn {
+  right: 16px;
 }
 
 .me .bubble {

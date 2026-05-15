@@ -10,6 +10,7 @@ const ROOM_TOPIC_SUFFIX = {
   type: "typing",
   pres: "presence",
   call: "call",
+  delete: "delete",
 };
 const LS_ROOMS = "Nut_rooms_v1";
 const LS_HIST_BASE = "Nut_history_v1_";
@@ -213,6 +214,9 @@ const statusInput = document.getElementById("status-input");
 const statusModalClose = document.getElementById("status-modal-close");
 const userStatusText = document.getElementById("user-status-text");
 const voiceBtn = document.getElementById("voice-btn");
+const searchInput = document.getElementById("search-input");
+
+let searchTerm = "";
 
 // ── DOM ─────────────────────────────────────────────────────────────────────
 const roomInp = document.getElementById("room-input");
@@ -764,6 +768,7 @@ function connectMQTT() {
           getTopic("msg"),
           getTopic("clear"),
           getTopic("close"),
+          getTopic("delete"),
           getTopic("type"),
           getTopic("pres"),
           getTopic("call"),
@@ -858,6 +863,7 @@ function connectMQTT() {
         if (topic === getTopic("msg")) handleMsg(data);
         if (topic === getTopic("clear")) handleClear(data);
         if (topic === getTopic("close")) handleRoomClose(data);
+        if (topic === getTopic("delete")) handleDelete(data);
         if (topic === getTopic("type")) handleTyping(data);
         if (topic === getTopic("pres")) handlePresence(data);
         if (topic === getTopic("call")) {
@@ -1040,6 +1046,10 @@ function renderMsg(msg, animate) {
     });
     row.appendChild(voiceEl);
 
+    if (isMe) {
+      row.appendChild(createDeleteButton(msgId));
+    }
+
     const ts = document.createElement("div");
     ts.className = "ts";
     ts.textContent = fmtTime(msg.ts);
@@ -1067,6 +1077,20 @@ function renderMsg(msg, animate) {
     bubble.textContent = msg.text;
     row.appendChild(bubble);
 
+    const mentionMe = !isMe && isMention(msg);
+    if (mentionMe) {
+      row.classList.add("mentioned");
+      const mentionBadge = document.createElement("div");
+      mentionBadge.className = "mention-badge";
+      mentionBadge.textContent = "Mentioned";
+      row.appendChild(mentionBadge);
+      bubble.classList.add("mentioned");
+    }
+
+    if (isMe) {
+      row.appendChild(createDeleteButton(msgId));
+    }
+
     row.addEventListener("click", () => {
       if (selectedMsgId === msgId) {
         selectedMsgId = null;
@@ -1089,6 +1113,80 @@ function renderMsg(msg, animate) {
     msgsEl.appendChild(row);
   }
   msgsEl.scrollTop = msgsEl.scrollHeight;
+  if (searchTerm) applySearchHighlights();
+}
+
+function escapeRegex(value) {
+  return String(value).replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+}
+
+function isMention(msg) {
+  if (!msg?.text || !userName) return false;
+  const normalized = escapeRegex(userName.trim());
+  const mentionPattern = new RegExp(`(^|\\s)@${normalized}(\\b|$)`, "i");
+  const everyonePattern = /(^|\s)@(all|everyone)(\b|$)/i;
+  return mentionPattern.test(msg.text) || everyonePattern.test(msg.text);
+}
+
+function createDeleteButton(msgId) {
+  const btn = document.createElement("button");
+  btn.type = "button";
+  btn.className = "msg-delete-btn";
+  btn.title = "Delete message";
+  btn.textContent = "×";
+  btn.addEventListener("click", (e) => {
+    e.stopPropagation();
+    deleteMessage(msgId);
+  });
+  return btn;
+}
+
+function applySearchHighlights() {
+  const term = searchTerm.trim().toLowerCase();
+  let firstMatch = null;
+  msgsEl.querySelectorAll(".row").forEach((row) => {
+    const bubble = row.querySelector(".bubble, .voice-msg");
+    if (!bubble) {
+      row.classList.remove("search-hit");
+      return;
+    }
+    const text = bubble.textContent.toLowerCase();
+    const match = term && text.includes(term);
+    row.classList.toggle("search-hit", !!match);
+    if (match && !firstMatch) {
+      firstMatch = row;
+    }
+  });
+  if (firstMatch) firstMatch.scrollIntoView({ behavior: "smooth", block: "center" });
+}
+
+function deleteMessage(msgId) {
+  if (!msgId || !currentRoom) return;
+  publish(getTopic("delete"), {
+    type: "delete",
+    msg_id: msgId,
+    room_id: currentRoom.room_id,
+    by: userName,
+    ts: nowMs(),
+  });
+  handleDelete({ msg_id: msgId, room_id: currentRoom.room_id, by: userName });
+}
+
+function handleDelete(data) {
+  if (!data || data.room_id !== currentRoom?.room_id || !data.msg_id) return;
+  const row = document.querySelector(`[data-msg-id="${CSS.escape(data.msg_id)}"]`);
+  if (row) row.remove();
+  removeFromHistory(data.msg_id);
+  const sys = document.createElement("div");
+  sys.className = "sys";
+  sys.textContent = `${data.by || "Someone"} deleted a message.`;
+  msgsEl.appendChild(sys);
+  msgsEl.scrollTop = msgsEl.scrollHeight;
+}
+
+function removeFromHistory(msgId) {
+  const history = getHistory().filter((msg) => msg.id !== msgId);
+  saveHistory(history);
 }
 
 // ── Send ──────────────────────────────────────────────────────────────────────
@@ -1164,6 +1262,13 @@ pollBtn.addEventListener("click", () => pollModal.classList.remove("hidden"));
 pollModalClose.addEventListener("click", () =>
   pollModal.classList.add("hidden"),
 );
+
+if (searchInput) {
+  searchInput.addEventListener("input", (e) => {
+    searchTerm = e.target.value || "";
+    applySearchHighlights();
+  });
+}
 pollForm.addEventListener("submit", (e) => {
   e.preventDefault();
   createPoll();
@@ -1198,6 +1303,11 @@ function setTheme(theme) {
   }
   localStorage.setItem("Nut_theme", theme);
 }
+
+(function initApp() {
+  const savedTheme = localStorage.getItem("Nut_theme") || "dark";
+  setTheme(savedTheme);
+})();
 
 function applyCustomTheme() {
   const custom = JSON.parse(localStorage.getItem("Nut_custom_theme") || "{}");
