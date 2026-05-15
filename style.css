@@ -488,8 +488,10 @@ body {
 #chat-screen {
   display: flex;
   flex-direction: column;
-  width: 100%;
+  width: min(100%, 760px);
   max-width: 760px;
+  margin: 0 auto;
+  min-height: 100vh;
   height: 100vh;
   height: -webkit-fill-available;
   padding-top: var(--sat);
@@ -519,6 +521,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  flex-wrap: wrap;
   padding: 12px 20px;
   background: rgba(15, 23, 42, 0.8);
   backdrop-filter: blur(28px);
@@ -527,6 +530,13 @@ body {
   flex-shrink: 0;
   gap: 12px;
   min-height: 62px;
+}
+.ch-left,
+.ch-right {
+  min-width: 0;
+}
+.ch-center {
+  min-width: 0;
 }
 
 .ch-left {
