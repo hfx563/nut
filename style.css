@@ -521,7 +521,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   padding: 12px 20px;
   background: rgba(15, 23, 42, 0.8);
   backdrop-filter: blur(28px);
@@ -531,12 +531,17 @@ body {
   gap: 12px;
   min-height: 62px;
 }
+.chat-header > * {
+  min-width: 0;
+}
 .ch-left,
 .ch-right {
   min-width: 0;
+  flex: 0 0 auto;
 }
 .ch-center {
   min-width: 0;
+  flex: 0 1 auto;
 }
 
 .ch-left {
@@ -626,9 +631,9 @@ body {
 .chat-search {
   display: flex;
   align-items: center;
-  flex: 1 1 220px;
-  min-width: 160px;
-  max-width: 320px;
+  flex: 1 1 260px;
+  min-width: 180px;
+  max-width: 380px;
   order: 2;
 }
 
