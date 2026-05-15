@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 <div align="center">
 
 <br />
@@ -34,19 +33,19 @@ Messages are delivered over MQTT (WebSocket). Calls are peer-to-peer via WebRTC.
 
 ## Features
 
-| Feature                 | Details                                                   |
-| ----------------------- | --------------------------------------------------------- |
-| 💬 Real-time messaging  | MQTT over WebSocket — 3 broker fallbacks                  |
-| � Private rooms         | Room name + password required; messages isolated per room |
-| 👑 Admin access         | Admin user 563 can access rooms without room password     |
-| �🔒 Password protection | SHA-256 hashed, never stored in plaintext                 |
-| 📞 Voice calls          | WebRTC via PeerJS                                         |
-| 📹 Video calls          | Camera + mic with mute/cam toggle                         |
-| ✍️ Typing indicators    | Live animated dots                                        |
-| 🟢 Presence             | Online count with 10s heartbeat                           |
-| 🗑️ Clear history        | Synced clear for all users                                |
-| 💾 Local history        | Persists across refreshes via localStorage                |
-| 📱 Mobile ready         | iOS safe-area, 44px touch targets                         |
+| Feature                | Details                                                   |
+| ---------------------- | --------------------------------------------------------- |
+| 💬 Real-time messaging | MQTT over WebSocket — 3 broker fallbacks                  |
+| 🔐 Private rooms       | Room name + password required; messages isolated per room |
+| 👑 Admin access        | Admin user 563 can access rooms without room password     |
+| 🔒 Password protection | SHA-256 hashed, never stored in plaintext                 |
+| 📞 Voice calls         | WebRTC via PeerJS                                         |
+| 📹 Video calls         | Camera + mic with mute/cam toggle                         |
+| ✍️ Typing indicators   | Live animated dots                                        |
+| 🟢 Presence            | Online count with 10s heartbeat                           |
+| 🗑️ Clear history       | Synced clear for all users                                |
+| 💾 Local history       | Persists across refreshes via localStorage                |
+| 📱 Mobile ready        | iOS safe-area, 44px touch targets                         |
 
 ---
 
@@ -67,16 +66,18 @@ Fonts    →  Inter via Google Fonts
 **Open directly:**
 
 ```
-Nut/index.html  →  double-click or drag into browser
+index.html  →  double-click or drag into browser
 ```
 
 **Serve locally** (recommended for camera/mic):
 
 ```bash
-cd Nut
+cd .
 npx serve .
 # → http://localhost:3000
 ```
+
+---
 
 **Test on phone:**
 
@@ -122,12 +123,11 @@ node -e "const c=require('crypto'); console.log(c.createHash('sha256').update('Y
 ## File Structure
 
 ```
-Nut/
-├── index.html     UI — join screen, chat, modals
-├── chat.js        MQTT messaging, presence, typing, history
-├── call.js        WebRTC voice & video via PeerJS
-├── style.css      Design system & all component styles
-└── README.md
+index.html     UI — join screen, chat, modals
+chat.js        MQTT messaging, presence, typing, history
+call.js        WebRTC voice & video via PeerJS
+style.css      Design system & all component styles
+README.md
 ```
 
 ---
@@ -138,39 +138,12 @@ Chrome · Firefox · Safari · Edge · iOS Safari · Android Chrome
 
 > Camera/mic require HTTPS or localhost.
 
----
-
 <div align="center">
 
 <br />
 
-Made with care &nbsp;·&nbsp; No tracking &nbsp;·&nbsp; No server &nbsp;·&nbsp; No noise
+Made with care · No tracking · No server · No noise
 
 <br />
 
 </div>
-=======
-# AR Test AI - Projects
-
-This folder contains two separate projects:
-
----
-
-## PDF-Converter/
-Crawls any documentation website and converts it to a structured PDF with images.
-
-**To use:** Double-click `PDF-Converter\crawl_to_pdf.bat`
-
-**First time on a new PC:** Double-click `PDF-Converter\SETUP.bat`
-
----
-
-## Travel-App/
-Luxe Travel — a public travel guide web app with city search, weather, news and more.
-
-**To run locally:** Double-click `Travel-App\START_LOCAL_SERVER.bat`
-
-**To deploy:** See `Travel-App\README.md`
-
----
->>>>>>> 751d4b835bf15fbed076988892ed3af543e3f374
