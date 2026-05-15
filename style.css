@@ -849,7 +849,8 @@ body {
 }
 
 .bubble {
-  padding: 11px 16px;
+  padding: 11px 16px 11px 16px;
+  padding-right: 48px;
   border-radius: var(--r-lg);
   font-size: 14.5px;
   line-height: 1.55;
@@ -883,19 +884,21 @@ body {
   position: absolute;
   top: 8px;
   right: 10px;
-  width: 24px;
-  height: 24px;
+  width: 28px;
+  height: 28px;
   border: none;
   border-radius: 50%;
-  background: rgba(248, 113, 113, 0.14);
+  background: rgba(248, 113, 113, 0.2);
   color: var(--txt);
   cursor: pointer;
   font-size: 14px;
   display: flex;
   align-items: center;
   justify-content: center;
-  opacity: 0.88;
-  transition: opacity 0.14s ease, transform 0.14s ease;
+  opacity: 0.94;
+  z-index: 2;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.18);
+  transition: opacity 0.14s ease, transform 0.14s ease, background 0.14s ease;
 }
 
 .msg-delete-btn:hover {
