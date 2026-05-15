@@ -1157,7 +1157,8 @@ function applySearchHighlights() {
       firstMatch = row;
     }
   });
-  if (firstMatch) firstMatch.scrollIntoView({ behavior: "smooth", block: "center" });
+  if (firstMatch)
+    firstMatch.scrollIntoView({ behavior: "smooth", block: "center" });
 }
 
 function deleteMessage(msgId) {
@@ -1174,7 +1175,9 @@ function deleteMessage(msgId) {
 
 function handleDelete(data) {
   if (!data || data.room_id !== currentRoom?.room_id || !data.msg_id) return;
-  const row = document.querySelector(`[data-msg-id="${CSS.escape(data.msg_id)}"]`);
+  const row = document.querySelector(
+    `[data-msg-id="${CSS.escape(data.msg_id)}"]`,
+  );
   if (row) row.remove();
   removeFromHistory(data.msg_id);
   const sys = document.createElement("div");

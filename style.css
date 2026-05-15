@@ -618,16 +618,43 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  flex: 1;
+  flex: 0 1 auto;
   gap: 12px;
+  min-width: 0;
 }
 
 .chat-search {
   display: flex;
   align-items: center;
   flex: 1 1 220px;
-  min-width: 220px;
+  min-width: 160px;
   max-width: 320px;
+  order: 2;
+}
+
+@media (max-width: 720px) {
+  .chat-header {
+    align-items: stretch;
+  }
+  .ch-center,
+  .chat-search,
+  .ch-right {
+    width: 100%;
+  }
+  .ch-center {
+    justify-content: flex-start;
+    order: 1;
+    margin-bottom: 8px;
+  }
+  .chat-search {
+    order: 2;
+    max-width: none;
+  }
+  .ch-right {
+    justify-content: flex-start;
+    order: 3;
+    gap: 8px;
+  }
 }
 
 .chat-search input {
