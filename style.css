@@ -75,6 +75,22 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
+/* Mobile / iOS fixes: keep app top-aligned and allow scrolling */
+@media (max-width: 720px) {
+  body {
+    align-items: flex-start;
+    justify-content: flex-start;
+    overflow: auto;
+  }
+
+  /* Ensure chat fills the width and respects safe-area insets on iOS */
+  #chat-screen {
+    width: 100%;
+    padding-left: calc(16px + var(--sal));
+    padding-right: calc(16px + var(--sar));
+  }
+}
+
 .hidden {
   display: none !important;
 }
