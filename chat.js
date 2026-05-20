@@ -214,9 +214,6 @@ const statusInput = document.getElementById("status-input");
 const statusModalClose = document.getElementById("status-modal-close");
 const userStatusText = document.getElementById("user-status-text");
 const voiceBtn = document.getElementById("voice-btn");
-const searchInput = document.getElementById("search-input");
-
-let searchTerm = "";
 
 // ── DOM ─────────────────────────────────────────────────────────────────────
 const roomInp = document.getElementById("room-input");
@@ -721,7 +718,20 @@ function publishRoomMeta() {
 }
 
 async function verifyRoomMeta() {
+  // First check if we already have it in memory
   if (roomMeta && roomMeta.room_id === currentRoom.room_id) return roomMeta;
+  
+  // Then check local storage
+  if (currentRoom && currentRoom.room_name) {
+    const savedRoom = getSavedRoom(currentRoom.room_name);
+    if (savedRoom && savedRoom.room_id === currentRoom.room_id) {
+      // Cache it in roomMeta for consistency
+      roomMeta = savedRoom;
+      return roomMeta;
+    }
+  }
+  
+  // Finally, wait for MQTT message
   return await waitForRoomMeta();
 }
 
@@ -1113,7 +1123,6 @@ function renderMsg(msg, animate) {
     msgsEl.appendChild(row);
   }
   msgsEl.scrollTop = msgsEl.scrollHeight;
-  if (searchTerm) applySearchHighlights();
 }
 
 function escapeRegex(value) {
@@ -1139,26 +1148,6 @@ function createDeleteButton(msgId) {
     deleteMessage(msgId);
   });
   return btn;
-}
-
-function applySearchHighlights() {
-  const term = searchTerm.trim().toLowerCase();
-  let firstMatch = null;
-  msgsEl.querySelectorAll(".row").forEach((row) => {
-    const bubble = row.querySelector(".bubble, .voice-msg");
-    if (!bubble) {
-      row.classList.remove("search-hit");
-      return;
-    }
-    const text = bubble.textContent.toLowerCase();
-    const match = term && text.includes(term);
-    row.classList.toggle("search-hit", !!match);
-    if (match && !firstMatch) {
-      firstMatch = row;
-    }
-  });
-  if (firstMatch)
-    firstMatch.scrollIntoView({ behavior: "smooth", block: "center" });
 }
 
 function deleteMessage(msgId) {
@@ -1266,12 +1255,6 @@ pollModalClose.addEventListener("click", () =>
   pollModal.classList.add("hidden"),
 );
 
-if (searchInput) {
-  searchInput.addEventListener("input", (e) => {
-    searchTerm = e.target.value || "";
-    applySearchHighlights();
-  });
-}
 pollForm.addEventListener("submit", (e) => {
   e.preventDefault();
   createPoll();
