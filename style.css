@@ -540,17 +540,17 @@ body {
 
 /* ΓöÇΓöÇ Chat Header ΓöÇΓöÇ */
 .chat-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 12px 20px;
-  background: rgba(15, 23, 42, 0.8);
-  backdrop-filter: blur(28px);
-  -webkit-backdrop-filter: blur(28px);
-  border-bottom: 1px solid var(--bdr);
-  flex-shrink: 0;
-  gap: 12px;
-  min-height: 62px;
+   display: flex;
+   align-items: center;
+   justify-content: space-between;
+   padding: 8px 12px; /* Reduced padding for better fit on small screens */
+   background: rgba(15, 23, 42, 0.8);
+   backdrop-filter: blur(28px);
+   -webkit-backdrop-filter: blur(28px);
+   border-bottom: 1px solid var(--bdr);
+   flex-shrink: 0;
+   gap: 8px; /* Reduced gap */
+   min-height: 50px; /* Reduced height */
 }
 
 .ch-left {
@@ -561,19 +561,19 @@ body {
 }
 
 .ch-avatar {
-  width: 38px;
-  height: 38px;
-  border-radius: 10px;
-  background: linear-gradient(135deg, var(--acc-dim), rgba(139, 92, 246, 0.2));
-  border: 1px solid rgba(99, 102, 241, 0.25);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 15px;
-  font-weight: 700;
-  color: var(--acc2);
-  flex-shrink: 0;
-  letter-spacing: -0.02em;
+   width: 32px; /* Reduced from 38px */
+   height: 32px; /* Reduced from 38px */
+   border-radius: 8px; /* Reduced from 10px */
+   background: linear-gradient(135deg, var(--acc-dim), rgba(139, 92, 246, 0.2));
+   border: 1px solid rgba(99, 102, 241, 0.25);
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   font-size: 13px; /* Reduced from 15px */
+   font-weight: 700;
+   color: var(--acc2);
+   flex-shrink: 0;
+   letter-spacing: -0.02em;
 }
 
 .ch-info {
@@ -583,11 +583,11 @@ body {
 }
 
 .ch-name {
-  font-size: 15px;
-  font-weight: 600;
-  color: var(--txt);
-  letter-spacing: -0.02em;
-  line-height: 1;
+   font-size: 13px; /* Reduced from 15px */
+   font-weight: 600;
+   color: var(--txt);
+   letter-spacing: -0.02em;
+   line-height: 1;
 }
 
 .ch-status {
@@ -688,26 +688,26 @@ body {
 
 /* ΓöÇΓöÇ Icon buttons ΓöÇΓöÇ */
 .icon-btn {
-  width: 36px;
-  height: 36px;
-  border-radius: 10px;
-  border: 1px solid var(--bdr);
-  background: var(--sur);
-  color: var(--txt3);
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-  -webkit-tap-highlight-color: transparent;
-  transition:
-    background 0.14s var(--ease),
-    color 0.14s,
-    border-color 0.14s,
-    transform 0.1s;
+   width: 30px; /* Reduced from 36px */
+   height: 30px; /* Reduced from 36px */
+   border-radius: 8px; /* Reduced from 10px */
+   border: 1px solid var(--bdr);
+   background: var(--sur);
+   color: var(--txt3);
+   cursor: pointer;
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   flex-shrink: 0;
+   -webkit-tap-highlight-color: transparent;
+   transition:
+     background 0.14s var(--ease),
+     color 0.14s,
+     border-color 0.14s,
+     transform 0.1s;
 }
 .icon-btn:active {
-  transform: scale(0.88);
+   transform: scale(0.88);
 }
 
 .icon-btn.green {
