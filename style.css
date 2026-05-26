@@ -50,7 +50,7 @@
 }
 
 html {
-  height: -webkit-fill-available;
+   height: -webkit-fill-available;
 }
 
 body {
@@ -67,19 +67,17 @@ body {
    background-attachment: fixed;
    min-height: 100vh;
    min-height: -webkit-fill-available;
-   display: flex;
-   align-items: center;
-   justify-content: center;
+   width: 100%;
+   margin: 0;
    overflow: hidden;
    -webkit-text-size-adjust: 100%;
    -webkit-font-smoothing: antialiased;
+   display: block;
 }
 
 /* Mobile / iOS fixes: keep app top-aligned and allow scrolling */
 @media (max-width: 720px) {
   body {
-    align-items: flex-start;
-    justify-content: flex-start;
     overflow: auto;
     background-attachment: scroll;
   }
@@ -90,6 +88,26 @@ body {
     padding-left: calc(16px + var(--sal));
     padding-right: calc(16px + var(--sar));
   }
+}
+
+#app-root {
+   display: flex;
+   flex-direction: column;
+   width: 100%;
+   height: 100%;
+   min-height: 100vh;
+   min-height: -webkit-fill-available;
+   position: relative;
+}
+
+#app-root {
+   display: flex;
+   flex-direction: column;
+   width: 100%;
+   height: 100%;
+   min-height: 100vh;
+   min-height: -webkit-fill-available;
+   position: relative;
 }
 
 .hidden {
