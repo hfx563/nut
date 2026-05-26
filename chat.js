@@ -194,6 +194,7 @@ const typDots = document.querySelector(".t-dots");
 const modal = document.getElementById("modal");
 const modalYes = document.getElementById("modal-yes");
 const modalNo = document.getElementById("modal-no");
+const modalSection = document.getElementById("modal-section");
 
 // New features
 const themeBtn = document.getElementById("theme-btn");
@@ -1177,7 +1178,7 @@ function handleDelete(data) {
 }
 
 function removeFromHistory(msgId) {
-  const history = getHistory().filter((msg) => msg.id !== msgId);
+  const history = getHistory().filter((msg) => getMessageId(msg) !== msgId);
   saveHistory(history);
 }
 
@@ -1205,11 +1206,27 @@ msgForm.addEventListener("submit", (e) => {
   doStopTyping();
 });
 
+// ── Modal helpers ──────────────────────────────────────────────────────────────
+function showModal(el) {
+  el.classList.remove("hidden");
+  modalSection?.setAttribute("aria-hidden", "false");
+}
+function hideModal(el) {
+  el.classList.add("hidden");
+  const anyOpen = modal.querySelector(".modal-box:not(.hidden)") ||
+    themeModal?.querySelector(".modal-box:not(.hidden)") ||
+    pollModal?.querySelector(".modal-box:not(.hidden)") ||
+    statusModal?.querySelector(".modal-box:not(.hidden)");
+  modalSection?.setAttribute("aria-hidden", anyOpen ? "false" : "true");
+}
+
 // ── Clear ─────────────────────────────────────────────────────────────────────
-clearBtn.addEventListener("click", () => modal.classList.remove("hidden"));
-modalNo.addEventListener("click", () => modal.classList.add("hidden"));
+clearBtn.addEventListener("click", () => showModal(modal));
+modalNo.addEventListener("click", () => {
+  hideModal(modal);
+});
 modalYes.addEventListener("click", () => {
-  modal.classList.add("hidden");
+  hideModal(modal);
   const epoch = nowMs();
   if (currentRoom)
     publish(getTopic("clear"), {
@@ -1222,12 +1239,12 @@ modalYes.addEventListener("click", () => {
 
 // New features listeners
 themeBtn.addEventListener("click", () => {
-  themeModal.classList.remove("hidden");
+  showModal(themeModal);
   themeOptionsDiv.classList.remove("hidden");
   customThemeSettings.classList.add("hidden");
 });
 themeModalClose.addEventListener("click", () => {
-  themeModal.classList.add("hidden");
+  hideModal(themeModal);
 });
 themeOptions.forEach((btn) => {
   btn.addEventListener("click", () => {
@@ -1238,7 +1255,7 @@ themeOptions.forEach((btn) => {
       loadCustomThemeInputs();
     } else {
       setTheme(theme);
-      themeModal.classList.add("hidden");
+      hideModal(themeModal);
     }
   });
 });
@@ -1246,31 +1263,31 @@ themeOptions.forEach((btn) => {
 saveCustomThemeBtn.addEventListener("click", () => {
   saveCustomTheme();
   setTheme("custom");
-  themeModal.classList.add("hidden");
+  hideModal(themeModal);
   customThemeSettings.classList.add("hidden");
 });
 
-pollBtn.addEventListener("click", () => pollModal.classList.remove("hidden"));
+pollBtn.addEventListener("click", () => showModal(pollModal));
 pollModalClose.addEventListener("click", () =>
-  pollModal.classList.add("hidden"),
+  hideModal(pollModal),
 );
 
 pollForm.addEventListener("submit", (e) => {
   e.preventDefault();
   createPoll();
-  pollModal.classList.add("hidden");
+  hideModal(pollModal);
 });
 
 statusBtn.addEventListener("click", () =>
-  statusModal.classList.remove("hidden"),
+  showModal(statusModal),
 );
 statusModalClose.addEventListener("click", () =>
-  statusModal.classList.add("hidden"),
+  hideModal(statusModal),
 );
 statusForm.addEventListener("submit", (e) => {
   e.preventDefault();
   setUserStatus(statusInput.value.trim());
-  statusModal.classList.add("hidden");
+  hideModal(statusModal);
 });
 
 voiceBtn.addEventListener("click", toggleVoiceRecording);
@@ -1669,8 +1686,13 @@ function handleTyping(data) {
 
 // ── Admin Helpers ─────────────────────────────────────────────────────────────
 function publishToClient(client, topic, data, opts = {}) {
-  if (client && client.connected)
-    client.publish(topic, JSON.stringify(data), opts);
+  if (client && client.connected) {
+    client.publish(
+      topic,
+      data === "" ? "" : JSON.stringify(data),
+      opts,
+    );
+  }
 }
 
 function getTopicFor(roomId, suffix) {
