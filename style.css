@@ -75,18 +75,16 @@ body {
    display: block;
 }
 
-/* Mobile / iOS fixes: keep app top-aligned and allow scrolling */
+/* Mobile / iOS fixes */
 @media (max-width: 720px) {
   body {
-    overflow: auto;
     background-attachment: scroll;
   }
-
-  /* Ensure chat fills the width and respects safe-area insets on iOS */
   #chat-screen {
-    width: 100%;
-    padding-left: calc(16px + var(--sal));
-    padding-right: calc(16px + var(--sar));
+    left: 0;
+    transform: none;
+    padding-left: var(--sal);
+    padding-right: var(--sar);
   }
 }
 
@@ -511,17 +509,17 @@ body {
    CHAT SCREEN
 ΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉ */
 #chat-screen {
-   display: flex;
-   flex-direction: column;
-   width: 100%;
-   max-width: 760px;
-   height: 100vh;
-   height: -webkit-fill-available;
-   padding-top: var(--sat);
-   padding-bottom: var(--sab);
-   position: relative;
-   z-index: 1;
-   margin: 0 auto; /* Center horizontally */
+  position: fixed;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 760px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding-top: var(--sat);
+  padding-bottom: var(--sab);
+  z-index: 1;
 }
 
 /* ΓöÇΓöÇ Chat Sections ΓöÇΓöÇ */
@@ -532,6 +530,7 @@ body {
 }
 #message-section {
   flex: 1;
+  min-height: 0;
   overflow: hidden;
 }
 #compose-section {
