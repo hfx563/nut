@@ -18,7 +18,7 @@ const LS_EPOCH_BASE = "Nut_epoch_v1_";
 const ADMIN_USERNAME = "563";
 const ADMIN_PASSWORD_HASH =
   "fa4ddf29f41b575377ce14a7900d1e26b669163ca53b80ea3168c6801cf7e114";
-const ROOM_LIST_BASE = "Nut/rooms/list/";
+
 
 let currentRoom = null;
 let userRole = "user";
@@ -1459,9 +1459,23 @@ async function toggleVoiceRecording() {
 }
 
 async function startRecording() {
+  if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+    showSysMsg("⚠️ Voice recording is not supported in this browser.");
+    return;
+  }
   try {
     const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-    mediaRecorder = new MediaRecorder(stream);
+    // Pick a MIME type supported by the current browser (Safari needs mp4/aac)
+    const mimeType = [
+      "audio/webm;codecs=opus",
+      "audio/webm",
+      "audio/ogg;codecs=opus",
+      "audio/mp4",
+    ].find((t) => MediaRecorder.isTypeSupported(t)) || "";
+
+    mediaRecorder = mimeType
+      ? new MediaRecorder(stream, { mimeType })
+      : new MediaRecorder(stream);
     recordedChunks = [];
 
     mediaRecorder.ondataavailable = (e) => {
@@ -1469,7 +1483,9 @@ async function startRecording() {
     };
 
     mediaRecorder.onstop = () => {
-      const blob = new Blob(recordedChunks, { type: "audio/webm" });
+      const blob = new Blob(recordedChunks, {
+        type: mediaRecorder.mimeType || "audio/webm",
+      });
       sendVoiceMessage(blob);
       stream.getTracks().forEach((track) => track.stop());
     };
@@ -1478,7 +1494,15 @@ async function startRecording() {
     isRecording = true;
     voiceBtn.classList.add("recording");
   } catch (err) {
-    console.error("Recording failed", err);
+    isRecording = false;
+    voiceBtn.classList.remove("recording");
+    const msg =
+      err.name === "NotAllowedError"
+        ? "⚠️ Microphone permission denied."
+        : err.name === "NotFoundError"
+        ? "⚠️ No microphone found."
+        : "⚠️ Could not start recording: " + err.message;
+    showSysMsg(msg);
   }
 }
 
@@ -1672,11 +1696,12 @@ function handleTyping(data) {
   if (!data.ts || nowMs() - data.ts > 4000) delete typMap[data.key];
   else typMap[data.key] = data.name;
   const typers = Object.values(typMap);
+  const typingTextEl = document.getElementById("typing-text");
   if (typers.length === 0) {
-    typEl.textContent = "";
+    if (typingTextEl) typingTextEl.textContent = "";
     if (typDots) typDots.classList.add("hidden");
   } else {
-    typEl.textContent =
+    if (typingTextEl) typingTextEl.textContent =
       typers.length === 1
         ? typers[0] + " is typing"
         : typers.join(", ") + " are typing";
@@ -1684,36 +1709,4 @@ function handleTyping(data) {
   }
 }
 
-// ── Admin Helpers ─────────────────────────────────────────────────────────────
-function publishToClient(client, topic, data, opts = {}) {
-  if (client && client.connected) {
-    client.publish(
-      topic,
-      data === "" ? "" : JSON.stringify(data),
-      opts,
-    );
-  }
-}
 
-function getTopicFor(roomId, suffix) {
-  return TOPIC_BASE + roomId + "/" + suffix;
-}
-
-function getMetaTopicFor(roomId) {
-  return TOPIC_BASE + roomId + "/" + ROOM_META_SUFFIX;
-}
-
-function removeSavedRoom(roomId) {
-  const rooms = getSavedRooms().filter((r) => r.room_id !== roomId);
-  localStorage.setItem(LS_ROOMS, JSON.stringify(rooms));
-}
-
-function leaveRoomAfterClose() {
-  doLeave();
-}
-
-function handleClose(data) {
-  if (!data || data.room_id !== currentRoom?.room_id) return;
-  showSysMsg("Room closed by " + (data.by || "Admin"));
-  doLeave();
-}
