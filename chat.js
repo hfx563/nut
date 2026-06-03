@@ -11,6 +11,7 @@ const ROOM_TOPIC_SUFFIX = {
   pres: "presence",
   call: "call",
   delete: "delete",
+  read: "read",
 };
 const LS_ROOMS = "Nut_rooms_v1";
 const LS_HIST_BASE = "Nut_history_v1_";
@@ -108,6 +109,27 @@ function setRoomTitle() {
     roomNameEl.textContent = currentRoom ? currentRoom.room_name : "";
 }
 
+// ── Reply ─────────────────────────────────────────────────────────────────────
+function setReply(msg) {
+  replyTo = { id: getMessageId(msg), name: msg.name, text: msg.text || "Voice message" };
+  replyBarName.textContent = replyTo.name;
+  replyBarText.textContent = replyTo.text;
+  replyBar.classList.remove("hidden");
+  msgInp.focus();
+}
+
+function clearReply() {
+  replyTo = null;
+  replyBar.classList.add("hidden");
+}
+
+// ── Scroll to bottom ──────────────────────────────────────────────────────────
+function updateScrollBtn() {
+  if (!msgsEl || !scrollBottomBtn) return;
+  const distFromBottom = msgsEl.scrollHeight - msgsEl.scrollTop - msgsEl.clientHeight;
+  scrollBottomBtn.classList.toggle("hidden", distFromBottom < 80);
+}
+
 function isAdminUser(name) {
   return String(name || "").trim() === ADMIN_USERNAME;
 }
@@ -129,11 +151,34 @@ let recordedChunks = [];
 const seenIds = new Set();
 const onlineMap = {};
 const typMap = {};
-const polls = new Map(); // poll_id -> poll data
-const reactions = new Map(); // msg_id -> {emoji: [userKeys]}
+const polls = new Map();
+const reactions = new Map();
 let selectedMsgId = null;
 let previousSelected = null;
-const adminRoomOnlineUsers = {}; // Track online users per room for admin view
+const adminRoomOnlineUsers = {};
+
+// Reply state
+let replyTo = null; // { id, name, text }
+
+// Read receipts: msgId -> Set of userKeys who read it
+const readMap = new Map();
+
+// Sound
+let soundEnabled = true;
+function playMsgSound() {
+  if (!soundEnabled) return;
+  try {
+    const ctx = new (window.AudioContext || window.webkitAudioContext)();
+    const o = ctx.createOscillator();
+    const g = ctx.createGain();
+    o.connect(g); g.connect(ctx.destination);
+    o.frequency.value = 880;
+    o.type = 'sine';
+    g.gain.setValueAtTime(0.12, ctx.currentTime);
+    g.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.18);
+    o.start(); o.stop(ctx.currentTime + 0.18);
+  } catch (_) {}
+}
 
 const COLORS = [
   "#6c63ff",
@@ -160,10 +205,27 @@ function esc(s) {
 
 function fmtTime(ts) {
   const d = new Date(ts);
-  const t = d.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
-  return d.toDateString() === new Date().toDateString()
-    ? t
-    : d.toLocaleDateString([], { month: "short", day: "numeric" }) + " " + t;
+  return d.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+}
+
+function fmtDateLabel(ts) {
+  const d = new Date(ts);
+  const now = new Date();
+  const yesterday = new Date(now); yesterday.setDate(now.getDate() - 1);
+  if (d.toDateString() === now.toDateString()) return "Today";
+  if (d.toDateString() === yesterday.toDateString()) return "Yesterday";
+  return d.toLocaleDateString([], { weekday: "long", month: "long", day: "numeric" });
+}
+
+let lastDateLabel = null;
+function maybeInsertDateSeparator(ts) {
+  const label = fmtDateLabel(ts);
+  if (label === lastDateLabel) return;
+  lastDateLabel = label;
+  const sep = document.createElement("div");
+  sep.className = "date-sep";
+  sep.textContent = label;
+  msgsEl.appendChild(sep);
 }
 
 // ── DOM ───────────────────────────────────────────────────────────────────────
@@ -215,6 +277,12 @@ const statusInput = document.getElementById("status-input");
 const statusModalClose = document.getElementById("status-modal-close");
 const userStatusText = document.getElementById("user-status-text");
 const voiceBtn = document.getElementById("voice-btn");
+const scrollBottomBtn = document.getElementById("scroll-bottom-btn");
+const replyBar = document.getElementById("reply-bar");
+const replyBarName = document.getElementById("reply-bar-name");
+const replyBarText = document.getElementById("reply-bar-text");
+const replyBarClose = document.getElementById("reply-bar-close");
+const soundToggleBtn = document.getElementById("sound-toggle-btn");
 
 // ── DOM ─────────────────────────────────────────────────────────────────────
 const roomInp = document.getElementById("room-input");
@@ -785,6 +853,7 @@ function connectMQTT() {
           getTopic("call"),
           getTopic("poll"),
           getTopic("reaction"),
+          getTopic("read"),
         ],
         async (err) => {
           if (!err) {
@@ -882,6 +951,7 @@ function connectMQTT() {
         }
         if (topic === getTopic("poll")) handlePoll(data);
         if (topic === getTopic("reaction")) handleReaction(data);
+        if (topic === getTopic("read")) handleRead(data);
       } catch (_) {}
     });
   }
@@ -946,6 +1016,7 @@ function addToHistory(msg) {
   saveHistory(h);
 }
 function renderHistory() {
+  lastDateLabel = null;
   const h = getHistory().filter((m) => m.ts > clearEpoch);
   h.sort((a, b) => a.ts - b.ts);
   h.forEach((m) => renderMsg(m, false));
@@ -965,7 +1036,19 @@ function handleMsg(msg) {
   if (seenIds.has(dk)) return;
   seenIds.add(dk);
   renderMsg(msg, true);
-  if (msg.type === "user" || msg.type === "voice") addToHistory(msg);
+  if (msg.type === "user" || msg.type === "voice") {
+    addToHistory(msg);
+    // Play sound and send read receipt for others' messages
+    if (msg.name !== userName) {
+      playMsgSound();
+      // Send read receipt
+      publish(getTopic("read"), {
+        msg_id: getMessageId(msg),
+        user_key: userKey,
+        room_id: currentRoom.room_id,
+      });
+    }
+  }
 }
 
 function getMessageId(msg) {
@@ -1025,6 +1108,8 @@ function updateMessageReactions(msgId) {
 function renderMsg(msg, animate) {
   const msgId = getMessageId(msg);
 
+  maybeInsertDateSeparator(msg.ts);
+
   if (msg.type === "system") {
     const el = document.createElement("div");
     el.className = "sys";
@@ -1048,24 +1133,17 @@ function renderMsg(msg, animate) {
 
     const voiceEl = document.createElement("div");
     voiceEl.className = "voice-msg";
-    voiceEl.innerHTML = `<button class="voice-play">▶️</button>
-      <div class="voice-wave"></div>
-      <span class="voice-duration">Voice</span>`;
+    voiceEl.innerHTML = `<button class="voice-play">&#9654;</button><div class="voice-wave"></div><span class="voice-duration">Voice</span>`;
     const audio = new Audio(msg.audio);
-    voiceEl.querySelector(".voice-play").addEventListener("click", () => {
-      audio.play();
-    });
+    voiceEl.querySelector(".voice-play").addEventListener("click", () => { audio.play(); });
     row.appendChild(voiceEl);
 
-    if (isMe) {
-      row.appendChild(createDeleteButton(msgId));
-    }
+    if (isMe) row.appendChild(createDeleteButton(msgId));
 
     const ts = document.createElement("div");
     ts.className = "ts";
     ts.textContent = fmtTime(msg.ts);
     row.appendChild(ts);
-
     msgsEl.appendChild(row);
   } else {
     const isMe = msg.name === userName;
@@ -1083,6 +1161,19 @@ function renderMsg(msg, animate) {
       row.appendChild(who);
     }
 
+    // Reply quote
+    if (msg.reply_to) {
+      const q = document.createElement("div");
+      q.className = "reply-quote";
+      q.innerHTML = `<span class="reply-quote-name">${esc(msg.reply_to.name)}</span><span class="reply-quote-text">${esc(msg.reply_to.text)}</span>`;
+      q.addEventListener("click", (e) => {
+        e.stopPropagation();
+        const target = document.querySelector(`[data-msg-id="${CSS.escape(msg.reply_to.id)}"]`);
+        if (target) { target.scrollIntoView({ behavior: "smooth", block: "center" }); target.classList.add("highlight"); setTimeout(() => target.classList.remove("highlight"), 1200); }
+      });
+      row.appendChild(q);
+    }
+
     const bubble = document.createElement("div");
     bubble.className = "bubble";
     bubble.textContent = msg.text;
@@ -1098,9 +1189,17 @@ function renderMsg(msg, animate) {
       bubble.classList.add("mentioned");
     }
 
-    if (isMe) {
-      row.appendChild(createDeleteButton(msgId));
-    }
+    // Context menu (long-press mobile / right-click desktop)
+    const showCtx = (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      showMsgContextMenu(row, msg, msgId, isMe);
+    };
+    row.addEventListener("contextmenu", showCtx);
+    let pressTimer;
+    row.addEventListener("touchstart", () => { pressTimer = setTimeout(() => showCtx({ preventDefault(){}, stopPropagation(){} }), 500); }, { passive: true });
+    row.addEventListener("touchend", () => clearTimeout(pressTimer));
+    row.addEventListener("touchmove", () => clearTimeout(pressTimer));
 
     row.addEventListener("click", () => {
       if (selectedMsgId === msgId) {
@@ -1116,14 +1215,22 @@ function renderMsg(msg, animate) {
 
     updateMessageReactions(msgId);
 
+    // Timestamp + read receipt
     const ts = document.createElement("div");
     ts.className = "ts";
-    ts.textContent = fmtTime(msg.ts);
+    const readers = readMap.get(msgId);
+    const readCount = readers ? readers.size : 0;
+    const tick = isMe ? (readCount > 0 ? " ✓✓" : " ✓") : "";
+    ts.textContent = fmtTime(msg.ts) + tick;
+    if (isMe && readCount > 0) ts.classList.add("ts-read");
     row.appendChild(ts);
 
     msgsEl.appendChild(row);
   }
-  msgsEl.scrollTop = msgsEl.scrollHeight;
+
+  const distFromBottom = msgsEl.scrollHeight - msgsEl.scrollTop - msgsEl.clientHeight;
+  if (animate && distFromBottom < 200) msgsEl.scrollTop = msgsEl.scrollHeight;
+  updateScrollBtn();
 }
 
 function escapeRegex(value) {
@@ -1182,6 +1289,50 @@ function removeFromHistory(msgId) {
   saveHistory(history);
 }
 
+// ── Context menu ──────────────────────────────────────────────────────────────
+function showMsgContextMenu(row, msg, msgId, isMe) {
+  document.getElementById("msg-ctx-menu")?.remove();
+  const menu = document.createElement("div");
+  menu.id = "msg-ctx-menu";
+  menu.className = "ctx-menu";
+
+  const items = [
+    { label: "Reply", action: () => setReply(msg) },
+    { label: "Copy", action: () => navigator.clipboard?.writeText(msg.text || "").catch(() => {}) },
+  ];
+  if (isMe) items.push({ label: "Delete", action: () => deleteMessage(msgId), danger: true });
+
+  items.forEach(({ label, action, danger }) => {
+    const btn = document.createElement("button");
+    btn.className = "ctx-item" + (danger ? " ctx-danger" : "");
+    btn.textContent = label;
+    btn.addEventListener("click", () => { menu.remove(); action(); });
+    menu.appendChild(btn);
+  });
+
+  const rect = row.getBoundingClientRect();
+  menu.style.top = (rect.bottom + window.scrollY + 4) + "px";
+  menu.style.left = Math.min(rect.left, window.innerWidth - 160) + "px";
+  document.body.appendChild(menu);
+  setTimeout(() => document.addEventListener("click", () => menu.remove(), { once: true }), 10);
+}
+
+// ── Read receipts ─────────────────────────────────────────────────────────────
+function handleRead(data) {
+  if (!data || data.room_id !== currentRoom?.room_id) return;
+  if (!readMap.has(data.msg_id)) readMap.set(data.msg_id, new Set());
+  readMap.get(data.msg_id).add(data.user_key);
+  // Update tick on the message
+  const row = document.querySelector(`[data-msg-id="${CSS.escape(data.msg_id)}"]`);
+  if (!row) return;
+  const ts = row.querySelector(".ts");
+  if (!ts) return;
+  const readers = readMap.get(data.msg_id);
+  const timeStr = ts.textContent.replace(/ ✓✓?$/, "");
+  ts.textContent = timeStr + (readers.size > 0 ? " ✓✓" : " ✓");
+  ts.classList.add("ts-read");
+}
+
 // ── Send ──────────────────────────────────────────────────────────────────────
 msgForm.addEventListener("submit", (e) => {
   e.preventDefault();
@@ -1197,6 +1348,7 @@ msgForm.addEventListener("submit", (e) => {
     text,
     ts: nowMs(),
   };
+  if (replyTo) { msg.reply_to = { ...replyTo }; clearReply(); }
   const dk = String(msg.ts) + "|" + msg.name + "|" + msg.text;
   seenIds.add(dk);
   publish(getTopic("msg"), msg);
@@ -1291,6 +1443,20 @@ statusForm.addEventListener("submit", (e) => {
 });
 
 voiceBtn.addEventListener("click", toggleVoiceRecording);
+
+if (replyBarClose) replyBarClose.addEventListener("click", clearReply);
+
+if (scrollBottomBtn) scrollBottomBtn.addEventListener("click", () => {
+  msgsEl.scrollTop = msgsEl.scrollHeight;
+});
+
+if (msgsEl) msgsEl.addEventListener("scroll", updateScrollBtn);
+
+if (soundToggleBtn) soundToggleBtn.addEventListener("click", () => {
+  soundEnabled = !soundEnabled;
+  soundToggleBtn.title = soundEnabled ? "Sound ON" : "Sound OFF";
+  soundToggleBtn.style.opacity = soundEnabled ? "1" : "0.4";
+});
 
 function handleClear(data) {
   if (!data || !data.epoch || data.epoch <= clearEpoch) return;
@@ -1586,6 +1752,8 @@ function applyClear(epoch, by) {
   setStoredEpoch(epoch);
   saveHistory([]);
   seenIds.clear();
+  readMap.clear();
+  lastDateLabel = null;
   msgsEl.innerHTML = "";
   const el = document.createElement("div");
   el.className = "sys";

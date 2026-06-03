@@ -1,4 +1,4 @@
-<!doctype html>
+﻿<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -170,6 +170,7 @@
                 <line x1="21" y1="12" x2="9" y2="12" />
               </svg>
             </button>
+            <button id="sound-toggle-btn" class="icon-btn" type="button" aria-label="Toggle sound" title="Sound ON"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg></button>
             <button id="theme-btn" class="icon-btn" type="button" aria-label="Change theme">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
                 <circle cx="12" cy="12" r="3" />
@@ -181,9 +182,11 @@
 
         <section id="message-section" class="chat-section">
           <div id="messages" role="log" aria-live="polite" aria-label="Messages"></div>
+          <button id="scroll-bottom-btn" class="hidden" aria-label="Scroll to bottom"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></button>
         </section>
 
         <section id="compose-section" class="chat-section">
+          <div id="reply-bar" class="hidden"><div class="reply-bar-inner"><div class="reply-bar-accent"></div><div class="reply-bar-content"><span id="reply-bar-name"></span><span id="reply-bar-text"></span></div><button id="reply-bar-close" aria-label="Cancel reply">&times;</button></div></div>
           <div id="typing-bar" aria-live="polite">
             <div class="t-dots hidden" aria-hidden="true">
               <span></span><span></span><span></span>
