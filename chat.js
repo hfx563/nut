@@ -12,6 +12,8 @@ const ROOM_TOPIC_SUFFIX = {
   call: "call",
   delete: "delete",
   read: "read",
+  histreq: "hist-req",
+  histsync: "hist-sync",
 };
 const LS_ROOMS = "Nut_rooms_v1";
 const LS_HIST_BASE = "Nut_history_v1_";
@@ -721,6 +723,7 @@ function doLeave() {
   msgsEl.innerHTML = "";
   nameInp.value = "";
   seenIds.clear();
+  histSyncSent = false;
 }
 
 // ── MQTT ──────────────────────────────────────────────────────────────────────
@@ -854,6 +857,8 @@ function connectMQTT() {
           getTopic("poll"),
           getTopic("reaction"),
           getTopic("read"),
+          getTopic("hist-req"),
+          getTopic("hist-sync"),
         ],
         async (err) => {
           if (!err) {
@@ -881,6 +886,14 @@ function connectMQTT() {
                 doLeave();
                 return;
               }
+            }
+
+            // If new user has no local history, request it from existing users
+            if (getHistory().length === 0) {
+              publish(getTopic("hist-req"), {
+                from: userKey,
+                room_id: currentRoom.room_id,
+              });
             }
 
             publish(getTopic("msg"), {
@@ -952,6 +965,8 @@ function connectMQTT() {
         if (topic === getTopic("poll")) handlePoll(data);
         if (topic === getTopic("reaction")) handleReaction(data);
         if (topic === getTopic("read")) handleRead(data);
+        if (topic === getTopic("hist-req")) handleHistReq(data);
+        if (topic === getTopic("hist-sync")) handleHistSync(data);
       } catch (_) {}
     });
   }
@@ -1745,6 +1760,54 @@ function handleRoomClose(data) {
     msgsEl.appendChild(el);
     leaveRoomAfterClose();
   }
+}
+
+// ── History sync ────────────────────────────────────────────────────────────
+let histSyncSent = false;
+
+function handleHistReq(data) {
+  // Only respond once per session to avoid flooding, and only if we have history
+  if (!data || data.room_id !== currentRoom?.room_id) return;
+  if (data.from === userKey) return; // don't respond to our own request
+  if (histSyncSent) return;
+  const h = getHistory().filter((m) => m.ts > clearEpoch);
+  if (h.length === 0) return;
+  histSyncSent = true;
+  // Send in chunks of 30 to stay under MQTT payload limits
+  const CHUNK = 30;
+  for (let i = 0; i < h.length; i += CHUNK) {
+    const chunk = h.slice(i, i + CHUNK);
+    publish(getTopic("hist-sync"), {
+      room_id: currentRoom.room_id,
+      epoch: clearEpoch,
+      msgs: chunk,
+    });
+  }
+  // Reset after 5s so we can respond to future requests
+  setTimeout(() => { histSyncSent = false; }, 5000);
+}
+
+function handleHistSync(data) {
+  if (!data || data.room_id !== currentRoom?.room_id) return;
+  if (!Array.isArray(data.msgs) || data.msgs.length === 0) return;
+  // Only apply if we still have no history (first sync wins)
+  if (getHistory().length > 0) return;
+  // Apply the clear epoch from the sender so we respect clears
+  if (data.epoch && data.epoch > clearEpoch) {
+    clearEpoch = data.epoch;
+    setStoredEpoch(clearEpoch);
+  }
+  const valid = data.msgs.filter(
+    (m) => m && m.ts && m.ts > clearEpoch && (m.type === "user" || m.type === "voice")
+  );
+  if (valid.length === 0) return;
+  valid.forEach((m) => addToHistory(m));
+  // Re-render everything cleanly
+  msgsEl.innerHTML = "";
+  lastDateLabel = null;
+  seenIds.clear();
+  renderHistory();
+  msgsEl.scrollTop = msgsEl.scrollHeight;
 }
 
 function applyClear(epoch, by) {
