@@ -427,3 +427,924 @@
   display:       block;
   height:        16px;
 }
+
+/* ============================================================
+   Windows 98 Theme — Phase 3: Existing Component Overrides
+   Applies Win98 styling to all existing app selectors.
+   All rules scoped to [data-theme="win98"].
+   ============================================================ */
+
+/* ── Body / background ────────────────────────────────────── */
+[data-theme="win98"] body {
+  background: var(--win98-desktop-bg) !important;
+  background-attachment: fixed !important;
+}
+
+/* ── Login screen ─────────────────────────────────────────── */
+[data-theme="win98"] #join-screen {
+  background: transparent;
+}
+
+[data-theme="win98"] .login-card {
+  background:      var(--win98-gray);
+  border-top:      2px solid var(--win98-light-shadow);
+  border-left:     2px solid var(--win98-light-shadow);
+  border-bottom:   2px solid var(--win98-border-dark);
+  border-right:    2px solid var(--win98-border-dark);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  padding:         16px;
+  max-width:       320px;
+}
+
+[data-theme="win98"] .brand-name {
+  font-size:   14px;
+  font-weight: bold;
+  color:       var(--win98-text);
+}
+
+[data-theme="win98"] .login-sub {
+  font-size: 11px;
+  color:     var(--win98-text-muted);
+}
+
+/* Inputs on login */
+[data-theme="win98"] .input-wrap input {
+  background:    var(--win98-input-bg);
+  color:         var(--win98-text);
+  font-family:   "MS Sans Serif", "Microsoft Sans Serif", Tahoma, Arial, sans-serif;
+  font-size:     11px;
+  padding:       3px 4px 3px 28px;
+  border-top:    2px solid var(--win98-border-dark);
+  border-left:   2px solid var(--win98-border-dark);
+  border-bottom: 2px solid var(--win98-light-shadow);
+  border-right:  2px solid var(--win98-light-shadow);
+  transition:    none;
+}
+[data-theme="win98"] .input-wrap input:focus {
+  outline:        2px solid var(--win98-blue);
+  outline-offset: -2px;
+  background:     var(--win98-input-bg);
+  border-color:   inherit;
+  box-shadow:     none;
+}
+[data-theme="win98"] .input-wrap input::placeholder {
+  color: var(--win98-gray-dark);
+}
+[data-theme="win98"] .input-icon {
+  color: var(--win98-text-muted);
+}
+[data-theme="win98"] .input-wrap:focus-within .input-icon {
+  color: var(--win98-text-muted);
+}
+
+/* Login buttons */
+[data-theme="win98"] .login-btn {
+  background:    var(--win98-gray);
+  color:         var(--win98-text);
+  font-family:   "MS Sans Serif", "Microsoft Sans Serif", Tahoma, Arial, sans-serif;
+  font-size:     11px;
+  font-weight:   normal;
+  min-height:    23px;
+  padding:       3px 12px;
+  border-top:    2px solid var(--win98-light-shadow);
+  border-left:   2px solid var(--win98-light-shadow);
+  border-bottom: 2px solid var(--win98-border-dark);
+  border-right:  2px solid var(--win98-border-dark);
+  transition:    none;
+  letter-spacing: 0;
+  margin-top:    8px;
+}
+[data-theme="win98"] .login-btn:hover {
+  opacity:   1;
+  transform: none;
+}
+[data-theme="win98"] .login-btn:active {
+  border-top:    2px solid var(--win98-border-dark);
+  border-left:   2px solid var(--win98-border-dark);
+  border-bottom: 2px solid var(--win98-light-shadow);
+  border-right:  2px solid var(--win98-light-shadow);
+  transform:     none;
+  opacity:       1;
+  padding:       4px 11px 2px 13px;
+}
+[data-theme="win98"] .login-btn.ghost {
+  background:   var(--win98-gray);
+  color:        var(--win98-text);
+  border-color: inherit;
+}
+
+/* Admin panel */
+[data-theme="win98"] .admin-panel {
+  background:    var(--win98-gray);
+  border-top:    2px solid var(--win98-light-shadow);
+  border-left:   2px solid var(--win98-light-shadow);
+  border-bottom: 2px solid var(--win98-border-dark);
+  border-right:  2px solid var(--win98-border-dark);
+}
+
+/* Room cards */
+[data-theme="win98"] .room-card {
+  background:    var(--win98-gray);
+  border-top:    2px solid var(--win98-light-shadow);
+  border-left:   2px solid var(--win98-light-shadow);
+  border-bottom: 2px solid var(--win98-border-dark);
+  border-right:  2px solid var(--win98-border-dark);
+  transition:    none;
+}
+[data-theme="win98"] .room-card:hover {
+  background:    var(--win98-gray-light);
+  border-color:  inherit;
+  transform:     none;
+}
+[data-theme="win98"] .room-card-actions button {
+  background:    var(--win98-gray);
+  border-top:    1px solid var(--win98-light-shadow);
+  border-left:   1px solid var(--win98-light-shadow);
+  border-bottom: 1px solid var(--win98-border-dark);
+  border-right:  1px solid var(--win98-border-dark);
+  color:         var(--win98-text);
+  transition:    none;
+}
+[data-theme="win98"] .room-card-actions button:hover {
+  background:  var(--win98-gray-light);
+  transform:   none;
+}
+
+/* ── Chat header ──────────────────────────────────────────── */
+[data-theme="win98"] .chat-header {
+  background:      var(--win98-gray);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  border-bottom:   2px solid var(--win98-border-dark);
+  padding:         2px 4px;
+  min-height:      28px;
+}
+
+[data-theme="win98"] .ch-avatar {
+  background:   var(--win98-gray);
+  border:       1px solid var(--win98-border-dark);
+  color:        var(--win98-text);
+  border-radius: 0 !important;
+}
+
+[data-theme="win98"] .online-badge {
+  background:    var(--win98-gray);
+  border-top:    1px solid var(--win98-border-dark);
+  border-left:   1px solid var(--win98-border-dark);
+  border-bottom: 1px solid var(--win98-light-shadow);
+  border-right:  1px solid var(--win98-light-shadow);
+  border-radius: 0 !important;
+  font-size:     11px;
+  padding:       2px 6px;
+}
+
+/* Icon buttons */
+[data-theme="win98"] .icon-btn {
+  background:    var(--win98-gray);
+  border-top:    2px solid var(--win98-light-shadow);
+  border-left:   2px solid var(--win98-light-shadow);
+  border-bottom: 2px solid var(--win98-border-dark);
+  border-right:  2px solid var(--win98-border-dark);
+  color:         var(--win98-text);
+  width:         22px;
+  height:        22px;
+  transition:    none;
+}
+[data-theme="win98"] .icon-btn:active {
+  border-top:    2px solid var(--win98-border-dark);
+  border-left:   2px solid var(--win98-border-dark);
+  border-bottom: 2px solid var(--win98-light-shadow);
+  border-right:  2px solid var(--win98-light-shadow);
+  transform:     none;
+}
+[data-theme="win98"] .icon-btn.green,
+[data-theme="win98"] .icon-btn.cyan,
+[data-theme="win98"] .icon-btn.red {
+  background:   var(--win98-gray);
+  border-color: inherit;
+  color:        var(--win98-text);
+}
+@media (hover: hover) {
+  [data-theme="win98"] .icon-btn:hover,
+  [data-theme="win98"] .icon-btn.green:hover,
+  [data-theme="win98"] .icon-btn.cyan:hover,
+  [data-theme="win98"] .icon-btn.red:hover {
+    background:  var(--win98-gray-light);
+    color:       var(--win98-text);
+    border-color: inherit;
+    box-shadow:  none;
+    transform:   none;
+  }
+}
+[data-theme="win98"] .icon-sep {
+  background: var(--win98-gray-dark);
+}
+
+/* ── Messages area ────────────────────────────────────────── */
+[data-theme="win98"] #messages {
+  background: var(--win98-input-bg);
+  border-top:    2px solid var(--win98-border-dark);
+  border-left:   2px solid var(--win98-border-dark);
+  border-bottom: 2px solid var(--win98-light-shadow);
+  border-right:  2px solid var(--win98-light-shadow);
+  padding:       8px;
+}
+
+[data-theme="win98"] .me .bubble {
+  background:    var(--win98-select-bg);
+  color:         var(--win98-select-text);
+  border-radius: 0 !important;
+}
+[data-theme="win98"] .them .bubble {
+  background:    var(--win98-gray);
+  color:         var(--win98-text);
+  border:        1px solid var(--win98-border-dark);
+  box-shadow:    none;
+  border-radius: 0 !important;
+}
+[data-theme="win98"] .bubble {
+  font-family: "MS Sans Serif", "Microsoft Sans Serif", Tahoma, Arial, sans-serif;
+  font-size:   11px;
+  padding:     4px 8px;
+}
+[data-theme="win98"] .who {
+  font-size:      11px;
+  color:          var(--win98-text-muted);
+  text-transform: none;
+  letter-spacing: 0;
+}
+[data-theme="win98"] .ts {
+  font-size: 10px;
+  color:     var(--win98-text-muted);
+}
+[data-theme="win98"] .sys {
+  background:    var(--win98-gray);
+  border:        1px solid var(--win98-border-dark);
+  border-radius: 0 !important;
+  color:         var(--win98-text-muted);
+  font-size:     11px;
+}
+[data-theme="win98"] .date-sep {
+  background:    var(--win98-gray);
+  border:        1px solid var(--win98-border-dark);
+  border-radius: 0 !important;
+  color:         var(--win98-text-muted);
+  font-size:     11px;
+}
+
+[data-theme="win98"] .row.pop {
+  animation: none;
+}
+[data-theme="win98"] .row.highlight {
+  animation: none;
+  background: rgba(0, 0, 128, 0.12);
+}
+
+/* Scroll-to-bottom button */
+[data-theme="win98"] #scroll-bottom-btn {
+  background:    var(--win98-gray);
+  border-top:    2px solid var(--win98-light-shadow);
+  border-left:   2px solid var(--win98-light-shadow);
+  border-bottom: 2px solid var(--win98-border-dark);
+  border-right:  2px solid var(--win98-border-dark);
+  border-radius: 0 !important;
+  color:         var(--win98-text);
+  box-shadow:    none;
+  transition:    none;
+}
+[data-theme="win98"] #scroll-bottom-btn:hover {
+  background:  var(--win98-gray-light);
+  color:       var(--win98-text);
+  transform:   none;
+}
+
+/* ── Compose area ─────────────────────────────────────────── */
+[data-theme="win98"] #compose-section {
+  background:      var(--win98-gray);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  border-top:      2px solid var(--win98-border-dark);
+}
+
+[data-theme="win98"] .compose-inner {
+  background:    var(--win98-input-bg);
+  border-top:    2px solid var(--win98-border-dark);
+  border-left:   2px solid var(--win98-border-dark);
+  border-bottom: 2px solid var(--win98-light-shadow);
+  border-right:  2px solid var(--win98-light-shadow);
+  border-radius: 0 !important;
+  transition:    none;
+}
+[data-theme="win98"] .compose-inner:focus-within {
+  border-color: inherit;
+  box-shadow:   none;
+}
+
+[data-theme="win98"] #msg-input {
+  font-family: "MS Sans Serif", "Microsoft Sans Serif", Tahoma, Arial, sans-serif;
+  font-size:   11px;
+  color:       var(--win98-text);
+  min-height:  22px;
+  background:  transparent;
+}
+[data-theme="win98"] #msg-input::placeholder {
+  color: var(--win98-gray-dark);
+}
+
+[data-theme="win98"] #send-btn {
+  background:    var(--win98-gray);
+  border-top:    2px solid var(--win98-light-shadow);
+  border-left:   2px solid var(--win98-light-shadow);
+  border-bottom: 2px solid var(--win98-border-dark);
+  border-right:  2px solid var(--win98-border-dark);
+  border-radius: 0 !important;
+  color:         var(--win98-text);
+  width:         28px;
+  height:        28px;
+  transition:    none;
+}
+[data-theme="win98"] #send-btn:hover  { transform: none; }
+[data-theme="win98"] #send-btn:active {
+  border-top:    2px solid var(--win98-border-dark);
+  border-left:   2px solid var(--win98-border-dark);
+  border-bottom: 2px solid var(--win98-light-shadow);
+  border-right:  2px solid var(--win98-light-shadow);
+  transform:     none;
+  opacity:       1;
+}
+
+[data-theme="win98"] #poll-btn,
+[data-theme="win98"] #voice-btn {
+  color:         var(--win98-text);
+  border-radius: 0 !important;
+  transition:    none;
+}
+[data-theme="win98"] #poll-btn:hover,
+[data-theme="win98"] #voice-btn:hover {
+  background: var(--win98-gray-light);
+  color:      var(--win98-text);
+}
+
+/* Typing bar */
+[data-theme="win98"] #typing-bar {
+  background: var(--win98-gray);
+}
+[data-theme="win98"] #typing-text {
+  font-size:  11px;
+  color:      var(--win98-text-muted);
+  font-style: normal;
+}
+[data-theme="win98"] .t-dots span {
+  background: var(--win98-blue);
+  animation:  none;
+}
+
+/* Reply bar */
+[data-theme="win98"] #reply-bar {
+  background:  var(--win98-gray);
+  border-top:  1px solid var(--win98-border-dark);
+}
+[data-theme="win98"] .reply-bar-accent {
+  background: var(--win98-blue);
+}
+[data-theme="win98"] #reply-bar-name {
+  color: var(--win98-blue);
+}
+[data-theme="win98"] #reply-bar-text {
+  color: var(--win98-text-muted);
+}
+[data-theme="win98"] #reply-bar-close {
+  color: var(--win98-text);
+}
+
+/* ── Context menu ─────────────────────────────────────────── */
+[data-theme="win98"] .ctx-menu {
+  background:      var(--win98-gray);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  border-top:      2px solid var(--win98-light-shadow);
+  border-left:     2px solid var(--win98-light-shadow);
+  border-bottom:   2px solid var(--win98-border-dark);
+  border-right:    2px solid var(--win98-border-dark);
+  border-radius:   0 !important;
+  box-shadow:      none;
+  animation:       none;
+  padding:         2px;
+}
+[data-theme="win98"] .ctx-item {
+  font-family:   "MS Sans Serif", "Microsoft Sans Serif", Tahoma, Arial, sans-serif;
+  font-size:     11px;
+  color:         var(--win98-text);
+  border-radius: 0 !important;
+  padding:       3px 20px 3px 6px;
+}
+[data-theme="win98"] .ctx-item:hover {
+  background: var(--win98-select-bg);
+  color:      var(--win98-select-text);
+}
+[data-theme="win98"] .ctx-danger {
+  color: var(--win98-red);
+}
+[data-theme="win98"] .ctx-danger:hover {
+  background: var(--win98-select-bg);
+  color:      var(--win98-select-text);
+}
+
+/* ── Reactions / polls / voice ────────────────────────────── */
+[data-theme="win98"] .reaction-btn,
+[data-theme="win98"] .reaction-emoji {
+  background:    var(--win98-gray);
+  border:        1px solid var(--win98-border-dark);
+  border-radius: 0 !important;
+  color:         var(--win98-text);
+  transition:    none;
+}
+[data-theme="win98"] .reaction-btn:hover {
+  background:   var(--win98-gray-light);
+  border-color: var(--win98-border-dark);
+}
+[data-theme="win98"] .reaction-btn.reacted {
+  background:   var(--win98-select-bg);
+  border-color: var(--win98-border-dark);
+  color:        var(--win98-select-text);
+}
+
+[data-theme="win98"] .poll-container {
+  background:    var(--win98-gray);
+  border:        1px solid var(--win98-border-dark);
+  border-radius: 0 !important;
+}
+[data-theme="win98"] .poll-option {
+  border:        1px solid var(--win98-border-dark);
+  border-radius: 0 !important;
+  transition:    none;
+}
+[data-theme="win98"] .poll-option:hover {
+  background: var(--win98-gray-light);
+}
+[data-theme="win98"] .poll-option.voted {
+  background: var(--win98-select-bg);
+  color:      var(--win98-select-text);
+}
+[data-theme="win98"] .poll-fill {
+  background: var(--win98-blue);
+}
+
+[data-theme="win98"] .voice-msg {
+  background:    var(--win98-gray);
+  border:        1px solid var(--win98-border-dark);
+  border-radius: 0 !important;
+}
+[data-theme="win98"] .voice-play {
+  color: var(--win98-blue);
+}
+
+/* ============================================================
+   Windows 98 Theme — Phase 4: Modals, Call Card, Responsive
+   ============================================================ */
+
+/* ── Modal overlay ────────────────────────────────────────── */
+[data-theme="win98"] .modal-overlay {
+  background:      rgba(0, 0, 0, 0.5);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+
+/* ── Modal box (shared) ───────────────────────────────────── */
+[data-theme="win98"] .modal-box {
+  background:      var(--win98-gray);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  border-top:      2px solid var(--win98-light-shadow);
+  border-left:     2px solid var(--win98-light-shadow);
+  border-bottom:   2px solid var(--win98-border-dark);
+  border-right:    2px solid var(--win98-border-dark);
+  border-radius:   0 !important;
+  padding:         0;
+  animation:       none;
+  text-align:      left;
+}
+
+/* Win98-style title bar inside modal */
+[data-theme="win98"] .modal-box h3 {
+  background:  linear-gradient(to right, var(--win98-titlebar-bg), #1084d0);
+  color:       var(--win98-titlebar-text);
+  font-family: "MS Sans Serif", "Microsoft Sans Serif", Tahoma, Arial, sans-serif;
+  font-size:   11px;
+  font-weight: bold;
+  padding:     3px 6px;
+  margin:      0;
+  letter-spacing: 0;
+  user-select: none;
+}
+
+[data-theme="win98"] .modal-box p {
+  font-family: "MS Sans Serif", "Microsoft Sans Serif", Tahoma, Arial, sans-serif;
+  font-size:   11px;
+  color:       var(--win98-text);
+  padding:     12px 12px 8px;
+  margin:      0;
+  line-height: 1.5;
+}
+
+/* Modal content area padding */
+[data-theme="win98"] .theme-options,
+[data-theme="win98"] .custom-theme-settings,
+[data-theme="win98"] #poll-form,
+[data-theme="win98"] #status-form {
+  padding: 8px 12px;
+}
+
+[data-theme="win98"] .modal-actions {
+  padding:    8px 12px 10px;
+  gap:        8px;
+  border-top: 1px solid var(--win98-gray-dark);
+}
+
+/* ── Modal buttons (.mbtn) ────────────────────────────────── */
+[data-theme="win98"] .mbtn {
+  background:    var(--win98-gray);
+  color:         var(--win98-text);
+  font-family:   "MS Sans Serif", "Microsoft Sans Serif", Tahoma, Arial, sans-serif;
+  font-size:     11px;
+  font-weight:   normal;
+  min-height:    23px;
+  padding:       3px 12px;
+  border-top:    2px solid var(--win98-light-shadow);
+  border-left:   2px solid var(--win98-light-shadow);
+  border-bottom: 2px solid var(--win98-border-dark);
+  border-right:  2px solid var(--win98-border-dark);
+  border-radius: 0 !important;
+  transition:    none;
+  box-shadow:    none;
+}
+[data-theme="win98"] .mbtn:active {
+  border-top:    2px solid var(--win98-border-dark);
+  border-left:   2px solid var(--win98-border-dark);
+  border-bottom: 2px solid var(--win98-light-shadow);
+  border-right:  2px solid var(--win98-light-shadow);
+  padding:       4px 11px 2px 13px;
+  transform:     none;
+}
+[data-theme="win98"] .mbtn-ghost {
+  background:   var(--win98-gray);
+  color:        var(--win98-text);
+  border-color: inherit;
+}
+[data-theme="win98"] .mbtn-ghost:hover {
+  background: var(--win98-gray-light);
+  color:      var(--win98-text);
+}
+[data-theme="win98"] .mbtn-red {
+  background: var(--win98-gray);
+  color:      var(--win98-red);
+  box-shadow: none;
+}
+[data-theme="win98"] .mbtn-red:hover { opacity: 1; }
+[data-theme="win98"] .mbtn-primary {
+  background: var(--win98-gray);
+  color:      var(--win98-blue);
+  box-shadow: none;
+}
+[data-theme="win98"] .mbtn-primary:hover { opacity: 1; }
+
+/* ── Theme modal options ──────────────────────────────────── */
+[data-theme="win98"] .theme-option {
+  background:    var(--win98-gray);
+  color:         var(--win98-text);
+  font-family:   "MS Sans Serif", "Microsoft Sans Serif", Tahoma, Arial, sans-serif;
+  font-size:     11px;
+  padding:       3px 12px;
+  min-height:    23px;
+  border-top:    2px solid var(--win98-light-shadow);
+  border-left:   2px solid var(--win98-light-shadow);
+  border-bottom: 2px solid var(--win98-border-dark);
+  border-right:  2px solid var(--win98-border-dark);
+  border-radius: 0 !important;
+  transition:    none;
+}
+[data-theme="win98"] .theme-option:hover {
+  background:   var(--win98-gray-light);
+  border-color: inherit;
+}
+
+/* ── Poll / status form inputs ────────────────────────────── */
+[data-theme="win98"] #poll-form input,
+[data-theme="win98"] #status-input {
+  background:    var(--win98-input-bg);
+  color:         var(--win98-text);
+  font-family:   "MS Sans Serif", "Microsoft Sans Serif", Tahoma, Arial, sans-serif;
+  font-size:     11px;
+  padding:       3px 4px;
+  border-top:    2px solid var(--win98-border-dark);
+  border-left:   2px solid var(--win98-border-dark);
+  border-bottom: 2px solid var(--win98-light-shadow);
+  border-right:  2px solid var(--win98-light-shadow);
+  border-radius: 0 !important;
+  margin-bottom: 6px;
+}
+[data-theme="win98"] #poll-form input:focus,
+[data-theme="win98"] #status-input:focus {
+  outline:        2px solid var(--win98-blue);
+  outline-offset: -2px;
+  border-color:   inherit;
+}
+
+/* Custom theme color rows */
+[data-theme="win98"] .custom-row label {
+  font-family: "MS Sans Serif", "Microsoft Sans Serif", Tahoma, Arial, sans-serif;
+  font-size:   11px;
+  color:       var(--win98-text);
+}
+
+/* ── Call card ────────────────────────────────────────────── */
+[data-theme="win98"] #call-card {
+  background:      var(--win98-gray);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  border-top:      2px solid var(--win98-light-shadow);
+  border-left:     2px solid var(--win98-light-shadow);
+  border-bottom:   2px solid var(--win98-border-dark);
+  border-right:    2px solid var(--win98-border-dark);
+  border-radius:   0 !important;
+  box-shadow:      none;
+  color:           var(--win98-text);
+  font-family:     "MS Sans Serif", "Microsoft Sans Serif", Tahoma, Arial, sans-serif;
+  animation:       none;
+  padding:         0;
+}
+
+/* Call card title bar */
+[data-theme="win98"] .cc-title {
+  display:     block;
+  background:  linear-gradient(to right, var(--win98-titlebar-bg), #1084d0);
+  color:       var(--win98-titlebar-text);
+  font-family: "MS Sans Serif", "Microsoft Sans Serif", Tahoma, Arial, sans-serif;
+  font-size:   11px;
+  font-weight: bold;
+  padding:     3px 6px;
+  margin:      0;
+}
+
+[data-theme="win98"] .cc-sub {
+  font-size:   11px;
+  color:       var(--win98-text);
+  font-weight: normal;
+  padding:     8px 12px 0;
+  margin:      0;
+  display:     block;
+}
+
+[data-theme="win98"] .cc-call-name {
+  font-size:   13px;
+  font-weight: bold;
+  color:       var(--win98-text);
+  padding:     8px 12px 0;
+}
+
+[data-theme="win98"] .cc-call-status {
+  font-size: 11px;
+  color:     var(--win98-text-muted);
+  padding:   2px 12px 8px;
+}
+
+[data-theme="win98"] .cc-duration {
+  font-size:   13px;
+  font-weight: bold;
+  color:       var(--win98-blue);
+  padding:     4px 12px;
+}
+
+/* Avatar */
+[data-theme="win98"] .cc-avatar {
+  background:    var(--win98-gray);
+  border:        2px solid var(--win98-border-dark);
+  border-radius: 0 !important;
+  color:         var(--win98-text);
+  font-size:     18px;
+  margin:        8px auto;
+}
+[data-theme="win98"] .cc-avatar-pulse {
+  animation: none;
+}
+
+/* Calling dots — static in Win98 */
+[data-theme="win98"] .cc-dots span {
+  background: var(--win98-blue);
+  animation:  none;
+}
+
+/* Type icons */
+[data-theme="win98"] .cc-type-icon {
+  background:    var(--win98-gray);
+  border:        1px solid var(--win98-border-dark);
+  border-radius: 0 !important;
+  color:         var(--win98-text);
+}
+[data-theme="win98"] .cc-icon-green,
+[data-theme="win98"] .cc-icon-cyan {
+  background:   var(--win98-gray);
+  border-color: var(--win98-border-dark);
+  color:        var(--win98-text);
+}
+
+/* User list in picker */
+[data-theme="win98"] .cc-user-list {
+  padding: 4px 8px;
+}
+[data-theme="win98"] .cc-user-btn {
+  background:    var(--win98-gray);
+  border-top:    2px solid var(--win98-light-shadow);
+  border-left:   2px solid var(--win98-light-shadow);
+  border-bottom: 2px solid var(--win98-border-dark);
+  border-right:  2px solid var(--win98-border-dark);
+  border-radius: 0 !important;
+  color:         var(--win98-text);
+  font-family:   "MS Sans Serif", "Microsoft Sans Serif", Tahoma, Arial, sans-serif;
+  font-size:     11px;
+  min-height:    28px;
+  transition:    none;
+}
+[data-theme="win98"] .cc-user-btn:hover {
+  background:   var(--win98-gray-light);
+  border-color: inherit;
+  transform:    none;
+}
+[data-theme="win98"] .cc-user-btn:active {
+  border-top:    2px solid var(--win98-border-dark);
+  border-left:   2px solid var(--win98-border-dark);
+  border-bottom: 2px solid var(--win98-light-shadow);
+  border-right:  2px solid var(--win98-light-shadow);
+  transform:     none;
+}
+[data-theme="win98"] .cc-user-av {
+  background:    var(--win98-gray);
+  border:        1px solid var(--win98-border-dark);
+  border-radius: 0 !important;
+  color:         var(--win98-text);
+  font-size:     11px;
+}
+[data-theme="win98"] .cc-user-dot {
+  background: var(--win98-green);
+  box-shadow: none;
+}
+
+/* Call card text input */
+[data-theme="win98"] .cc-input {
+  background:    var(--win98-input-bg);
+  color:         var(--win98-text);
+  font-family:   "MS Sans Serif", "Microsoft Sans Serif", Tahoma, Arial, sans-serif;
+  font-size:     11px;
+  padding:       3px 4px;
+  border-top:    2px solid var(--win98-border-dark);
+  border-left:   2px solid var(--win98-border-dark);
+  border-bottom: 2px solid var(--win98-light-shadow);
+  border-right:  2px solid var(--win98-light-shadow);
+  border-radius: 0 !important;
+  text-align:    left;
+  transition:    none;
+  margin:        4px 8px;
+  width:         calc(100% - 16px);
+}
+[data-theme="win98"] .cc-input:focus {
+  outline:        2px solid var(--win98-blue);
+  outline-offset: -2px;
+  border-color:   inherit;
+  box-shadow:     none;
+}
+[data-theme="win98"] .cc-input::placeholder {
+  color: var(--win98-gray-dark);
+}
+
+/* Call card buttons */
+[data-theme="win98"] .cc-btn {
+  background:    var(--win98-gray);
+  color:         var(--win98-text);
+  font-family:   "MS Sans Serif", "Microsoft Sans Serif", Tahoma, Arial, sans-serif;
+  font-size:     11px;
+  font-weight:   normal;
+  min-height:    23px;
+  padding:       3px 12px;
+  border-top:    2px solid var(--win98-light-shadow);
+  border-left:   2px solid var(--win98-light-shadow);
+  border-bottom: 2px solid var(--win98-border-dark);
+  border-right:  2px solid var(--win98-border-dark);
+  border-radius: 0 !important;
+  transition:    none;
+  box-shadow:    none;
+  margin:        2px 8px;
+  width:         calc(100% - 16px);
+}
+[data-theme="win98"] .cc-btn:active {
+  border-top:    2px solid var(--win98-border-dark);
+  border-left:   2px solid var(--win98-border-dark);
+  border-bottom: 2px solid var(--win98-light-shadow);
+  border-right:  2px solid var(--win98-light-shadow);
+  transform:     none;
+}
+[data-theme="win98"] .cc-btn-primary {
+  background: var(--win98-gray);
+  color:      var(--win98-blue);
+  box-shadow: none;
+}
+[data-theme="win98"] .cc-btn-primary:hover { opacity: 1; }
+[data-theme="win98"] .cc-btn-ghost {
+  background: var(--win98-gray);
+  color:      var(--win98-text);
+  box-shadow: none;
+}
+[data-theme="win98"] .cc-btn-ghost:hover {
+  background: var(--win98-gray-light);
+  color:      var(--win98-text);
+}
+
+/* Action buttons row (accept/decline/end/mute/cam) */
+[data-theme="win98"] .cc-btn-row {
+  padding: 8px 12px 10px;
+  gap:     12px;
+}
+[data-theme="win98"] .cc-action-btn {
+  width:         40px;
+  height:        40px;
+  border-radius: 0 !important;
+  background:    var(--win98-gray);
+  border-top:    2px solid var(--win98-light-shadow);
+  border-left:   2px solid var(--win98-light-shadow);
+  border-bottom: 2px solid var(--win98-border-dark);
+  border-right:  2px solid var(--win98-border-dark);
+  color:         var(--win98-text);
+  font-size:     14px;
+  transition:    none;
+  box-shadow:    none;
+}
+[data-theme="win98"] .cc-action-btn:hover { transform: none; }
+[data-theme="win98"] .cc-action-btn:active {
+  border-top:    2px solid var(--win98-border-dark);
+  border-left:   2px solid var(--win98-border-dark);
+  border-bottom: 2px solid var(--win98-light-shadow);
+  border-right:  2px solid var(--win98-light-shadow);
+  transform:     none;
+  opacity:       1;
+}
+[data-theme="win98"] .cc-action-accept {
+  background: var(--win98-gray);
+  color:      var(--win98-green);
+  box-shadow: none;
+}
+[data-theme="win98"] .cc-action-decline,
+[data-theme="win98"] .cc-action-end {
+  background: var(--win98-gray);
+  color:      var(--win98-red);
+  box-shadow: none;
+}
+[data-theme="win98"] .cc-action-mute,
+[data-theme="win98"] .cc-action-muted {
+  background:   var(--win98-gray);
+  color:        var(--win98-text);
+  border-color: inherit;
+}
+[data-theme="win98"] .cc-action-cam {
+  background:   var(--win98-gray);
+  color:        var(--win98-text);
+  border-color: inherit;
+}
+[data-theme="win98"] .cc-action-label {
+  font-size:   10px;
+  color:       var(--win98-text-muted);
+  font-family: "MS Sans Serif", "Microsoft Sans Serif", Tahoma, Arial, sans-serif;
+}
+
+/* Video wrap */
+[data-theme="win98"] .cc-video-wrap {
+  border:        2px solid var(--win98-border-dark);
+  border-radius: 0 !important;
+  margin:        4px 8px 8px;
+}
+[data-theme="win98"] .cc-video-local {
+  border:        2px solid var(--win98-border-dark);
+  border-radius: 0 !important;
+  box-shadow:    none;
+}
+
+/* ── Responsive adjustments ───────────────────────────────── */
+@media (max-width: 540px) {
+  [data-theme="win98"] .login-card {
+    padding: 0;
+    max-width: 100%;
+  }
+  [data-theme="win98"] .modal-box {
+    max-width: 100%;
+  }
+}
+
+@media (max-width: 400px) {
+  [data-theme="win98"] #call-card {
+    bottom: 60px;
+    padding: 0;
+  }
+  [data-theme="win98"] .cc-action-btn {
+    width:  34px;
+    height: 34px;
+  }
+}
