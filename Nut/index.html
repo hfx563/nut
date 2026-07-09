@@ -23,11 +23,28 @@
     <link rel="stylesheet" href="styles/style.css" />
   </head>
   <body>
-    <div class="mesh-bg" aria-hidden="true">
-      <div class="mesh-orb mesh-1"></div>
-      <div class="mesh-orb mesh-2"></div>
-      <div class="mesh-orb mesh-3"></div>
-    </div>
+    <svg class="mesh-bg" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <filter id="mb" x="-50%" y="-50%" width="200%" height="200%">
+          <feGaussianBlur stdDeviation="60"/>
+        </filter>
+        <radialGradient id="g1" cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stop-color="rgba(99,102,241,0.22)"/>
+          <stop offset="100%" stop-color="transparent"/>
+        </radialGradient>
+        <radialGradient id="g2" cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stop-color="rgba(34,211,238,0.14)"/>
+          <stop offset="100%" stop-color="transparent"/>
+        </radialGradient>
+        <radialGradient id="g3" cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stop-color="rgba(139,92,246,0.10)"/>
+          <stop offset="100%" stop-color="transparent"/>
+        </radialGradient>
+      </defs>
+      <circle cx="150" cy="100" r="300" fill="url(#g1)" filter="url(#mb)"/>
+      <circle cx="calc(100% - 100px)" cy="calc(100% - 100px)" r="250" fill="url(#g2)" filter="url(#mb)"/>
+      <circle cx="50%" cy="50%" r="200" fill="url(#g3)" filter="url(#mb)"/>
+    </svg>
 
     <main id="app-root">
       <!-- JOIN SCREEN -->
