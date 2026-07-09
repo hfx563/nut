@@ -1598,6 +1598,35 @@ body {
   margin-bottom: 16px;
 }
 
+/* Picker title + SVG icons inside call card */
+.cc-title {
+  font-size: 17px;
+  font-weight: 700;
+  color: #f8fafc;
+  letter-spacing: -0.02em;
+}
+.cc-action-btn svg {
+  width: 24px;
+  height: 24px;
+  display: block;
+}
+.cc-avatar svg {
+  width: 34px;
+  height: 34px;
+  display: block;
+}
+.cc-avatar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.cc-icon-green svg,
+.cc-icon-cyan svg {
+  width: 18px;
+  height: 18px;
+  display: block;
+}
+
 /* User list (picker) */
 .cc-user-list {
   display: flex;

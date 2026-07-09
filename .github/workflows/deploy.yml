@@ -25,15 +25,7 @@ jobs:
 
       - name: Prepare Nut app files
         run: |
-          mkdir -p _site
-          cp Nut/index.html _site/
-          cp Nut/chat.js _site/
-          cp Nut/call.js _site/
-          cp Nut/style.css _site/
-          cp Nut/manifest.json _site/
-          cp Nut/logo.png _site/
-          cp Nut/logo.svg _site/
-          cp Nut/logo.webp _site/
+          cp -r Nut/. _site
           touch _site/.nojekyll
 
       - uses: actions/configure-pages@v4

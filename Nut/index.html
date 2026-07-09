@@ -13,13 +13,14 @@
     <meta name="theme-color" content="#0F172A" />
     <meta name="format-detection" content="telephone=no" />
     <title>Nut</title>
-    <link rel="icon" type="image/png" href="logo.webp" />
-    <link rel="manifest" href="manifest.json" />
-    <link rel="apple-touch-icon" href="logo.webp" />
+    <link rel="icon" type="image/webp" href="assets/images/logo.webp" />
+    <link rel="manifest" href="assets/manifest.json" />
+    <link rel="apple-touch-icon" href="assets/images/logo.webp" />
+    <meta name="description" content="Nut — private, real-time chat rooms with end-to-end encryption, voice and video calls. No servers, no tracking." />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="styles/style.css" />
   </head>
   <body>
     <div class="mesh-bg" aria-hidden="true">
@@ -34,7 +35,7 @@
         <div class="login-card">
           <div class="brand">
             <div class="brand-icon">
-              <img src="logo.webp" width="48" height="48" alt="Nut" />
+              <img src="assets/images/logo.webp" width="48" height="48" alt="Nut" />
             </div>
             <span class="brand-name">Nut</span>
           </div>
@@ -340,7 +341,7 @@
     <!-- Scripts -->
     <script src="https://unpkg.com/peerjs@1.5.4/dist/peerjs.min.js" defer></script>
     <script src="https://unpkg.com/mqtt/dist/mqtt.min.js" defer></script>
-    <script src="chat.js" defer></script>
-    <script src="call.js" defer></script>
+    <script src="features/chat/chat.js" defer></script>
+    <script src="features/calls/call.js" defer></script>
   </body>
 </html>

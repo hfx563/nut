@@ -94,7 +94,7 @@ npx serve . --listen 0.0.0.0
 Nutroom
 ```
 
-**To change it** — generate a new SHA-256 hash and replace `CHAT_PASSWORD_HASH` in `chat.js`:
+**To change it** — generate a new SHA-256 hash and replace `ADMIN_PASSWORD_HASH` in `features/chat/chat.js`:
 
 ```bash
 node -e "const c=require('crypto'); console.log(c.createHash('sha256').update('YOUR_PASSWORD').digest('hex'))"
@@ -123,11 +123,19 @@ node -e "const c=require('crypto'); console.log(c.createHash('sha256').update('Y
 ## File Structure
 
 ```
-index.html     UI — join screen, chat, modals
-chat.js        MQTT messaging, presence, typing, history
-call.js        WebRTC voice & video via PeerJS
-style.css      Design system & all component styles
-README.md
+Nut/
+├── index.html              UI — join screen, chat, modals
+├── assets/
+│   ├── images/             Brand logo (png, svg, webp)
+│   └── manifest.json       PWA manifest (icon paths relative to this file)
+├── styles/
+│   └── style.css           Design system & all component styles
+├── features/
+│   ├── chat/               Real-time messaging feature
+│   │   └── chat.js         MQTT, presence, typing, history, polls, reactions, voice, themes, admin
+│   └── calls/              Voice & video calling feature
+│       └── call.js         WebRTC voice & video via PeerJS
+└── README.md
 ```
 
 ---

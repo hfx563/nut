@@ -1,5 +1,15 @@
 'use strict';
 
+// ── SVG icon set (clean, consistent iconography) ──────────────────────────────
+const ICON = {
+  phone:    '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.4 2 2 0 0 1 3.6 1.22h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.78a16 16 0 0 0 6.29 6.29l1.62-1.62a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>',
+  phoneOff: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M10.68 13.31a16 16 0 0 0 3.41 2.6l1.27-1.27a2 2 0 0 1 2.11-.45 19.79 19.79 0 0 0 3.34 1.49 2 2 0 0 1 1.61 1.94V20a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.42 19.42 0 0 1-3.33-2.67m-2.67-3.34a19.79 19.79 0 0 1-3.07-8.63A2 2 0 0 1 4.11 2h3.12a2 2 0 0 1 1.94 1.61 19.79 19.79 0 0 0 1.49 3.34 2 2 0 0 1-.45 2.11L8.09 9.91"/><line x1="23" y1="1" x2="1" y2="23"/></svg>',
+  check:    '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>',
+  mic:      '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>',
+  micOff:   '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="1" y1="1" x2="23" y2="23"/><path d="M9 9v3a3 3 0 0 0 5.12 2.12M15 9.34V4a3 3 0 0 0-5.94-.6"/><path d="M17 16.95A7 7 0 0 1 5 12v-2m14 0v2a7 7 0 0 1-.11 1.23"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>',
+  cam:      '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg>',
+};
+
 // ── PeerJS state ──────────────────────────────────────────────────────────────
 let peer         = null;
 let activeCall   = null;
@@ -160,7 +170,7 @@ function showCallCard(state) {
 
   // Avatar
   const av = el('div', 'cc-avatar cc-avatar-pulse');
-  av.textContent = state === 'ringing' ? '↙' : state === 'active' ? '◉' : '↗';
+  av.innerHTML = ICON.phone;
   card.appendChild(av);
 
   // Name
@@ -203,14 +213,14 @@ function showCallCard(state) {
   // Buttons
   const row = el('div', 'cc-btn-row');
   if (state === 'ringing') {
-    row.appendChild(callActionBtn('decline', '✕', 'Decline', declineCall));
-    row.appendChild(callActionBtn('accept',  '✓', 'Accept',  acceptCall));
+    row.appendChild(callActionBtn('decline', ICON.phoneOff, 'Decline', declineCall));
+    row.appendChild(callActionBtn('accept',  ICON.check,    'Accept',  acceptCall));
   } else {
     if (state === 'active') {
-      row.appendChild(callActionBtn('mute', '♪', 'Mute', toggleMute, 'call-mute-btn'));
-      if (isVideo) row.appendChild(callActionBtn('cam', '⬛', 'Camera', toggleCam, 'call-cam-btn'));
+      row.appendChild(callActionBtn('mute', ICON.mic, 'Mute', toggleMute, 'call-mute-btn'));
+      if (isVideo) row.appendChild(callActionBtn('cam', ICON.cam, 'Camera', toggleCam, 'call-cam-btn'));
     }
-    row.appendChild(callActionBtn('end', '✕', 'End', hangup));
+    row.appendChild(callActionBtn('end', ICON.phoneOff, 'End', hangup));
   }
   card.appendChild(row);
 
@@ -222,7 +232,7 @@ function showCallCard(state) {
 function callActionBtn(type, icon, label, fn, id) {
   const wrap = el('div', 'cc-action-wrap');
   const btn  = el('button', 'cc-action-btn cc-action-' + type);
-  btn.textContent = icon;
+  btn.innerHTML = icon;
   if (id) btn.id = id;
   btn.addEventListener('click', fn);
   const lbl = el('span', 'cc-action-label');
@@ -289,7 +299,7 @@ function toggleMute() {
   const t = localStream.getAudioTracks()[0]; if (!t) return;
   t.enabled = !t.enabled;
   const b = document.getElementById('call-mute-btn');
-  if (b) { b.textContent = t.enabled ? '♪' : '✕'; b.classList.toggle('cc-action-muted', !t.enabled); }
+  if (b) { b.innerHTML = t.enabled ? ICON.mic : ICON.micOff; b.classList.toggle('cc-action-muted', !t.enabled); }
 }
 
 function toggleCam() {
