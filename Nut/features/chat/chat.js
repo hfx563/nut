@@ -56,7 +56,11 @@ async function makeRoomId(roomName) {
 
 async function verifyAdminPassword(input) {
   const hash = await hashString(input);
-  return hash === ADMIN_PASSWORD_HASH;
+  // Constant-time comparison to prevent timing attacks
+  if (hash.length !== ADMIN_PASSWORD_HASH.length) return false;
+  let diff = 0;
+  for (let i = 0; i < hash.length; i++) diff |= hash.charCodeAt(i) ^ ADMIN_PASSWORD_HASH.charCodeAt(i);
+  return diff === 0;
 }
 
 function getSavedRooms() {
@@ -345,21 +349,34 @@ function renderAdminRooms() {
       userList.length > 0
         ? `<div class="room-users"><strong>Online (${onlineCount}):</strong> ${userList.join(", ")}</div>`
         : `<div class="room-users"><em>No users online</em></div>`;
-    item.innerHTML = `<div>
-        <strong>${esc(meta.room_name)}</strong>
-        <p>${esc(meta.created_by || "Unknown creator")}</p>
-        ${userListHtml}
-      </div>
-      <div class="room-card-actions">
-        <button type="button" class="room-card-join">Join</button>
-        <button type="button" class="room-card-close">Close</button>
-      </div>`;
-    item
-      .querySelector(".room-card-join")
-      .addEventListener("click", () => joinAdminRoom(meta));
-    item
-      .querySelector(".room-card-close")
-      .addEventListener("click", () => closeAdminRoom(meta));
+    const infoDiv = document.createElement("div");
+    const strong = document.createElement("strong");
+    strong.textContent = meta.room_name;
+    const p = document.createElement("p");
+    p.textContent = meta.created_by || "Unknown creator";
+    const usersDiv = document.createElement("div");
+    usersDiv.className = "room-users";
+    if (userList.length > 0) {
+      const b = document.createElement("strong");
+      b.textContent = `Online (${onlineCount}): `;
+      usersDiv.appendChild(b);
+      usersDiv.appendChild(document.createTextNode(userList.map(u => u.replace(/&amp;/g,"&").replace(/&lt;/g,"<").replace(/&gt;/g,">").replace(/&quot;/g,'"')).join(", ")));
+    } else {
+      const em = document.createElement("em");
+      em.textContent = "No users online";
+      usersDiv.appendChild(em);
+    }
+    infoDiv.appendChild(strong); infoDiv.appendChild(p); infoDiv.appendChild(usersDiv);
+    const actionsDiv = document.createElement("div");
+    actionsDiv.className = "room-card-actions";
+    const joinBtnEl = document.createElement("button");
+    joinBtnEl.type = "button"; joinBtnEl.className = "room-card-join"; joinBtnEl.textContent = "Join";
+    const closeBtnEl = document.createElement("button");
+    closeBtnEl.type = "button"; closeBtnEl.className = "room-card-close"; closeBtnEl.textContent = "Close";
+    actionsDiv.appendChild(joinBtnEl); actionsDiv.appendChild(closeBtnEl);
+    item.appendChild(infoDiv); item.appendChild(actionsDiv);
+    joinBtnEl.addEventListener("click", () => joinAdminRoom(meta));
+    closeBtnEl.addEventListener("click", () => closeAdminRoom(meta));
     adminRoomList.appendChild(item);
   });
 }
@@ -1180,7 +1197,9 @@ function renderMsg(msg, animate) {
     if (msg.reply_to) {
       const q = document.createElement("div");
       q.className = "reply-quote";
-      q.innerHTML = `<span class="reply-quote-name">${esc(msg.reply_to.name)}</span><span class="reply-quote-text">${esc(msg.reply_to.text)}</span>`;
+      const rqName = document.createElement("span"); rqName.className = "reply-quote-name"; rqName.textContent = msg.reply_to.name;
+      const rqText = document.createElement("span"); rqText.className = "reply-quote-text"; rqText.textContent = msg.reply_to.text;
+      q.appendChild(rqName); q.appendChild(rqText);
       q.addEventListener("click", (e) => {
         e.stopPropagation();
         const target = document.querySelector(`[data-msg-id="${CSS.escape(msg.reply_to.id)}"]`);
@@ -1592,9 +1611,12 @@ function renderPoll(poll) {
   const el = document.createElement("div");
   el.className = "poll-container";
   el.dataset.pollId = poll.id;
-  el.innerHTML = `<div class="poll-question">${esc(poll.question)}</div>
-    <div class="poll-options"></div>`;
-  const optsEl = el.querySelector(".poll-options");
+  const pq = document.createElement("div");
+  pq.className = "poll-question"; pq.textContent = poll.question;
+  const po = document.createElement("div");
+  po.className = "poll-options";
+  el.appendChild(pq); el.appendChild(po);
+  const optsEl = po;
 
   poll.options.forEach((opt, idx) => {
     const votes = Object.values(poll.votes).filter((v) => v === idx).length;
@@ -1604,9 +1626,12 @@ function renderPoll(poll) {
 
     const optEl = document.createElement("div");
     optEl.className = `poll-option ${voted ? "voted" : ""}`;
-    optEl.innerHTML = `<span>${esc(opt)}</span>
-      <div class="poll-bar"><div class="poll-fill" style="width: ${percent}%"></div></div>
-      <span>${votes}</span>`;
+    const optSpan = document.createElement("span"); optSpan.textContent = opt;
+    const bar = document.createElement("div"); bar.className = "poll-bar";
+    const fill = document.createElement("div"); fill.className = "poll-fill"; fill.style.width = percent + "%";
+    bar.appendChild(fill);
+    const votesSpan = document.createElement("span"); votesSpan.textContent = votes;
+    optEl.appendChild(optSpan); optEl.appendChild(bar); optEl.appendChild(votesSpan);
     optEl.addEventListener("click", () => votePoll(poll.id, idx));
     optsEl.appendChild(optEl);
   });
