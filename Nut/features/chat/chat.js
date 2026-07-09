@@ -1442,6 +1442,8 @@ themeOptions.forEach((btn) => {
     } else {
       setTheme(theme);
       hideModal(themeModal);
+      customThemeSettings.classList.add("hidden");
+      themeOptionsDiv.classList.remove("hidden");
     }
   });
 });

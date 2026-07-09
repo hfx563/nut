@@ -1,0 +1,429 @@
+/* ============================================================
+   Windows 98 Theme — Phase 1: Design Tokens
+   File: styles/windows98-theme.css
+   
+   HOW IT WORKS:
+   - All tokens are scoped to [data-theme="win98"] on <html>
+   - This file does NOT touch any existing classes
+   - Link this AFTER style.css in index.html
+   - To activate: document.documentElement.setAttribute('data-theme','win98')
+   ============================================================ */
+
+/* ── Color Tokens ─────────────────────────────────────────── */
+[data-theme="win98"] {
+
+  /* Core system grays */
+  --win98-gray:          #C0C0C0;   /* Main window/button background */
+  --win98-gray-light:    #DFDFDF;   /* Highlight face */
+  --win98-gray-dark:     #808080;   /* Dark shadow */
+  --win98-gray-darker:   #404040;   /* Deeper shadow */
+
+  /* 3D bevel colors */
+  --win98-light-shadow:  #FFFFFF;   /* Top/left highlight */
+  --win98-dark-shadow:   #808080;   /* Bottom/right shadow */
+  --win98-border-light:  #DFDFDF;   /* Inner top/left */
+  --win98-border-dark:   #000000;   /* Outer bottom/right */
+
+  /* Title bar */
+  --win98-titlebar-bg:       #000080;  /* Active title bar blue */
+  --win98-titlebar-bg-inactive: #808080;
+  --win98-titlebar-text:     #FFFFFF;
+
+  /* Accent / interactive */
+  --win98-blue:          #000080;   /* Classic navy */
+  --win98-blue-select:   #0000AA;   /* Selected item */
+  --win98-select-bg:     #000080;
+  --win98-select-text:   #FFFFFF;
+
+  /* Semantic */
+  --win98-red:           #800000;
+  --win98-green:         #008000;
+  --win98-yellow:        #808000;
+
+  /* Surface */
+  --win98-window-bg:     #C0C0C0;
+  --win98-desktop-bg:    #008080;   /* Classic teal desktop */
+  --win98-input-bg:      #FFFFFF;
+  --win98-disabled-bg:   #C0C0C0;
+  --win98-disabled-text: #808080;
+
+  /* Text */
+  --win98-text:          #000000;
+  --win98-text-muted:    #404040;
+  --win98-text-disabled: #808080;
+
+  /* ── Map win98 tokens onto the app's existing variables ── */
+  /* This makes all existing components instantly adopt the   */
+  /* Win98 palette without changing any class names.          */
+
+  --bg-a:    #C0C0C0;
+  --bg-b:    #C0C0C0;
+  --bg-c:    #A0A0A0;
+  --sur:     rgba(0, 0, 0, 0.06);
+  --sur2:    rgba(0, 0, 0, 0.10);
+  --sur3:    rgba(0, 0, 0, 0.14);
+  --glass:   #C0C0C0;
+  --bdr:     #808080;
+  --bdr2:    #000000;
+  --acc:     #000080;
+  --acc2:    #0000AA;
+  --acc-dim: rgba(0, 0, 128, 0.12);
+  --acc-glow:rgba(0, 0, 128, 0.25);
+  --cyan:    #008080;
+  --cyan-dim:rgba(0, 128, 128, 0.15);
+  --cyan-glow:rgba(0, 128, 128, 0.25);
+  --green:   #008000;
+  --green-dim:rgba(0, 128, 0, 0.15);
+  --red:     #800000;
+  --red-dim: rgba(128, 0, 0, 0.15);
+  --txt:     #000000;
+  --txt2:    #404040;
+  --txt3:    #808080;
+  --r:       0px;
+  --r-lg:    0px;
+  --r-xl:    0px;
+}
+
+/* ── Typography Tokens ────────────────────────────────────── */
+[data-theme="win98"] body {
+  font-family: "MS Sans Serif", "Microsoft Sans Serif", Tahoma, Arial, "Segoe UI", sans-serif;
+  font-size: 11px;
+  line-height: 1.4;
+  color: var(--win98-text);
+  background: var(--win98-desktop-bg);
+  -webkit-font-smoothing: none;   /* Crisp pixel rendering */
+  font-smooth: never;
+}
+
+/* ── Border / Shadow Tokens (utility classes) ─────────────── */
+
+/* Raised 3D surface — used on buttons, panels */
+[data-theme="win98"] .w98-raised {
+  border-top:    2px solid var(--win98-light-shadow);
+  border-left:   2px solid var(--win98-light-shadow);
+  border-bottom: 2px solid var(--win98-border-dark);
+  border-right:  2px solid var(--win98-border-dark);
+  background:    var(--win98-gray);
+}
+
+/* Sunken 3D surface — used on inputs, message areas */
+[data-theme="win98"] .w98-sunken {
+  border-top:    2px solid var(--win98-border-dark);
+  border-left:   2px solid var(--win98-border-dark);
+  border-bottom: 2px solid var(--win98-light-shadow);
+  border-right:  2px solid var(--win98-light-shadow);
+  background:    var(--win98-input-bg);
+}
+
+/* Flat bordered panel */
+[data-theme="win98"] .w98-panel {
+  border: 2px solid var(--win98-gray-dark);
+  background: var(--win98-gray);
+}
+
+/* ── Global resets scoped to win98 theme ──────────────────── */
+[data-theme="win98"] * {
+  border-radius: 0 !important;
+}
+
+[data-theme="win98"] .mesh-bg {
+  display: none;
+}
+
+/* ============================================================
+   Windows 98 Theme — Phase 2: Reusable Component Classes
+   ============================================================ */
+
+/* ── .win98-button ────────────────────────────────────────── */
+[data-theme="win98"] .win98-button {
+  display:         inline-flex;
+  align-items:     center;
+  justify-content: center;
+  min-width:       75px;
+  min-height:      23px;
+  padding:         3px 12px;
+  background:      var(--win98-gray);
+  color:           var(--win98-text);
+  font-family:     "MS Sans Serif", "Microsoft Sans Serif", Tahoma, Arial, sans-serif;
+  font-size:       11px;
+  font-weight:     normal;
+  cursor:          pointer;
+  border-top:      2px solid var(--win98-light-shadow);
+  border-left:     2px solid var(--win98-light-shadow);
+  border-bottom:   2px solid var(--win98-border-dark);
+  border-right:    2px solid var(--win98-border-dark);
+  outline:         none;
+  user-select:     none;
+  -webkit-tap-highlight-color: transparent;
+  transition:      none;
+  text-decoration: none;
+  white-space:     nowrap;
+}
+
+[data-theme="win98"] .win98-button:hover {
+  background: var(--win98-gray);
+  color:      var(--win98-text);
+}
+
+[data-theme="win98"] .win98-button:active {
+  border-top:    2px solid var(--win98-border-dark);
+  border-left:   2px solid var(--win98-border-dark);
+  border-bottom: 2px solid var(--win98-light-shadow);
+  border-right:  2px solid var(--win98-light-shadow);
+  padding:       4px 11px 2px 13px; /* shift content on press */
+}
+
+[data-theme="win98"] .win98-button:focus-visible {
+  outline:        1px dotted var(--win98-text);
+  outline-offset: -4px;
+}
+
+[data-theme="win98"] .win98-button:disabled,
+[data-theme="win98"] .win98-button[disabled] {
+  color:          var(--win98-disabled-text);
+  cursor:         default;
+  pointer-events: none;
+}
+
+/* Button variant — primary (default action) */
+[data-theme="win98"] .win98-button-primary {
+  border: 2px solid var(--win98-border-dark);
+  box-shadow:
+    inset -1px -1px 0 var(--win98-border-dark),
+    inset  1px  1px 0 var(--win98-light-shadow),
+    inset -2px -2px 0 var(--win98-dark-shadow),
+    inset  2px  2px 0 var(--win98-gray-light);
+}
+
+/* Button variant — danger */
+[data-theme="win98"] .win98-button-danger {
+  color: var(--win98-red);
+}
+
+/* ── .win98-input ──────────────────────────────────────────── */
+[data-theme="win98"] .win98-input {
+  background:  var(--win98-input-bg);
+  color:       var(--win98-text);
+  font-family: "MS Sans Serif", "Microsoft Sans Serif", Tahoma, Arial, sans-serif;
+  font-size:   11px;
+  padding:     3px 4px;
+  border-top:    2px solid var(--win98-border-dark);
+  border-left:   2px solid var(--win98-border-dark);
+  border-bottom: 2px solid var(--win98-light-shadow);
+  border-right:  2px solid var(--win98-light-shadow);
+  outline:     none;
+  width:       100%;
+}
+
+[data-theme="win98"] .win98-input::placeholder {
+  color: var(--win98-gray-dark);
+}
+
+[data-theme="win98"] .win98-input:focus {
+  outline: 2px solid var(--win98-blue);
+  outline-offset: -2px;
+}
+
+/* ── .win98-window ─────────────────────────────────────────── */
+[data-theme="win98"] .win98-window {
+  background:  var(--win98-gray);
+  border-top:    2px solid var(--win98-light-shadow);
+  border-left:   2px solid var(--win98-light-shadow);
+  border-bottom: 2px solid var(--win98-border-dark);
+  border-right:  2px solid var(--win98-border-dark);
+  padding:     0;
+}
+
+/* ── .win98-title-bar ──────────────────────────────────────── */
+[data-theme="win98"] .win98-title-bar {
+  display:         flex;
+  align-items:     center;
+  justify-content: space-between;
+  background:      linear-gradient(to right, var(--win98-titlebar-bg), #1084d0);
+  color:           var(--win98-titlebar-text);
+  font-family:     "MS Sans Serif", "Microsoft Sans Serif", Tahoma, Arial, sans-serif;
+  font-size:       11px;
+  font-weight:     bold;
+  padding:         3px 4px;
+  user-select:     none;
+  min-height:      18px;
+}
+
+[data-theme="win98"] .win98-title-bar-inactive {
+  background: var(--win98-titlebar-bg-inactive);
+}
+
+[data-theme="win98"] .win98-title-bar-text {
+  display:     flex;
+  align-items: center;
+  gap:         4px;
+  font-size:   11px;
+  font-weight: bold;
+}
+
+/* Title bar control buttons (close/min/max) */
+[data-theme="win98"] .win98-title-btn {
+  width:       16px;
+  height:      14px;
+  min-width:   unset;
+  min-height:  unset;
+  padding:     0;
+  font-size:   9px;
+  font-weight: bold;
+  line-height: 1;
+  background:  var(--win98-gray);
+  color:       var(--win98-text);
+  border-top:    1px solid var(--win98-light-shadow);
+  border-left:   1px solid var(--win98-light-shadow);
+  border-bottom: 1px solid var(--win98-border-dark);
+  border-right:  1px solid var(--win98-border-dark);
+  cursor:      pointer;
+  display:     flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ── .win98-panel ──────────────────────────────────────────── */
+[data-theme="win98"] .win98-panel {
+  background:  var(--win98-gray);
+  border-top:    1px solid var(--win98-light-shadow);
+  border-left:   1px solid var(--win98-light-shadow);
+  border-bottom: 1px solid var(--win98-border-dark);
+  border-right:  1px solid var(--win98-border-dark);
+  padding:     8px;
+}
+
+/* Inset panel (sunken content area) */
+[data-theme="win98"] .win98-panel-inset {
+  background:  var(--win98-input-bg);
+  border-top:    2px solid var(--win98-border-dark);
+  border-left:   2px solid var(--win98-border-dark);
+  border-bottom: 2px solid var(--win98-light-shadow);
+  border-right:  2px solid var(--win98-light-shadow);
+  padding:     4px;
+}
+
+/* ── .win98-menu ───────────────────────────────────────────── */
+[data-theme="win98"] .win98-menu {
+  background:  var(--win98-gray);
+  border-top:    2px solid var(--win98-light-shadow);
+  border-left:   2px solid var(--win98-light-shadow);
+  border-bottom: 2px solid var(--win98-border-dark);
+  border-right:  2px solid var(--win98-border-dark);
+  padding:     2px;
+  min-width:   120px;
+}
+
+[data-theme="win98"] .win98-menu-item {
+  display:     block;
+  width:       100%;
+  padding:     3px 20px 3px 6px;
+  background:  transparent;
+  color:       var(--win98-text);
+  font-family: "MS Sans Serif", "Microsoft Sans Serif", Tahoma, Arial, sans-serif;
+  font-size:   11px;
+  border:      none;
+  text-align:  left;
+  cursor:      default;
+  white-space: nowrap;
+}
+
+[data-theme="win98"] .win98-menu-item:hover {
+  background: var(--win98-select-bg);
+  color:      var(--win98-select-text);
+}
+
+[data-theme="win98"] .win98-menu-separator {
+  height:     1px;
+  background: var(--win98-dark-shadow);
+  margin:     3px 2px;
+  border-bottom: 1px solid var(--win98-light-shadow);
+}
+
+/* ── .win98-statusbar ──────────────────────────────────────── */
+[data-theme="win98"] .win98-statusbar {
+  display:     flex;
+  align-items: center;
+  gap:         2px;
+  background:  var(--win98-gray);
+  border-top:  1px solid var(--win98-dark-shadow);
+  padding:     2px 4px;
+  font-size:   11px;
+}
+
+[data-theme="win98"] .win98-statusbar-pane {
+  border-top:    1px solid var(--win98-dark-shadow);
+  border-left:   1px solid var(--win98-dark-shadow);
+  border-bottom: 1px solid var(--win98-light-shadow);
+  border-right:  1px solid var(--win98-light-shadow);
+  padding:       1px 6px;
+  font-size:     11px;
+}
+
+/* ── .win98-checkbox / .win98-radio ───────────────────────── */
+[data-theme="win98"] .win98-checkbox,
+[data-theme="win98"] .win98-radio {
+  appearance:  none;
+  -webkit-appearance: none;
+  width:       13px;
+  height:      13px;
+  background:  var(--win98-input-bg);
+  border-top:    2px solid var(--win98-border-dark);
+  border-left:   2px solid var(--win98-border-dark);
+  border-bottom: 2px solid var(--win98-light-shadow);
+  border-right:  2px solid var(--win98-light-shadow);
+  cursor:      pointer;
+  flex-shrink: 0;
+  position:    relative;
+}
+
+[data-theme="win98"] .win98-checkbox:checked::after {
+  content:   "✓";
+  position:  absolute;
+  top:       -3px;
+  left:      0px;
+  font-size: 12px;
+  color:     var(--win98-text);
+  font-weight: bold;
+}
+
+[data-theme="win98"] .win98-radio {
+  border-radius: 50% !important;
+}
+
+[data-theme="win98"] .win98-radio:checked::after {
+  content:       "";
+  position:      absolute;
+  top:           3px;
+  left:          3px;
+  width:         5px;
+  height:        5px;
+  background:    var(--win98-text);
+  border-radius: 50% !important;
+}
+
+/* ── .win98-scrollbar (webkit only) ───────────────────────── */
+[data-theme="win98"] ::-webkit-scrollbar {
+  width:  16px;
+  height: 16px;
+}
+[data-theme="win98"] ::-webkit-scrollbar-track {
+  background: var(--win98-gray);
+}
+[data-theme="win98"] ::-webkit-scrollbar-thumb {
+  background:    var(--win98-gray);
+  border-top:    2px solid var(--win98-light-shadow);
+  border-left:   2px solid var(--win98-light-shadow);
+  border-bottom: 2px solid var(--win98-border-dark);
+  border-right:  2px solid var(--win98-border-dark);
+  min-height:    20px;
+}
+[data-theme="win98"] ::-webkit-scrollbar-button {
+  background:    var(--win98-gray);
+  border-top:    2px solid var(--win98-light-shadow);
+  border-left:   2px solid var(--win98-light-shadow);
+  border-bottom: 2px solid var(--win98-border-dark);
+  border-right:  2px solid var(--win98-border-dark);
+  display:       block;
+  height:        16px;
+}
