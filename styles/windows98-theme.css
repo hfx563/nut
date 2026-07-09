@@ -1,0 +1,1350 @@
+/* ============================================================
+   Windows 98 Theme — Phase 1: Design Tokens
+   File: styles/windows98-theme.css
+   
+   HOW IT WORKS:
+   - All tokens are scoped to [data-theme="win98"] on <html>
+   - This file does NOT touch any existing classes
+   - Link this AFTER style.css in index.html
+   - To activate: document.documentElement.setAttribute('data-theme','win98')
+   ============================================================ */
+
+/* ── Color Tokens ─────────────────────────────────────────── */
+[data-theme="win98"] {
+
+  /* Core system grays */
+  --win98-gray:          #C0C0C0;   /* Main window/button background */
+  --win98-gray-light:    #DFDFDF;   /* Highlight face */
+  --win98-gray-dark:     #808080;   /* Dark shadow */
+  --win98-gray-darker:   #404040;   /* Deeper shadow */
+
+  /* 3D bevel colors */
+  --win98-light-shadow:  #FFFFFF;   /* Top/left highlight */
+  --win98-dark-shadow:   #808080;   /* Bottom/right shadow */
+  --win98-border-light:  #DFDFDF;   /* Inner top/left */
+  --win98-border-dark:   #000000;   /* Outer bottom/right */
+
+  /* Title bar */
+  --win98-titlebar-bg:       #000080;  /* Active title bar blue */
+  --win98-titlebar-bg-inactive: #808080;
+  --win98-titlebar-text:     #FFFFFF;
+
+  /* Accent / interactive */
+  --win98-blue:          #000080;   /* Classic navy */
+  --win98-blue-select:   #0000AA;   /* Selected item */
+  --win98-select-bg:     #000080;
+  --win98-select-text:   #FFFFFF;
+
+  /* Semantic */
+  --win98-red:           #800000;
+  --win98-green:         #008000;
+  --win98-yellow:        #808000;
+
+  /* Surface */
+  --win98-window-bg:     #C0C0C0;
+  --win98-desktop-bg:    #008080;   /* Classic teal desktop */
+  --win98-input-bg:      #FFFFFF;
+  --win98-disabled-bg:   #C0C0C0;
+  --win98-disabled-text: #808080;
+
+  /* Text */
+  --win98-text:          #000000;
+  --win98-text-muted:    #404040;
+  --win98-text-disabled: #808080;
+
+  /* ── Map win98 tokens onto the app's existing variables ── */
+  /* This makes all existing components instantly adopt the   */
+  /* Win98 palette without changing any class names.          */
+
+  --bg-a:    #C0C0C0;
+  --bg-b:    #C0C0C0;
+  --bg-c:    #A0A0A0;
+  --sur:     rgba(0, 0, 0, 0.06);
+  --sur2:    rgba(0, 0, 0, 0.10);
+  --sur3:    rgba(0, 0, 0, 0.14);
+  --glass:   #C0C0C0;
+  --bdr:     #808080;
+  --bdr2:    #000000;
+  --acc:     #000080;
+  --acc2:    #0000AA;
+  --acc-dim: rgba(0, 0, 128, 0.12);
+  --acc-glow:rgba(0, 0, 128, 0.25);
+  --cyan:    #008080;
+  --cyan-dim:rgba(0, 128, 128, 0.15);
+  --cyan-glow:rgba(0, 128, 128, 0.25);
+  --green:   #008000;
+  --green-dim:rgba(0, 128, 0, 0.15);
+  --red:     #800000;
+  --red-dim: rgba(128, 0, 0, 0.15);
+  --txt:     #000000;
+  --txt2:    #404040;
+  --txt3:    #808080;
+  --r:       0px;
+  --r-lg:    0px;
+  --r-xl:    0px;
+}
+
+/* ── Typography Tokens ────────────────────────────────────── */
+[data-theme="win98"] body {
+  font-family: "MS Sans Serif", "Microsoft Sans Serif", Tahoma, Arial, "Segoe UI", sans-serif;
+  font-size: 11px;
+  line-height: 1.4;
+  color: var(--win98-text);
+  background: var(--win98-desktop-bg);
+  -webkit-font-smoothing: none;   /* Crisp pixel rendering */
+  font-smooth: never;
+}
+
+/* ── Border / Shadow Tokens (utility classes) ─────────────── */
+
+/* Raised 3D surface — used on buttons, panels */
+[data-theme="win98"] .w98-raised {
+  border-top:    2px solid var(--win98-light-shadow);
+  border-left:   2px solid var(--win98-light-shadow);
+  border-bottom: 2px solid var(--win98-border-dark);
+  border-right:  2px solid var(--win98-border-dark);
+  background:    var(--win98-gray);
+}
+
+/* Sunken 3D surface — used on inputs, message areas */
+[data-theme="win98"] .w98-sunken {
+  border-top:    2px solid var(--win98-border-dark);
+  border-left:   2px solid var(--win98-border-dark);
+  border-bottom: 2px solid var(--win98-light-shadow);
+  border-right:  2px solid var(--win98-light-shadow);
+  background:    var(--win98-input-bg);
+}
+
+/* Flat bordered panel */
+[data-theme="win98"] .w98-panel {
+  border: 2px solid var(--win98-gray-dark);
+  background: var(--win98-gray);
+}
+
+/* ── Global resets scoped to win98 theme ──────────────────── */
+[data-theme="win98"] * {
+  border-radius: 0 !important;
+}
+
+[data-theme="win98"] .mesh-bg {
+  display: none;
+}
+
+/* ============================================================
+   Windows 98 Theme — Phase 2: Reusable Component Classes
+   ============================================================ */
+
+/* ── .win98-button ────────────────────────────────────────── */
+[data-theme="win98"] .win98-button {
+  display:         inline-flex;
+  align-items:     center;
+  justify-content: center;
+  min-width:       75px;
+  min-height:      23px;
+  padding:         3px 12px;
+  background:      var(--win98-gray);
+  color:           var(--win98-text);
+  font-family:     "MS Sans Serif", "Microsoft Sans Serif", Tahoma, Arial, sans-serif;
+  font-size:       11px;
+  font-weight:     normal;
+  cursor:          pointer;
+  border-top:      2px solid var(--win98-light-shadow);
+  border-left:     2px solid var(--win98-light-shadow);
+  border-bottom:   2px solid var(--win98-border-dark);
+  border-right:    2px solid var(--win98-border-dark);
+  outline:         none;
+  user-select:     none;
+  -webkit-tap-highlight-color: transparent;
+  transition:      none;
+  text-decoration: none;
+  white-space:     nowrap;
+}
+
+[data-theme="win98"] .win98-button:hover {
+  background: var(--win98-gray);
+  color:      var(--win98-text);
+}
+
+[data-theme="win98"] .win98-button:active {
+  border-top:    2px solid var(--win98-border-dark);
+  border-left:   2px solid var(--win98-border-dark);
+  border-bottom: 2px solid var(--win98-light-shadow);
+  border-right:  2px solid var(--win98-light-shadow);
+  padding:       4px 11px 2px 13px; /* shift content on press */
+}
+
+[data-theme="win98"] .win98-button:focus-visible {
+  outline:        1px dotted var(--win98-text);
+  outline-offset: -4px;
+}
+
+[data-theme="win98"] .win98-button:disabled,
+[data-theme="win98"] .win98-button[disabled] {
+  color:          var(--win98-disabled-text);
+  cursor:         default;
+  pointer-events: none;
+}
+
+/* Button variant — primary (default action) */
+[data-theme="win98"] .win98-button-primary {
+  border: 2px solid var(--win98-border-dark);
+  box-shadow:
+    inset -1px -1px 0 var(--win98-border-dark),
+    inset  1px  1px 0 var(--win98-light-shadow),
+    inset -2px -2px 0 var(--win98-dark-shadow),
+    inset  2px  2px 0 var(--win98-gray-light);
+}
+
+/* Button variant — danger */
+[data-theme="win98"] .win98-button-danger {
+  color: var(--win98-red);
+}
+
+/* ── .win98-input ──────────────────────────────────────────── */
+[data-theme="win98"] .win98-input {
+  background:  var(--win98-input-bg);
+  color:       var(--win98-text);
+  font-family: "MS Sans Serif", "Microsoft Sans Serif", Tahoma, Arial, sans-serif;
+  font-size:   11px;
+  padding:     3px 4px;
+  border-top:    2px solid var(--win98-border-dark);
+  border-left:   2px solid var(--win98-border-dark);
+  border-bottom: 2px solid var(--win98-light-shadow);
+  border-right:  2px solid var(--win98-light-shadow);
+  outline:     none;
+  width:       100%;
+}
+
+[data-theme="win98"] .win98-input::placeholder {
+  color: var(--win98-gray-dark);
+}
+
+[data-theme="win98"] .win98-input:focus {
+  outline: 2px solid var(--win98-blue);
+  outline-offset: -2px;
+}
+
+/* ── .win98-window ─────────────────────────────────────────── */
+[data-theme="win98"] .win98-window {
+  background:  var(--win98-gray);
+  border-top:    2px solid var(--win98-light-shadow);
+  border-left:   2px solid var(--win98-light-shadow);
+  border-bottom: 2px solid var(--win98-border-dark);
+  border-right:  2px solid var(--win98-border-dark);
+  padding:     0;
+}
+
+/* ── .win98-title-bar ──────────────────────────────────────── */
+[data-theme="win98"] .win98-title-bar {
+  display:         flex;
+  align-items:     center;
+  justify-content: space-between;
+  background:      linear-gradient(to right, var(--win98-titlebar-bg), #1084d0);
+  color:           var(--win98-titlebar-text);
+  font-family:     "MS Sans Serif", "Microsoft Sans Serif", Tahoma, Arial, sans-serif;
+  font-size:       11px;
+  font-weight:     bold;
+  padding:         3px 4px;
+  user-select:     none;
+  min-height:      18px;
+}
+
+[data-theme="win98"] .win98-title-bar-inactive {
+  background: var(--win98-titlebar-bg-inactive);
+}
+
+[data-theme="win98"] .win98-title-bar-text {
+  display:     flex;
+  align-items: center;
+  gap:         4px;
+  font-size:   11px;
+  font-weight: bold;
+}
+
+/* Title bar control buttons (close/min/max) */
+[data-theme="win98"] .win98-title-btn {
+  width:       16px;
+  height:      14px;
+  min-width:   unset;
+  min-height:  unset;
+  padding:     0;
+  font-size:   9px;
+  font-weight: bold;
+  line-height: 1;
+  background:  var(--win98-gray);
+  color:       var(--win98-text);
+  border-top:    1px solid var(--win98-light-shadow);
+  border-left:   1px solid var(--win98-light-shadow);
+  border-bottom: 1px solid var(--win98-border-dark);
+  border-right:  1px solid var(--win98-border-dark);
+  cursor:      pointer;
+  display:     flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ── .win98-panel ──────────────────────────────────────────── */
+[data-theme="win98"] .win98-panel {
+  background:  var(--win98-gray);
+  border-top:    1px solid var(--win98-light-shadow);
+  border-left:   1px solid var(--win98-light-shadow);
+  border-bottom: 1px solid var(--win98-border-dark);
+  border-right:  1px solid var(--win98-border-dark);
+  padding:     8px;
+}
+
+/* Inset panel (sunken content area) */
+[data-theme="win98"] .win98-panel-inset {
+  background:  var(--win98-input-bg);
+  border-top:    2px solid var(--win98-border-dark);
+  border-left:   2px solid var(--win98-border-dark);
+  border-bottom: 2px solid var(--win98-light-shadow);
+  border-right:  2px solid var(--win98-light-shadow);
+  padding:     4px;
+}
+
+/* ── .win98-menu ───────────────────────────────────────────── */
+[data-theme="win98"] .win98-menu {
+  background:  var(--win98-gray);
+  border-top:    2px solid var(--win98-light-shadow);
+  border-left:   2px solid var(--win98-light-shadow);
+  border-bottom: 2px solid var(--win98-border-dark);
+  border-right:  2px solid var(--win98-border-dark);
+  padding:     2px;
+  min-width:   120px;
+}
+
+[data-theme="win98"] .win98-menu-item {
+  display:     block;
+  width:       100%;
+  padding:     3px 20px 3px 6px;
+  background:  transparent;
+  color:       var(--win98-text);
+  font-family: "MS Sans Serif", "Microsoft Sans Serif", Tahoma, Arial, sans-serif;
+  font-size:   11px;
+  border:      none;
+  text-align:  left;
+  cursor:      default;
+  white-space: nowrap;
+}
+
+[data-theme="win98"] .win98-menu-item:hover {
+  background: var(--win98-select-bg);
+  color:      var(--win98-select-text);
+}
+
+[data-theme="win98"] .win98-menu-separator {
+  height:     1px;
+  background: var(--win98-dark-shadow);
+  margin:     3px 2px;
+  border-bottom: 1px solid var(--win98-light-shadow);
+}
+
+/* ── .win98-statusbar ──────────────────────────────────────── */
+[data-theme="win98"] .win98-statusbar {
+  display:     flex;
+  align-items: center;
+  gap:         2px;
+  background:  var(--win98-gray);
+  border-top:  1px solid var(--win98-dark-shadow);
+  padding:     2px 4px;
+  font-size:   11px;
+}
+
+[data-theme="win98"] .win98-statusbar-pane {
+  border-top:    1px solid var(--win98-dark-shadow);
+  border-left:   1px solid var(--win98-dark-shadow);
+  border-bottom: 1px solid var(--win98-light-shadow);
+  border-right:  1px solid var(--win98-light-shadow);
+  padding:       1px 6px;
+  font-size:     11px;
+}
+
+/* ── .win98-checkbox / .win98-radio ───────────────────────── */
+[data-theme="win98"] .win98-checkbox,
+[data-theme="win98"] .win98-radio {
+  appearance:  none;
+  -webkit-appearance: none;
+  width:       13px;
+  height:      13px;
+  background:  var(--win98-input-bg);
+  border-top:    2px solid var(--win98-border-dark);
+  border-left:   2px solid var(--win98-border-dark);
+  border-bottom: 2px solid var(--win98-light-shadow);
+  border-right:  2px solid var(--win98-light-shadow);
+  cursor:      pointer;
+  flex-shrink: 0;
+  position:    relative;
+}
+
+[data-theme="win98"] .win98-checkbox:checked::after {
+  content:   "✓";
+  position:  absolute;
+  top:       -3px;
+  left:      0px;
+  font-size: 12px;
+  color:     var(--win98-text);
+  font-weight: bold;
+}
+
+[data-theme="win98"] .win98-radio {
+  border-radius: 50% !important;
+}
+
+[data-theme="win98"] .win98-radio:checked::after {
+  content:       "";
+  position:      absolute;
+  top:           3px;
+  left:          3px;
+  width:         5px;
+  height:        5px;
+  background:    var(--win98-text);
+  border-radius: 50% !important;
+}
+
+/* ── .win98-scrollbar (webkit only) ───────────────────────── */
+[data-theme="win98"] ::-webkit-scrollbar {
+  width:  16px;
+  height: 16px;
+}
+[data-theme="win98"] ::-webkit-scrollbar-track {
+  background: var(--win98-gray);
+}
+[data-theme="win98"] ::-webkit-scrollbar-thumb {
+  background:    var(--win98-gray);
+  border-top:    2px solid var(--win98-light-shadow);
+  border-left:   2px solid var(--win98-light-shadow);
+  border-bottom: 2px solid var(--win98-border-dark);
+  border-right:  2px solid var(--win98-border-dark);
+  min-height:    20px;
+}
+[data-theme="win98"] ::-webkit-scrollbar-button {
+  background:    var(--win98-gray);
+  border-top:    2px solid var(--win98-light-shadow);
+  border-left:   2px solid var(--win98-light-shadow);
+  border-bottom: 2px solid var(--win98-border-dark);
+  border-right:  2px solid var(--win98-border-dark);
+  display:       block;
+  height:        16px;
+}
+
+/* ============================================================
+   Windows 98 Theme — Phase 3: Existing Component Overrides
+   Applies Win98 styling to all existing app selectors.
+   All rules scoped to [data-theme="win98"].
+   ============================================================ */
+
+/* ── Body / background ────────────────────────────────────── */
+[data-theme="win98"] body {
+  background: var(--win98-desktop-bg) !important;
+  background-attachment: fixed !important;
+}
+
+/* ── Login screen ─────────────────────────────────────────── */
+[data-theme="win98"] #join-screen {
+  background: transparent;
+}
+
+[data-theme="win98"] .login-card {
+  background:      var(--win98-gray);
+  border-top:      2px solid var(--win98-light-shadow);
+  border-left:     2px solid var(--win98-light-shadow);
+  border-bottom:   2px solid var(--win98-border-dark);
+  border-right:    2px solid var(--win98-border-dark);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  padding:         16px;
+  max-width:       320px;
+}
+
+[data-theme="win98"] .brand-name {
+  font-size:   14px;
+  font-weight: bold;
+  color:       var(--win98-text);
+}
+
+[data-theme="win98"] .login-sub {
+  font-size: 11px;
+  color:     var(--win98-text-muted);
+}
+
+/* Inputs on login */
+[data-theme="win98"] .input-wrap input {
+  background:    var(--win98-input-bg);
+  color:         var(--win98-text);
+  font-family:   "MS Sans Serif", "Microsoft Sans Serif", Tahoma, Arial, sans-serif;
+  font-size:     11px;
+  padding:       3px 4px 3px 28px;
+  border-top:    2px solid var(--win98-border-dark);
+  border-left:   2px solid var(--win98-border-dark);
+  border-bottom: 2px solid var(--win98-light-shadow);
+  border-right:  2px solid var(--win98-light-shadow);
+  transition:    none;
+}
+[data-theme="win98"] .input-wrap input:focus {
+  outline:        2px solid var(--win98-blue);
+  outline-offset: -2px;
+  background:     var(--win98-input-bg);
+  border-color:   inherit;
+  box-shadow:     none;
+}
+[data-theme="win98"] .input-wrap input::placeholder {
+  color: var(--win98-gray-dark);
+}
+[data-theme="win98"] .input-icon {
+  color: var(--win98-text-muted);
+}
+[data-theme="win98"] .input-wrap:focus-within .input-icon {
+  color: var(--win98-text-muted);
+}
+
+/* Login buttons */
+[data-theme="win98"] .login-btn {
+  background:    var(--win98-gray);
+  color:         var(--win98-text);
+  font-family:   "MS Sans Serif", "Microsoft Sans Serif", Tahoma, Arial, sans-serif;
+  font-size:     11px;
+  font-weight:   normal;
+  min-height:    23px;
+  padding:       3px 12px;
+  border-top:    2px solid var(--win98-light-shadow);
+  border-left:   2px solid var(--win98-light-shadow);
+  border-bottom: 2px solid var(--win98-border-dark);
+  border-right:  2px solid var(--win98-border-dark);
+  transition:    none;
+  letter-spacing: 0;
+  margin-top:    8px;
+}
+[data-theme="win98"] .login-btn:hover {
+  opacity:   1;
+  transform: none;
+}
+[data-theme="win98"] .login-btn:active {
+  border-top:    2px solid var(--win98-border-dark);
+  border-left:   2px solid var(--win98-border-dark);
+  border-bottom: 2px solid var(--win98-light-shadow);
+  border-right:  2px solid var(--win98-light-shadow);
+  transform:     none;
+  opacity:       1;
+  padding:       4px 11px 2px 13px;
+}
+[data-theme="win98"] .login-btn.ghost {
+  background:   var(--win98-gray);
+  color:        var(--win98-text);
+  border-color: inherit;
+}
+
+/* Admin panel */
+[data-theme="win98"] .admin-panel {
+  background:    var(--win98-gray);
+  border-top:    2px solid var(--win98-light-shadow);
+  border-left:   2px solid var(--win98-light-shadow);
+  border-bottom: 2px solid var(--win98-border-dark);
+  border-right:  2px solid var(--win98-border-dark);
+}
+
+/* Room cards */
+[data-theme="win98"] .room-card {
+  background:    var(--win98-gray);
+  border-top:    2px solid var(--win98-light-shadow);
+  border-left:   2px solid var(--win98-light-shadow);
+  border-bottom: 2px solid var(--win98-border-dark);
+  border-right:  2px solid var(--win98-border-dark);
+  transition:    none;
+}
+[data-theme="win98"] .room-card:hover {
+  background:    var(--win98-gray-light);
+  border-color:  inherit;
+  transform:     none;
+}
+[data-theme="win98"] .room-card-actions button {
+  background:    var(--win98-gray);
+  border-top:    1px solid var(--win98-light-shadow);
+  border-left:   1px solid var(--win98-light-shadow);
+  border-bottom: 1px solid var(--win98-border-dark);
+  border-right:  1px solid var(--win98-border-dark);
+  color:         var(--win98-text);
+  transition:    none;
+}
+[data-theme="win98"] .room-card-actions button:hover {
+  background:  var(--win98-gray-light);
+  transform:   none;
+}
+
+/* ── Chat header ──────────────────────────────────────────── */
+[data-theme="win98"] .chat-header {
+  background:      var(--win98-gray);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  border-bottom:   2px solid var(--win98-border-dark);
+  padding:         2px 4px;
+  min-height:      28px;
+}
+
+[data-theme="win98"] .ch-avatar {
+  background:   var(--win98-gray);
+  border:       1px solid var(--win98-border-dark);
+  color:        var(--win98-text);
+  border-radius: 0 !important;
+}
+
+[data-theme="win98"] .online-badge {
+  background:    var(--win98-gray);
+  border-top:    1px solid var(--win98-border-dark);
+  border-left:   1px solid var(--win98-border-dark);
+  border-bottom: 1px solid var(--win98-light-shadow);
+  border-right:  1px solid var(--win98-light-shadow);
+  border-radius: 0 !important;
+  font-size:     11px;
+  padding:       2px 6px;
+}
+
+/* Icon buttons */
+[data-theme="win98"] .icon-btn {
+  background:    var(--win98-gray);
+  border-top:    2px solid var(--win98-light-shadow);
+  border-left:   2px solid var(--win98-light-shadow);
+  border-bottom: 2px solid var(--win98-border-dark);
+  border-right:  2px solid var(--win98-border-dark);
+  color:         var(--win98-text);
+  width:         22px;
+  height:        22px;
+  transition:    none;
+}
+[data-theme="win98"] .icon-btn:active {
+  border-top:    2px solid var(--win98-border-dark);
+  border-left:   2px solid var(--win98-border-dark);
+  border-bottom: 2px solid var(--win98-light-shadow);
+  border-right:  2px solid var(--win98-light-shadow);
+  transform:     none;
+}
+[data-theme="win98"] .icon-btn.green,
+[data-theme="win98"] .icon-btn.cyan,
+[data-theme="win98"] .icon-btn.red {
+  background:   var(--win98-gray);
+  border-color: inherit;
+  color:        var(--win98-text);
+}
+@media (hover: hover) {
+  [data-theme="win98"] .icon-btn:hover,
+  [data-theme="win98"] .icon-btn.green:hover,
+  [data-theme="win98"] .icon-btn.cyan:hover,
+  [data-theme="win98"] .icon-btn.red:hover {
+    background:  var(--win98-gray-light);
+    color:       var(--win98-text);
+    border-color: inherit;
+    box-shadow:  none;
+    transform:   none;
+  }
+}
+[data-theme="win98"] .icon-sep {
+  background: var(--win98-gray-dark);
+}
+
+/* ── Messages area ────────────────────────────────────────── */
+[data-theme="win98"] #messages {
+  background: var(--win98-input-bg);
+  border-top:    2px solid var(--win98-border-dark);
+  border-left:   2px solid var(--win98-border-dark);
+  border-bottom: 2px solid var(--win98-light-shadow);
+  border-right:  2px solid var(--win98-light-shadow);
+  padding:       8px;
+}
+
+[data-theme="win98"] .me .bubble {
+  background:    var(--win98-select-bg);
+  color:         var(--win98-select-text);
+  border-radius: 0 !important;
+}
+[data-theme="win98"] .them .bubble {
+  background:    var(--win98-gray);
+  color:         var(--win98-text);
+  border:        1px solid var(--win98-border-dark);
+  box-shadow:    none;
+  border-radius: 0 !important;
+}
+[data-theme="win98"] .bubble {
+  font-family: "MS Sans Serif", "Microsoft Sans Serif", Tahoma, Arial, sans-serif;
+  font-size:   11px;
+  padding:     4px 8px;
+}
+[data-theme="win98"] .who {
+  font-size:      11px;
+  color:          var(--win98-text-muted);
+  text-transform: none;
+  letter-spacing: 0;
+}
+[data-theme="win98"] .ts {
+  font-size: 10px;
+  color:     var(--win98-text-muted);
+}
+[data-theme="win98"] .sys {
+  background:    var(--win98-gray);
+  border:        1px solid var(--win98-border-dark);
+  border-radius: 0 !important;
+  color:         var(--win98-text-muted);
+  font-size:     11px;
+}
+[data-theme="win98"] .date-sep {
+  background:    var(--win98-gray);
+  border:        1px solid var(--win98-border-dark);
+  border-radius: 0 !important;
+  color:         var(--win98-text-muted);
+  font-size:     11px;
+}
+
+[data-theme="win98"] .row.pop {
+  animation: none;
+}
+[data-theme="win98"] .row.highlight {
+  animation: none;
+  background: rgba(0, 0, 128, 0.12);
+}
+
+/* Scroll-to-bottom button */
+[data-theme="win98"] #scroll-bottom-btn {
+  background:    var(--win98-gray);
+  border-top:    2px solid var(--win98-light-shadow);
+  border-left:   2px solid var(--win98-light-shadow);
+  border-bottom: 2px solid var(--win98-border-dark);
+  border-right:  2px solid var(--win98-border-dark);
+  border-radius: 0 !important;
+  color:         var(--win98-text);
+  box-shadow:    none;
+  transition:    none;
+}
+[data-theme="win98"] #scroll-bottom-btn:hover {
+  background:  var(--win98-gray-light);
+  color:       var(--win98-text);
+  transform:   none;
+}
+
+/* ── Compose area ─────────────────────────────────────────── */
+[data-theme="win98"] #compose-section {
+  background:      var(--win98-gray);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  border-top:      2px solid var(--win98-border-dark);
+}
+
+[data-theme="win98"] .compose-inner {
+  background:    var(--win98-input-bg);
+  border-top:    2px solid var(--win98-border-dark);
+  border-left:   2px solid var(--win98-border-dark);
+  border-bottom: 2px solid var(--win98-light-shadow);
+  border-right:  2px solid var(--win98-light-shadow);
+  border-radius: 0 !important;
+  transition:    none;
+}
+[data-theme="win98"] .compose-inner:focus-within {
+  border-color: inherit;
+  box-shadow:   none;
+}
+
+[data-theme="win98"] #msg-input {
+  font-family: "MS Sans Serif", "Microsoft Sans Serif", Tahoma, Arial, sans-serif;
+  font-size:   11px;
+  color:       var(--win98-text);
+  min-height:  22px;
+  background:  transparent;
+}
+[data-theme="win98"] #msg-input::placeholder {
+  color: var(--win98-gray-dark);
+}
+
+[data-theme="win98"] #send-btn {
+  background:    var(--win98-gray);
+  border-top:    2px solid var(--win98-light-shadow);
+  border-left:   2px solid var(--win98-light-shadow);
+  border-bottom: 2px solid var(--win98-border-dark);
+  border-right:  2px solid var(--win98-border-dark);
+  border-radius: 0 !important;
+  color:         var(--win98-text);
+  width:         28px;
+  height:        28px;
+  transition:    none;
+}
+[data-theme="win98"] #send-btn:hover  { transform: none; }
+[data-theme="win98"] #send-btn:active {
+  border-top:    2px solid var(--win98-border-dark);
+  border-left:   2px solid var(--win98-border-dark);
+  border-bottom: 2px solid var(--win98-light-shadow);
+  border-right:  2px solid var(--win98-light-shadow);
+  transform:     none;
+  opacity:       1;
+}
+
+[data-theme="win98"] #poll-btn,
+[data-theme="win98"] #voice-btn {
+  color:         var(--win98-text);
+  border-radius: 0 !important;
+  transition:    none;
+}
+[data-theme="win98"] #poll-btn:hover,
+[data-theme="win98"] #voice-btn:hover {
+  background: var(--win98-gray-light);
+  color:      var(--win98-text);
+}
+
+/* Typing bar */
+[data-theme="win98"] #typing-bar {
+  background: var(--win98-gray);
+}
+[data-theme="win98"] #typing-text {
+  font-size:  11px;
+  color:      var(--win98-text-muted);
+  font-style: normal;
+}
+[data-theme="win98"] .t-dots span {
+  background: var(--win98-blue);
+  animation:  none;
+}
+
+/* Reply bar */
+[data-theme="win98"] #reply-bar {
+  background:  var(--win98-gray);
+  border-top:  1px solid var(--win98-border-dark);
+}
+[data-theme="win98"] .reply-bar-accent {
+  background: var(--win98-blue);
+}
+[data-theme="win98"] #reply-bar-name {
+  color: var(--win98-blue);
+}
+[data-theme="win98"] #reply-bar-text {
+  color: var(--win98-text-muted);
+}
+[data-theme="win98"] #reply-bar-close {
+  color: var(--win98-text);
+}
+
+/* ── Context menu ─────────────────────────────────────────── */
+[data-theme="win98"] .ctx-menu {
+  background:      var(--win98-gray);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  border-top:      2px solid var(--win98-light-shadow);
+  border-left:     2px solid var(--win98-light-shadow);
+  border-bottom:   2px solid var(--win98-border-dark);
+  border-right:    2px solid var(--win98-border-dark);
+  border-radius:   0 !important;
+  box-shadow:      none;
+  animation:       none;
+  padding:         2px;
+}
+[data-theme="win98"] .ctx-item {
+  font-family:   "MS Sans Serif", "Microsoft Sans Serif", Tahoma, Arial, sans-serif;
+  font-size:     11px;
+  color:         var(--win98-text);
+  border-radius: 0 !important;
+  padding:       3px 20px 3px 6px;
+}
+[data-theme="win98"] .ctx-item:hover {
+  background: var(--win98-select-bg);
+  color:      var(--win98-select-text);
+}
+[data-theme="win98"] .ctx-danger {
+  color: var(--win98-red);
+}
+[data-theme="win98"] .ctx-danger:hover {
+  background: var(--win98-select-bg);
+  color:      var(--win98-select-text);
+}
+
+/* ── Reactions / polls / voice ────────────────────────────── */
+[data-theme="win98"] .reaction-btn,
+[data-theme="win98"] .reaction-emoji {
+  background:    var(--win98-gray);
+  border:        1px solid var(--win98-border-dark);
+  border-radius: 0 !important;
+  color:         var(--win98-text);
+  transition:    none;
+}
+[data-theme="win98"] .reaction-btn:hover {
+  background:   var(--win98-gray-light);
+  border-color: var(--win98-border-dark);
+}
+[data-theme="win98"] .reaction-btn.reacted {
+  background:   var(--win98-select-bg);
+  border-color: var(--win98-border-dark);
+  color:        var(--win98-select-text);
+}
+
+[data-theme="win98"] .poll-container {
+  background:    var(--win98-gray);
+  border:        1px solid var(--win98-border-dark);
+  border-radius: 0 !important;
+}
+[data-theme="win98"] .poll-option {
+  border:        1px solid var(--win98-border-dark);
+  border-radius: 0 !important;
+  transition:    none;
+}
+[data-theme="win98"] .poll-option:hover {
+  background: var(--win98-gray-light);
+}
+[data-theme="win98"] .poll-option.voted {
+  background: var(--win98-select-bg);
+  color:      var(--win98-select-text);
+}
+[data-theme="win98"] .poll-fill {
+  background: var(--win98-blue);
+}
+
+[data-theme="win98"] .voice-msg {
+  background:    var(--win98-gray);
+  border:        1px solid var(--win98-border-dark);
+  border-radius: 0 !important;
+}
+[data-theme="win98"] .voice-play {
+  color: var(--win98-blue);
+}
+
+/* ============================================================
+   Windows 98 Theme — Phase 4: Modals, Call Card, Responsive
+   ============================================================ */
+
+/* ── Modal overlay ────────────────────────────────────────── */
+[data-theme="win98"] .modal-overlay {
+  background:      rgba(0, 0, 0, 0.5);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+
+/* ── Modal box (shared) ───────────────────────────────────── */
+[data-theme="win98"] .modal-box {
+  background:      var(--win98-gray);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  border-top:      2px solid var(--win98-light-shadow);
+  border-left:     2px solid var(--win98-light-shadow);
+  border-bottom:   2px solid var(--win98-border-dark);
+  border-right:    2px solid var(--win98-border-dark);
+  border-radius:   0 !important;
+  padding:         0;
+  animation:       none;
+  text-align:      left;
+}
+
+/* Win98-style title bar inside modal */
+[data-theme="win98"] .modal-box h3 {
+  background:  linear-gradient(to right, var(--win98-titlebar-bg), #1084d0);
+  color:       var(--win98-titlebar-text);
+  font-family: "MS Sans Serif", "Microsoft Sans Serif", Tahoma, Arial, sans-serif;
+  font-size:   11px;
+  font-weight: bold;
+  padding:     3px 6px;
+  margin:      0;
+  letter-spacing: 0;
+  user-select: none;
+}
+
+[data-theme="win98"] .modal-box p {
+  font-family: "MS Sans Serif", "Microsoft Sans Serif", Tahoma, Arial, sans-serif;
+  font-size:   11px;
+  color:       var(--win98-text);
+  padding:     12px 12px 8px;
+  margin:      0;
+  line-height: 1.5;
+}
+
+/* Modal content area padding */
+[data-theme="win98"] .theme-options,
+[data-theme="win98"] .custom-theme-settings,
+[data-theme="win98"] #poll-form,
+[data-theme="win98"] #status-form {
+  padding: 8px 12px;
+}
+
+[data-theme="win98"] .modal-actions {
+  padding:    8px 12px 10px;
+  gap:        8px;
+  border-top: 1px solid var(--win98-gray-dark);
+}
+
+/* ── Modal buttons (.mbtn) ────────────────────────────────── */
+[data-theme="win98"] .mbtn {
+  background:    var(--win98-gray);
+  color:         var(--win98-text);
+  font-family:   "MS Sans Serif", "Microsoft Sans Serif", Tahoma, Arial, sans-serif;
+  font-size:     11px;
+  font-weight:   normal;
+  min-height:    23px;
+  padding:       3px 12px;
+  border-top:    2px solid var(--win98-light-shadow);
+  border-left:   2px solid var(--win98-light-shadow);
+  border-bottom: 2px solid var(--win98-border-dark);
+  border-right:  2px solid var(--win98-border-dark);
+  border-radius: 0 !important;
+  transition:    none;
+  box-shadow:    none;
+}
+[data-theme="win98"] .mbtn:active {
+  border-top:    2px solid var(--win98-border-dark);
+  border-left:   2px solid var(--win98-border-dark);
+  border-bottom: 2px solid var(--win98-light-shadow);
+  border-right:  2px solid var(--win98-light-shadow);
+  padding:       4px 11px 2px 13px;
+  transform:     none;
+}
+[data-theme="win98"] .mbtn-ghost {
+  background:   var(--win98-gray);
+  color:        var(--win98-text);
+  border-color: inherit;
+}
+[data-theme="win98"] .mbtn-ghost:hover {
+  background: var(--win98-gray-light);
+  color:      var(--win98-text);
+}
+[data-theme="win98"] .mbtn-red {
+  background: var(--win98-gray);
+  color:      var(--win98-red);
+  box-shadow: none;
+}
+[data-theme="win98"] .mbtn-red:hover { opacity: 1; }
+[data-theme="win98"] .mbtn-primary {
+  background: var(--win98-gray);
+  color:      var(--win98-blue);
+  box-shadow: none;
+}
+[data-theme="win98"] .mbtn-primary:hover { opacity: 1; }
+
+/* ── Theme modal options ──────────────────────────────────── */
+[data-theme="win98"] .theme-option {
+  background:    var(--win98-gray);
+  color:         var(--win98-text);
+  font-family:   "MS Sans Serif", "Microsoft Sans Serif", Tahoma, Arial, sans-serif;
+  font-size:     11px;
+  padding:       3px 12px;
+  min-height:    23px;
+  border-top:    2px solid var(--win98-light-shadow);
+  border-left:   2px solid var(--win98-light-shadow);
+  border-bottom: 2px solid var(--win98-border-dark);
+  border-right:  2px solid var(--win98-border-dark);
+  border-radius: 0 !important;
+  transition:    none;
+}
+[data-theme="win98"] .theme-option:hover {
+  background:   var(--win98-gray-light);
+  border-color: inherit;
+}
+
+/* ── Poll / status form inputs ────────────────────────────── */
+[data-theme="win98"] #poll-form input,
+[data-theme="win98"] #status-input {
+  background:    var(--win98-input-bg);
+  color:         var(--win98-text);
+  font-family:   "MS Sans Serif", "Microsoft Sans Serif", Tahoma, Arial, sans-serif;
+  font-size:     11px;
+  padding:       3px 4px;
+  border-top:    2px solid var(--win98-border-dark);
+  border-left:   2px solid var(--win98-border-dark);
+  border-bottom: 2px solid var(--win98-light-shadow);
+  border-right:  2px solid var(--win98-light-shadow);
+  border-radius: 0 !important;
+  margin-bottom: 6px;
+}
+[data-theme="win98"] #poll-form input:focus,
+[data-theme="win98"] #status-input:focus {
+  outline:        2px solid var(--win98-blue);
+  outline-offset: -2px;
+  border-color:   inherit;
+}
+
+/* Custom theme color rows */
+[data-theme="win98"] .custom-row label {
+  font-family: "MS Sans Serif", "Microsoft Sans Serif", Tahoma, Arial, sans-serif;
+  font-size:   11px;
+  color:       var(--win98-text);
+}
+
+/* ── Call card ────────────────────────────────────────────── */
+[data-theme="win98"] #call-card {
+  background:      var(--win98-gray);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  border-top:      2px solid var(--win98-light-shadow);
+  border-left:     2px solid var(--win98-light-shadow);
+  border-bottom:   2px solid var(--win98-border-dark);
+  border-right:    2px solid var(--win98-border-dark);
+  border-radius:   0 !important;
+  box-shadow:      none;
+  color:           var(--win98-text);
+  font-family:     "MS Sans Serif", "Microsoft Sans Serif", Tahoma, Arial, sans-serif;
+  animation:       none;
+  padding:         0;
+}
+
+/* Call card title bar */
+[data-theme="win98"] .cc-title {
+  display:     block;
+  background:  linear-gradient(to right, var(--win98-titlebar-bg), #1084d0);
+  color:       var(--win98-titlebar-text);
+  font-family: "MS Sans Serif", "Microsoft Sans Serif", Tahoma, Arial, sans-serif;
+  font-size:   11px;
+  font-weight: bold;
+  padding:     3px 6px;
+  margin:      0;
+}
+
+[data-theme="win98"] .cc-sub {
+  font-size:   11px;
+  color:       var(--win98-text);
+  font-weight: normal;
+  padding:     8px 12px 0;
+  margin:      0;
+  display:     block;
+}
+
+[data-theme="win98"] .cc-call-name {
+  font-size:   13px;
+  font-weight: bold;
+  color:       var(--win98-text);
+  padding:     8px 12px 0;
+}
+
+[data-theme="win98"] .cc-call-status {
+  font-size: 11px;
+  color:     var(--win98-text-muted);
+  padding:   2px 12px 8px;
+}
+
+[data-theme="win98"] .cc-duration {
+  font-size:   13px;
+  font-weight: bold;
+  color:       var(--win98-blue);
+  padding:     4px 12px;
+}
+
+/* Avatar */
+[data-theme="win98"] .cc-avatar {
+  background:    var(--win98-gray);
+  border:        2px solid var(--win98-border-dark);
+  border-radius: 0 !important;
+  color:         var(--win98-text);
+  font-size:     18px;
+  margin:        8px auto;
+}
+[data-theme="win98"] .cc-avatar-pulse {
+  animation: none;
+}
+
+/* Calling dots — static in Win98 */
+[data-theme="win98"] .cc-dots span {
+  background: var(--win98-blue);
+  animation:  none;
+}
+
+/* Type icons */
+[data-theme="win98"] .cc-type-icon {
+  background:    var(--win98-gray);
+  border:        1px solid var(--win98-border-dark);
+  border-radius: 0 !important;
+  color:         var(--win98-text);
+}
+[data-theme="win98"] .cc-icon-green,
+[data-theme="win98"] .cc-icon-cyan {
+  background:   var(--win98-gray);
+  border-color: var(--win98-border-dark);
+  color:        var(--win98-text);
+}
+
+/* User list in picker */
+[data-theme="win98"] .cc-user-list {
+  padding: 4px 8px;
+}
+[data-theme="win98"] .cc-user-btn {
+  background:    var(--win98-gray);
+  border-top:    2px solid var(--win98-light-shadow);
+  border-left:   2px solid var(--win98-light-shadow);
+  border-bottom: 2px solid var(--win98-border-dark);
+  border-right:  2px solid var(--win98-border-dark);
+  border-radius: 0 !important;
+  color:         var(--win98-text);
+  font-family:   "MS Sans Serif", "Microsoft Sans Serif", Tahoma, Arial, sans-serif;
+  font-size:     11px;
+  min-height:    28px;
+  transition:    none;
+}
+[data-theme="win98"] .cc-user-btn:hover {
+  background:   var(--win98-gray-light);
+  border-color: inherit;
+  transform:    none;
+}
+[data-theme="win98"] .cc-user-btn:active {
+  border-top:    2px solid var(--win98-border-dark);
+  border-left:   2px solid var(--win98-border-dark);
+  border-bottom: 2px solid var(--win98-light-shadow);
+  border-right:  2px solid var(--win98-light-shadow);
+  transform:     none;
+}
+[data-theme="win98"] .cc-user-av {
+  background:    var(--win98-gray);
+  border:        1px solid var(--win98-border-dark);
+  border-radius: 0 !important;
+  color:         var(--win98-text);
+  font-size:     11px;
+}
+[data-theme="win98"] .cc-user-dot {
+  background: var(--win98-green);
+  box-shadow: none;
+}
+
+/* Call card text input */
+[data-theme="win98"] .cc-input {
+  background:    var(--win98-input-bg);
+  color:         var(--win98-text);
+  font-family:   "MS Sans Serif", "Microsoft Sans Serif", Tahoma, Arial, sans-serif;
+  font-size:     11px;
+  padding:       3px 4px;
+  border-top:    2px solid var(--win98-border-dark);
+  border-left:   2px solid var(--win98-border-dark);
+  border-bottom: 2px solid var(--win98-light-shadow);
+  border-right:  2px solid var(--win98-light-shadow);
+  border-radius: 0 !important;
+  text-align:    left;
+  transition:    none;
+  margin:        4px 8px;
+  width:         calc(100% - 16px);
+}
+[data-theme="win98"] .cc-input:focus {
+  outline:        2px solid var(--win98-blue);
+  outline-offset: -2px;
+  border-color:   inherit;
+  box-shadow:     none;
+}
+[data-theme="win98"] .cc-input::placeholder {
+  color: var(--win98-gray-dark);
+}
+
+/* Call card buttons */
+[data-theme="win98"] .cc-btn {
+  background:    var(--win98-gray);
+  color:         var(--win98-text);
+  font-family:   "MS Sans Serif", "Microsoft Sans Serif", Tahoma, Arial, sans-serif;
+  font-size:     11px;
+  font-weight:   normal;
+  min-height:    23px;
+  padding:       3px 12px;
+  border-top:    2px solid var(--win98-light-shadow);
+  border-left:   2px solid var(--win98-light-shadow);
+  border-bottom: 2px solid var(--win98-border-dark);
+  border-right:  2px solid var(--win98-border-dark);
+  border-radius: 0 !important;
+  transition:    none;
+  box-shadow:    none;
+  margin:        2px 8px;
+  width:         calc(100% - 16px);
+}
+[data-theme="win98"] .cc-btn:active {
+  border-top:    2px solid var(--win98-border-dark);
+  border-left:   2px solid var(--win98-border-dark);
+  border-bottom: 2px solid var(--win98-light-shadow);
+  border-right:  2px solid var(--win98-light-shadow);
+  transform:     none;
+}
+[data-theme="win98"] .cc-btn-primary {
+  background: var(--win98-gray);
+  color:      var(--win98-blue);
+  box-shadow: none;
+}
+[data-theme="win98"] .cc-btn-primary:hover { opacity: 1; }
+[data-theme="win98"] .cc-btn-ghost {
+  background: var(--win98-gray);
+  color:      var(--win98-text);
+  box-shadow: none;
+}
+[data-theme="win98"] .cc-btn-ghost:hover {
+  background: var(--win98-gray-light);
+  color:      var(--win98-text);
+}
+
+/* Action buttons row (accept/decline/end/mute/cam) */
+[data-theme="win98"] .cc-btn-row {
+  padding: 8px 12px 10px;
+  gap:     12px;
+}
+[data-theme="win98"] .cc-action-btn {
+  width:         40px;
+  height:        40px;
+  border-radius: 0 !important;
+  background:    var(--win98-gray);
+  border-top:    2px solid var(--win98-light-shadow);
+  border-left:   2px solid var(--win98-light-shadow);
+  border-bottom: 2px solid var(--win98-border-dark);
+  border-right:  2px solid var(--win98-border-dark);
+  color:         var(--win98-text);
+  font-size:     14px;
+  transition:    none;
+  box-shadow:    none;
+}
+[data-theme="win98"] .cc-action-btn:hover { transform: none; }
+[data-theme="win98"] .cc-action-btn:active {
+  border-top:    2px solid var(--win98-border-dark);
+  border-left:   2px solid var(--win98-border-dark);
+  border-bottom: 2px solid var(--win98-light-shadow);
+  border-right:  2px solid var(--win98-light-shadow);
+  transform:     none;
+  opacity:       1;
+}
+[data-theme="win98"] .cc-action-accept {
+  background: var(--win98-gray);
+  color:      var(--win98-green);
+  box-shadow: none;
+}
+[data-theme="win98"] .cc-action-decline,
+[data-theme="win98"] .cc-action-end {
+  background: var(--win98-gray);
+  color:      var(--win98-red);
+  box-shadow: none;
+}
+[data-theme="win98"] .cc-action-mute,
+[data-theme="win98"] .cc-action-muted {
+  background:   var(--win98-gray);
+  color:        var(--win98-text);
+  border-color: inherit;
+}
+[data-theme="win98"] .cc-action-cam {
+  background:   var(--win98-gray);
+  color:        var(--win98-text);
+  border-color: inherit;
+}
+[data-theme="win98"] .cc-action-label {
+  font-size:   10px;
+  color:       var(--win98-text-muted);
+  font-family: "MS Sans Serif", "Microsoft Sans Serif", Tahoma, Arial, sans-serif;
+}
+
+/* Video wrap */
+[data-theme="win98"] .cc-video-wrap {
+  border:        2px solid var(--win98-border-dark);
+  border-radius: 0 !important;
+  margin:        4px 8px 8px;
+}
+[data-theme="win98"] .cc-video-local {
+  border:        2px solid var(--win98-border-dark);
+  border-radius: 0 !important;
+  box-shadow:    none;
+}
+
+/* ── Responsive adjustments ───────────────────────────────── */
+@media (max-width: 540px) {
+  [data-theme="win98"] .login-card {
+    padding: 0;
+    max-width: 100%;
+  }
+  [data-theme="win98"] .modal-box {
+    max-width: 100%;
+  }
+}
+
+@media (max-width: 400px) {
+  [data-theme="win98"] #call-card {
+    bottom: 60px;
+    padding: 0;
+  }
+  [data-theme="win98"] .cc-action-btn {
+    width:  34px;
+    height: 34px;
+  }
+}
