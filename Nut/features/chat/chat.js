@@ -18,19 +18,14 @@ const ROOM_TOPIC_SUFFIX = {
 const LS_ROOMS = "Nut_rooms_v1";
 const LS_HIST_BASE = "Nut_history_v1_";
 const LS_EPOCH_BASE = "Nut_epoch_v1_";
-const LS_ADMIN_USER = "Nut_admin_user_v1";
-const LS_ADMIN_HASH = "Nut_admin_hash_v1";
 
+const ADMIN_USERNAME = "563";
+const ADMIN_PASSWORD_HASH = "fa4ddf29f41b575377ce14a7900d1e26b669163ca53b80ea3168c6801cf7e114";
 function getAdminUsername() {
-  return localStorage.getItem(LS_ADMIN_USER) || "";
+  return ADMIN_USERNAME;
 }
 function getAdminPasswordHash() {
-  return localStorage.getItem(LS_ADMIN_HASH) || "";
-}
-async function setupAdminCredentials(username, password) {
-  const hash = await hashString(password);
-  localStorage.setItem(LS_ADMIN_USER, username.trim());
-  localStorage.setItem(LS_ADMIN_HASH, hash);
+  return ADMIN_PASSWORD_HASH;
 }
 
 
@@ -1529,13 +1524,7 @@ function setTheme(theme) {
 (function initApp() {
   const savedTheme = localStorage.getItem("Nut_theme") || "dark";
   setTheme(savedTheme);
-  // Expose admin setup helper — run once in browser console:
-  // setupAdmin('yourUsername', 'yourPassword')
-  window.setupAdmin = async (username, password) => {
-    if (!username || !password) { console.error("Usage: setupAdmin('username', 'password')"); return; }
-    await setupAdminCredentials(username, password);
-    console.log("Admin credentials saved.");
-  };
+  // Admin credentials are hardcoded (ADMIN_USERNAME / ADMIN_PASSWORD_HASH).
 })();
 
 function applyCustomTheme() {
