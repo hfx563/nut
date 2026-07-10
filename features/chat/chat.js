@@ -1506,7 +1506,7 @@ function setTheme(theme) {
 }
 
 (function initApp() {
-  const savedTheme = localStorage.getItem("Nut_theme") || "win98";
+  const savedTheme = localStorage.getItem("Nut_theme") || "meta";
   setTheme(savedTheme);
   // Admin credentials are hardcoded.
   // Username: 563, Password: 563
