@@ -1449,6 +1449,58 @@ Gï¿½ï¿½Gï¿½ï¿½Gï¿½ï¿½Gï¿½ï¿½Gï¿½ï¿½Gï¿½ï¿½Gï¿½ï¿½Gï¿½ï¿½Gï¿½ï¿½Gï¿½ï¿½Gï¿½ï¿½Gï¿
   --cyan: #22d3ee;
 }
 
+[data-theme="meta"] {
+  --bg-a: #f0f2f5;
+  --bg-b: #e4e6eb;
+  --bg-c: #d8dadf;
+  --sur: rgba(255, 255, 255, 0.8);
+  --sur2: rgba(255, 255, 255, 0.95);
+  --sur3: #ffffff;
+  --glass: rgba(255, 255, 255, 0.85);
+  --bdr: #dadde1;
+  --bdr2: #ced0d4;
+  --acc: #1877f2;
+  --acc2: #166fe5;
+  --acc-dim: rgba(24, 119, 242, 0.1);
+  --acc-glow: rgba(24, 119, 242, 0.2);
+  --red: #e41e3f;
+  --red-dim: rgba(228, 30, 63, 0.1);
+  --green: #42b72a;
+  --green-dim: rgba(66, 183, 42, 0.1);
+  --cyan: #1877f2;
+  --cyan-dim: rgba(24, 119, 242, 0.1);
+  --cyan-glow: rgba(24, 119, 242, 0.2);
+  --txt: #1c1e21;
+  --txt2: #65676b;
+  --txt3: #8a8d91;
+}
+
+[data-theme="tiktok"] {
+  --bg-a: #000000;
+  --bg-b: #121212;
+  --bg-c: #1a1a1a;
+  --sur: rgba(255, 255, 255, 0.06);
+  --sur2: rgba(255, 255, 255, 0.1);
+  --sur3: rgba(255, 255, 255, 0.15);
+  --glass: rgba(18, 18, 18, 0.9);
+  --bdr: rgba(255, 255, 255, 0.1);
+  --bdr2: rgba(255, 255, 255, 0.2);
+  --acc: #fe2c55;
+  --acc2: #ff6b81;
+  --acc-dim: rgba(254, 44, 85, 0.15);
+  --acc-glow: rgba(254, 44, 85, 0.3);
+  --cyan: #25f4ee;
+  --cyan-dim: rgba(37, 244, 238, 0.15);
+  --cyan-glow: rgba(37, 244, 238, 0.3);
+  --red: #fe2c55;
+  --red-dim: rgba(254, 44, 85, 0.15);
+  --green: #00f2ea;
+  --green-dim: rgba(0, 242, 234, 0.1);
+  --txt: #ffffff;
+  --txt2: #aaaaaa;
+  --txt3: #888888;
+}
+
 .custom-theme-settings {
   margin-top: 20px;
 }
