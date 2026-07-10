@@ -1501,6 +1501,615 @@ G��G��G��G��G��G��G��G��G��G��G��G�
   --txt3: #888888;
 }
 
+/* ── Meta Theme Button Overrides ──────────────────────────── */
+[data-theme="meta"] .login-btn {
+  background: #1877f2;
+  color: #fff;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 15px;
+  border: none;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  transition: background 0.15s, transform 0.12s;
+  margin-top: 16px;
+}
+[data-theme="meta"] .login-btn:hover {
+  background: #166fe5;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+}
+[data-theme="meta"] .login-btn:active {
+  transform: scale(0.98);
+}
+[data-theme="meta"] .login-btn.ghost {
+  background: #e4e6eb;
+  color: #1877f2;
+  border: 1px solid #ced0d4;
+  box-shadow: none;
+}
+[data-theme="meta"] .login-btn.ghost:hover {
+  background: #d8dadf;
+  box-shadow: none;
+}
+
+[data-theme="meta"] .mbtn {
+  border-radius: 8px;
+  font-weight: 600;
+  transition: background 0.15s, transform 0.12s;
+}
+[data-theme="meta"] .mbtn-primary {
+  background: #1877f2;
+  color: #fff;
+  border: none;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+[data-theme="meta"] .mbtn-primary:hover {
+  background: #166fe5;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+}
+[data-theme="meta"] .mbtn-ghost {
+  background: #e4e6eb;
+  color: #65676b;
+  border: 1px solid #ced0d4;
+  box-shadow: none;
+}
+[data-theme="meta"] .mbtn-ghost:hover {
+  background: #d8dadf;
+  color: #1c1e21;
+  box-shadow: none;
+}
+[data-theme="meta"] .mbtn-red {
+  background: #e41e3f;
+  color: #fff;
+  border: none;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+[data-theme="meta"] .mbtn-red:hover {
+  background: #c81e3a;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+}
+
+[data-theme="meta"] .cc-btn {
+  border-radius: 8px;
+  font-weight: 600;
+  transition: background 0.15s, transform 0.12s;
+}
+[data-theme="meta"] .cc-btn-primary {
+  background: #1877f2;
+  color: #fff;
+  border: none;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+[data-theme="meta"] .cc-btn-primary:hover {
+  background: #166fe5;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+}
+[data-theme="meta"] .cc-btn-ghost {
+  background: #e4e6eb;
+  color: #65676b;
+  border: 1px solid #ced0d4;
+  box-shadow: none;
+}
+[data-theme="meta"] .cc-btn-ghost:hover {
+  background: #d8dadf;
+  color: #1c1e21;
+  box-shadow: none;
+}
+
+[data-theme="meta"] .cc-action-btn {
+  border-radius: 50%;
+  background: #e4e6eb;
+  color: #65676b;
+  border: none;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+[data-theme="meta"] .cc-action-btn:hover {
+  transform: scale(1.08);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+}
+[data-theme="meta"] .cc-action-accept {
+  background: #42b72a;
+  color: #fff;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+[data-theme="meta"] .cc-action-accept:hover {
+  background: #36a420;
+  box-shadow: 0 2px 6px rgba(66, 183, 42, 0.3);
+}
+[data-theme="meta"] .cc-action-decline,
+[data-theme="meta"] .cc-action-end {
+  background: #e41e3f;
+  color: #fff;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+[data-theme="meta"] .cc-action-decline:hover,
+[data-theme="meta"] .cc-action-end:hover {
+  background: #c81e3a;
+  box-shadow: 0 2px 6px rgba(228, 30, 63, 0.3);
+}
+[data-theme="meta"] .cc-action-mute {
+  background: #e4e6eb;
+  color: #65676b;
+  border: 1px solid #ced0d4;
+  box-shadow: none;
+}
+[data-theme="meta"] .cc-action-muted {
+  background: #e41e3f;
+  color: #fff;
+  border: none;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+[data-theme="meta"] .cc-action-cam {
+  background: #e4e6eb;
+  color: #65676b;
+  border: 1px solid #ced0d4;
+  box-shadow: none;
+}
+[data-theme="meta"] .cc-action-label {
+  color: #65676b;
+}
+
+[data-theme="meta"] .icon-btn {
+  border-radius: 8px;
+  background: #e4e6eb;
+  color: #65676b;
+  border: 1px solid #ced0d4;
+  transition: background 0.15s, color 0.15s, transform 0.1s;
+}
+[data-theme="meta"] .icon-btn:hover {
+  background: #d8dadf;
+  color: #1877f2;
+  border-color: #1877f2;
+  transform: translateY(-1px);
+  box-shadow: none;
+}
+[data-theme="meta"] .icon-btn.green {
+  background: #e4e6eb;
+  color: #42b72a;
+  border-color: #ced0d4;
+}
+[data-theme="meta"] .icon-btn.green:hover {
+  background: #d8dadf;
+  border-color: #42b72a;
+  box-shadow: none;
+}
+[data-theme="meta"] .icon-btn.cyan {
+  background: #e4e6eb;
+  color: #1877f2;
+  border-color: #ced0d4;
+}
+[data-theme="meta"] .icon-btn.cyan:hover {
+  background: #d8dadf;
+  border-color: #1877f2;
+  box-shadow: none;
+}
+[data-theme="meta"] .icon-btn.red {
+  background: #e4e6eb;
+  color: #e41e3f;
+  border-color: #ced0d4;
+}
+[data-theme="meta"] .icon-btn.red:hover {
+  background: #f0f2f5;
+  border-color: #e41e3f;
+  box-shadow: none;
+}
+
+[data-theme="meta"] #send-btn {
+  background: #1877f2;
+  border-radius: 50%;
+  color: #fff;
+  border: none;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+[data-theme="meta"] #send-btn:hover {
+  background: #166fe5;
+  transform: scale(1.08);
+  box-shadow: 0 2px 6px rgba(24, 119, 242, 0.3);
+}
+
+[data-theme="meta"] #poll-btn,
+[data-theme="meta"] #voice-btn {
+  color: #65676b;
+  border-radius: 50%;
+  background: #e4e6eb;
+  border: 1px solid #ced0d4;
+}
+[data-theme="meta"] #poll-btn:hover,
+[data-theme="meta"] #voice-btn:hover {
+  background: #d8dadf;
+  color: #1877f2;
+  border-color: #1877f2;
+}
+
+[data-theme="meta"] .room-card-actions button {
+  background: #e4e6eb;
+  border: 1px solid #ced0d4;
+  color: #65676b;
+  border-radius: 8px;
+}
+[data-theme="meta"] .room-card-actions button:hover {
+  background: #d8dadf;
+  border-color: #1877f2;
+  color: #1877f2;
+}
+[data-theme="meta"] .room-card-actions .room-card-close {
+  color: #e41e3f;
+  border-color: #f0f2f5;
+}
+[data-theme="meta"] .room-card-actions .room-card-close:hover {
+  background: #f0f2f5;
+  border-color: #e41e3f;
+}
+
+[data-theme="meta"] .reaction-btn {
+  background: #e4e6eb;
+  border: 1px solid #ced0d4;
+  border-radius: 20px;
+  color: #65676b;
+}
+[data-theme="meta"] .reaction-btn:hover {
+  background: #d8dadf;
+  border-color: #1877f2;
+  color: #1877f2;
+}
+[data-theme="meta"] .reaction-btn.reacted {
+  background: #e7f3ff;
+  border-color: #1877f2;
+  color: #1877f2;
+}
+
+[data-theme="meta"] .theme-option {
+  border-radius: 8px;
+  background: #e4e6eb;
+  color: #1c1e21;
+  border: 1px solid #ced0d4;
+  transition: background 0.15s, border-color 0.15s;
+}
+[data-theme="meta"] .theme-option:hover {
+  background: #d8dadf;
+  border-color: #1877f2;
+  color: #1877f2;
+}
+
+[data-theme="meta"] #scroll-bottom-btn {
+  background: #e4e6eb;
+  border: 1px solid #ced0d4;
+  color: #65676b;
+  border-radius: 50%;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+[data-theme="meta"] #scroll-bottom-btn:hover {
+  background: #d8dadf;
+  color: #1877f2;
+  border-color: #1877f2;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+}
+[data-theme="meta"] #scroll-bottom-btn:active {
+  transform: scale(0.92);
+}
+
+[data-theme="meta"] .ctx-item {
+  border-radius: 8px;
+}
+[data-theme="meta"] .ctx-item:hover {
+  background: #e4e6eb;
+  color: #1877f2;
+}
+[data-theme="meta"] .ctx-danger {
+  color: #e41e3f;
+}
+[data-theme="meta"] .ctx-danger:hover {
+  background: #f0f2f5;
+  color: #e41e3f;
+}
+
+/* ── TikTok Theme Button Overrides ─────────────────────────── */
+[data-theme="tiktok"] .login-btn {
+  background: #fe2c55;
+  color: #fff;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 15px;
+  border: none;
+  box-shadow: 0 2px 8px rgba(254, 44, 85, 0.3);
+  transition: background 0.15s, transform 0.12s, box-shadow 0.15s;
+  margin-top: 16px;
+}
+[data-theme="tiktok"] .login-btn:hover {
+  background: #e62848;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(254, 44, 85, 0.4);
+}
+[data-theme="tiktok"] .login-btn:active {
+  transform: scale(0.98);
+}
+[data-theme="tiktok"] .login-btn.ghost {
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: none;
+}
+[data-theme="tiktok"] .login-btn.ghost:hover {
+  background: rgba(255, 255, 255, 0.15);
+  border-color: rgba(255, 255, 255, 0.3);
+  box-shadow: none;
+}
+
+[data-theme="tiktok"] .mbtn {
+  border-radius: 8px;
+  font-weight: 600;
+  transition: background 0.15s, transform 0.12s;
+}
+[data-theme="tiktok"] .mbtn-primary {
+  background: #fe2c55;
+  color: #fff;
+  border: none;
+  box-shadow: 0 2px 8px rgba(254, 44, 85, 0.3);
+}
+[data-theme="tiktok"] .mbtn-primary:hover {
+  background: #e62848;
+  box-shadow: 0 4px 12px rgba(254, 44, 85, 0.4);
+}
+[data-theme="tiktok"] .mbtn-ghost {
+  background: rgba(255, 255, 255, 0.08);
+  color: #aaaaaa;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  box-shadow: none;
+}
+[data-theme="tiktok"] .mbtn-ghost:hover {
+  background: rgba(255, 255, 255, 0.12);
+  color: #ffffff;
+  border-color: rgba(255, 255, 255, 0.25);
+  box-shadow: none;
+}
+[data-theme="tiktok"] .mbtn-red {
+  background: #fe2c55;
+  color: #fff;
+  border: none;
+  box-shadow: 0 2px 8px rgba(254, 44, 85, 0.3);
+}
+[data-theme="tiktok"] .mbtn-red:hover {
+  background: #e62848;
+  box-shadow: 0 4px 12px rgba(254, 44, 85, 0.4);
+}
+
+[data-theme="tiktok"] .cc-btn {
+  border-radius: 8px;
+  font-weight: 600;
+  transition: background 0.15s, transform 0.12s;
+}
+[data-theme="tiktok"] .cc-btn-primary {
+  background: #fe2c55;
+  color: #fff;
+  border: none;
+  box-shadow: 0 2px 8px rgba(254, 44, 85, 0.3);
+}
+[data-theme="tiktok"] .cc-btn-primary:hover {
+  background: #e62848;
+  box-shadow: 0 4px 12px rgba(254, 44, 85, 0.4);
+}
+[data-theme="tiktok"] .cc-btn-ghost {
+  background: rgba(255, 255, 255, 0.08);
+  color: #aaaaaa;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  box-shadow: none;
+}
+[data-theme="tiktok"] .cc-btn-ghost:hover {
+  background: rgba(255, 255, 255, 0.12);
+  color: #ffffff;
+  border-color: rgba(255, 255, 255, 0.25);
+  box-shadow: none;
+}
+
+[data-theme="tiktok"] .cc-action-btn {
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.1);
+  color: #aaaaaa;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+}
+[data-theme="tiktok"] .cc-action-btn:hover {
+  transform: scale(1.08);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+[data-theme="tiktok"] .cc-action-accept {
+  background: #25f4ee;
+  color: #000000;
+  border: none;
+  box-shadow: 0 2px 8px rgba(37, 244, 238, 0.4);
+}
+[data-theme="tiktok"] .cc-action-accept:hover {
+  background: #1de0d9;
+  box-shadow: 0 4px 16px rgba(37, 244, 238, 0.5);
+}
+[data-theme="tiktok"] .cc-action-decline,
+[data-theme="tiktok"] .cc-action-end {
+  background: #fe2c55;
+  color: #fff;
+  border: none;
+  box-shadow: 0 2px 8px rgba(254, 44, 85, 0.4);
+}
+[data-theme="tiktok"] .cc-action-decline:hover,
+[data-theme="tiktok"] .cc-action-end:hover {
+  background: #e62848;
+  box-shadow: 0 4px 16px rgba(254, 44, 85, 0.5);
+}
+[data-theme="tiktok"] .cc-action-mute {
+  background: rgba(255, 255, 255, 0.1);
+  color: #aaaaaa;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: none;
+}
+[data-theme="tiktok"] .cc-action-muted {
+  background: #fe2c55;
+  color: #fff;
+  border: none;
+  box-shadow: 0 2px 8px rgba(254, 44, 85, 0.4);
+}
+[data-theme="tiktok"] .cc-action-cam {
+  background: rgba(255, 255, 255, 0.1);
+  color: #aaaaaa;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: none;
+}
+[data-theme="tiktok"] .cc-action-label {
+  color: #888888;
+}
+
+[data-theme="tiktok"] .icon-btn {
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.08);
+  color: #888888;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  transition: background 0.15s, color 0.15s, transform 0.1s;
+}
+[data-theme="tiktok"] .icon-btn:hover {
+  background: rgba(254, 44, 85, 0.15);
+  color: #fe2c55;
+  border-color: rgba(254, 44, 85, 0.4);
+  transform: translateY(-1px);
+  box-shadow: 0 0 12px rgba(254, 44, 85, 0.2);
+}
+[data-theme="tiktok"] .icon-btn.green {
+  background: rgba(255, 255, 255, 0.08);
+  color: #00f2ea;
+  border-color: rgba(255, 255, 255, 0.15);
+}
+[data-theme="tiktok"] .icon-btn.green:hover {
+  background: rgba(0, 242, 234, 0.15);
+  border-color: rgba(0, 242, 234, 0.4);
+  box-shadow: 0 0 12px rgba(0, 242, 234, 0.2);
+}
+[data-theme="tiktok"] .icon-btn.cyan {
+  background: rgba(255, 255, 255, 0.08);
+  color: #25f4ee;
+  border-color: rgba(255, 255, 255, 0.15);
+}
+[data-theme="tiktok"] .icon-btn.cyan:hover {
+  background: rgba(37, 244, 238, 0.15);
+  border-color: rgba(37, 244, 238, 0.4);
+  box-shadow: 0 0 12px rgba(37, 244, 238, 0.2);
+}
+[data-theme="tiktok"] .icon-btn.red {
+  background: rgba(255, 255, 255, 0.08);
+  color: #fe2c55;
+  border-color: rgba(255, 255, 255, 0.15);
+}
+[data-theme="tiktok"] .icon-btn.red:hover {
+  background: rgba(254, 44, 85, 0.15);
+  border-color: rgba(254, 44, 85, 0.4);
+  box-shadow: 0 0 12px rgba(254, 44, 85, 0.2);
+}
+
+[data-theme="tiktok"] #send-btn {
+  background: #fe2c55;
+  border-radius: 50%;
+  color: #fff;
+  border: none;
+  box-shadow: 0 2px 8px rgba(254, 44, 85, 0.3);
+}
+[data-theme="tiktok"] #send-btn:hover {
+  background: #e62848;
+  transform: scale(1.08);
+  box-shadow: 0 4px 16px rgba(254, 44, 85, 0.4);
+}
+
+[data-theme="tiktok"] #poll-btn,
+[data-theme="tiktok"] #voice-btn {
+  color: #888888;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+}
+[data-theme="tiktok"] #poll-btn:hover,
+[data-theme="tiktok"] #voice-btn:hover {
+  background: rgba(254, 44, 85, 0.15);
+  color: #fe2c55;
+  border-color: rgba(254, 44, 85, 0.4);
+}
+
+[data-theme="tiktok"] .room-card-actions button {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: #aaaaaa;
+  border-radius: 8px;
+}
+[data-theme="tiktok"] .room-card-actions button:hover {
+  background: rgba(254, 44, 85, 0.15);
+  border-color: rgba(254, 44, 85, 0.4);
+  color: #fe2c55;
+}
+[data-theme="tiktok"] .room-card-actions .room-card-close {
+  color: #fe2c55;
+  border-color: rgba(255, 255, 255, 0.15);
+}
+[data-theme="tiktok"] .room-card-actions .room-card-close:hover {
+  background: rgba(254, 44, 85, 0.15);
+  border-color: #fe2c55;
+}
+
+[data-theme="tiktok"] .reaction-btn {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 20px;
+  color: #aaaaaa;
+}
+[data-theme="tiktok"] .reaction-btn:hover {
+  background: rgba(254, 44, 85, 0.15);
+  border-color: rgba(254, 44, 85, 0.4);
+  color: #fe2c55;
+}
+[data-theme="tiktok"] .reaction-btn.reacted {
+  background: rgba(254, 44, 85, 0.15);
+  border-color: #fe2c55;
+  color: #fe2c55;
+}
+
+[data-theme="tiktok"] .theme-option {
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.08);
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  transition: background 0.15s, border-color 0.15s;
+}
+[data-theme="tiktok"] .theme-option:hover {
+  background: rgba(254, 44, 85, 0.15);
+  border-color: #fe2c55;
+  color: #fe2c55;
+}
+
+[data-theme="tiktok"] #scroll-bottom-btn {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: #aaaaaa;
+  border-radius: 50%;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+[data-theme="tiktok"] #scroll-bottom-btn:hover {
+  background: rgba(254, 44, 85, 0.15);
+  color: #fe2c55;
+  border-color: rgba(254, 44, 85, 0.4);
+  box-shadow: 0 4px 12px rgba(254, 44, 85, 0.3);
+}
+[data-theme="tiktok"] #scroll-bottom-btn:active {
+  transform: scale(0.92);
+}
+
+[data-theme="tiktok"] .ctx-item {
+  border-radius: 8px;
+}
+[data-theme="tiktok"] .ctx-item:hover {
+  background: rgba(254, 44, 85, 0.15);
+  color: #fe2c55;
+}
+[data-theme="tiktok"] .ctx-danger {
+  color: #fe2c55;
+}
+[data-theme="tiktok"] .ctx-danger:hover {
+  background: rgba(254, 44, 85, 0.15);
+  color: #fe2c55;
+}
+
 .custom-theme-settings {
   margin-top: 20px;
 }
