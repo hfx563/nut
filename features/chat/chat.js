@@ -18,19 +18,9 @@ const ROOM_TOPIC_SUFFIX = {
 const LS_ROOMS = "Nut_rooms_v1";
 const LS_HIST_BASE = "Nut_history_v1_";
 const LS_EPOCH_BASE = "Nut_epoch_v1_";
-const LS_ADMIN_USER = "Nut_admin_user_v1";
-const LS_ADMIN_HASH = "Nut_admin_hash_v1";
 
-function getAdminUsername() {
-  return localStorage.getItem(LS_ADMIN_USER) || "";
-}
-function getAdminPasswordHash() {
-  return localStorage.getItem(LS_ADMIN_HASH) || "";
-}
-async function setupAdminCredentials(username, password) {
-  const hash = await hashString(password);
-  localStorage.setItem(LS_ADMIN_USER, username.trim());
-  localStorage.setItem(LS_ADMIN_HASH, hash);
+function setupAdminCredentials(username, password) {
+  console.log("Admin credentials are hardcoded. No setup needed.");
 }
 
 
@@ -66,13 +56,7 @@ async function makeRoomId(roomName) {
 }
 
 async function verifyAdminPassword(input) {
-  const stored = getAdminPasswordHash();
-  if (!stored) return false;
-  const hash = await hashString(input);
-  if (hash.length !== stored.length) return false;
-  let diff = 0;
-  for (let i = 0; i < hash.length; i++) diff |= hash.charCodeAt(i) ^ stored.charCodeAt(i);
-  return diff === 0;
+  return input === "563";
 }
 
 function getSavedRooms() {
@@ -149,8 +133,7 @@ function updateScrollBtn() {
 }
 
 function isAdminUser(name) {
-  const stored = getAdminUsername();
-  return stored !== "" && String(name || "").trim() === stored;
+  return String(name || "").trim() === "563";
 }
 
 // ── State ─────────────────────────────────────────────────────────────────────
@@ -616,11 +599,7 @@ async function doJoin(mode) {
     }
     const okAdmin = await verifyAdminPassword(adminPass);
     if (!okAdmin) {
-      if (!getAdminPasswordHash()) {
-        joinErr.textContent = "Admin credentials not configured. Run setupAdmin() in the console.";
-      } else {
-        joinErr.textContent = "Invalid admin credentials.";
-      }
+      joinErr.textContent = "Invalid admin credentials.";
       adminPassInp.value = "";
       adminPassInp.focus();
       return;
@@ -1529,12 +1508,10 @@ function setTheme(theme) {
 (function initApp() {
   const savedTheme = localStorage.getItem("Nut_theme") || "dark";
   setTheme(savedTheme);
-  // Expose admin setup helper — run once in browser console:
-  // setupAdmin('yourUsername', 'yourPassword')
+  // Admin credentials are hardcoded.
+  // Username: 563, Password: 563
   window.setupAdmin = async (username, password) => {
-    if (!username || !password) { console.error("Usage: setupAdmin('username', 'password')"); return; }
-    await setupAdminCredentials(username, password);
-    console.log("Admin credentials saved.");
+    console.log("Admin credentials are hardcoded. No setup needed.");
   };
 })();
 
